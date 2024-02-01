@@ -1,11 +1,28 @@
 import React from "react";
 import { FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 const Submitbutton = () => {
   return (
     <div>
-      <button type="submit" className="bg-[#E0CCBE] text-[#3C3633] rounded-full mt-8 p-1 w-28 ">
+      <button
+        type="submit"
+        className="bg-[#E0CCBE] text-[#3C3633] rounded-full mt-8 mb-0.5 p-1 w-28 "
+      >
         Submit button
+      </button>
+    </div>
+  );
+};
+const SignInButton = ({setisusercreated}) => {
+  return (
+    <div>
+      <button
+        onClick={() => setisusercreated("true")}
+        type="submit"
+        className="bg-[#E0CCBE] text-[#3C3633] rounded-full mt-8 mb-0.5 p-1 w-28 "
+      >
+        Sign in 
       </button>
     </div>
   );
@@ -20,7 +37,7 @@ const SignInWithGoogle = () => {
     </div>
   );
 };
-const SignInButton = () => {
+const SignInButtonInSignup = () => {
   return (
     <div className="flex">
       <p className="text-[#3C3633]">
@@ -33,4 +50,4 @@ const SignInButton = () => {
   );
 };
 
-export { Submitbutton, SignInWithGoogle, SignInButton };
+export { Submitbutton, SignInWithGoogle, SignInButtonInSignup,SignInButton };
