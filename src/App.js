@@ -1,5 +1,5 @@
 import "./App.css";
-import SignInpage from "./SignIn/SignInpage";
+import SignInpage from "./SignUp/SignInpage";
 import SignUppage from "./SignUp/SignUppage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {

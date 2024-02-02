@@ -1,24 +1,63 @@
 import React, { useState } from "react";
 import SignupImage from "../images/signupcopy.jpeg";
-import {
-  ConfirmPasswordfield,
-  Emailfield,
-  Namefield,
-  Passwordfield,
-} from "../Smallcomponents/Fields";
-import {
-  SignInButtonInSignup,
-  SignInWithGoogle,
-  Submitbutton,
-} from "../Smallcomponents/Buttons";
+import { FaGoogle } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { Inputfield } from "../Smallcomponents/Fields";
+import { Button } from "../Smallcomponents/Buttons";
 import Horizontalrule from "../Smallcomponents/Horizontalrule";
 import { BgImage } from "../Smallcomponents/BackgroundImage";
-import { Formvalidation } from "./Formvalidation";
-//firebase imports
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 function SignUppage() {
-  const formik = Formvalidation();
+  // const [iscreated, setIscreated] = useState(false);
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      ConfirmPassword: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .max(15, "Must be 15 characters or less")
+        .required("required"),
+      email: Yup.string().email("invalid email").required("required"),
+      password: Yup.string()
+        .min(8, "must be 8 character long")
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
+          "must conatains upper case ,lower case , one special character and one digit"
+        )
+        .required("required"),
+      ConfirmPassword: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Password must match")
+        .required("required"),
+    }),
+    onSubmit: (values) => {
+      toast.success(JSON.stringify(values, null, 2));
+      // firebaseMethod(iscreated);
+      // createuser();
+      // authenticate();
+    },
+  });
+  const firebaseMethod = (a) => {
+    alert("yy");
+    if (a === "false") {
+      const createuser = () => {
+        toast("createuser");
+      };
+    } else if (a === "true") {
+      const authenticate = () => {
+        toast("authenticate");
+      };
+    }
+  };
+
   return (
     <div className="flex items-center justify-center  bg-white h-screen">
+      <ToastContainer />
       <BgImage />
       <div className="bg-[#D9D9D9] h-5/6 w-3/5 flex relative">
         <div className="w-3/6 flex">
@@ -27,17 +66,50 @@ function SignUppage() {
         <div className="w-3/5  flex items-center justify-center">
           <div className=" h-4/3 w-4/5 text-center flex flex-col items-center">
             <h1 className="text-3xl font-bold text-[#3C3633]">Sign Up</h1>
-            <form action="" onSubmit={formik.handleSubmit}>
-              <Namefield formik={formik} />
-              <Emailfield formik={formik} />
-              <Passwordfield formik={formik} />
-              <ConfirmPasswordfield formik={formik} />
-              <Submitbutton />
+            <form>
+              <Inputfield
+                fieldName={"name"}
+                fieldtype={"text"}
+                formik={formik}
+              />
+              <Inputfield
+                fieldName={"email"}
+                fieldtype={"email"}
+                formik={formik}
+              />
+              <Inputfield
+                fieldName={"password"}
+                fieldtype={"password"}
+                formik={formik}
+              />
+              <Inputfield
+                fieldName={"ConfirmPassword"}
+                fieldtype={"password"}
+                formik={formik}
+              />
+              <Button
+                btnName={"Submit button"}
+                formik={formik}
+                clickHandler={formik.handleSubmit}
+              />
             </form>
             <Horizontalrule />
-            <SignInWithGoogle />
-            <div>
-              <SignInButtonInSignup />
+            <Button
+              btnName={"Sign In With Google"}
+              faicon={<FaGoogle className="mr-2" />}
+            />
+            <div className="mt-2">
+              <p>
+                {"Already have an account ? "}
+                <span>
+                  <Link
+                    to={"/SignInpage"}
+                    className="underline underline-offset-1"
+                  >
+                    {"Sign In"}
+                  </Link>
+                </span>
+              </p>
             </div>
           </div>
         </div>
