@@ -1,8 +1,13 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../FirebaseConfig/Firebaseconfig";
+import { CreateUser, authenticate } from "../Firebasemethods/AllMethods";
+import { toast } from "react-toastify";
+// import { createUserWithEmailAndPassword } from "firebase/auth";
+// import { auth } from "../FirebaseConfig/Firebaseconfig"
+import { useNavigate } from "react-router-dom";
 function Formvalidation() {
+  // console.log(isusercreated);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -28,18 +33,13 @@ function Formvalidation() {
     }),
     onSubmit: (value) => {
       console.log(value);
-      alert(JSON.stringify(value, null, 2));
-      createUserWithEmailAndPassword(
-        auth,
-        formik.values.email,
-        formik.values.password
-      )
-        .then((usercredential) => {
-          console.log(usercredential);
-        })
-        .catch((errors) => {
-          console.log(errors);
-        });
+      toast.success(JSON.stringify(value, null, 2));
+      // alert(JSON.stringify(value, null, 2));
+      navigate("/SignInpage");
+       CreateUser(formik);
+      //  authenticate(formik);
+      
+      // formik.resetForm();
     },
   });
   return formik;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SignupImage from "../images/signupcopy.jpeg";
 import {
   ConfirmPasswordfield,
@@ -7,14 +7,13 @@ import {
   Passwordfield,
 } from "../Smallcomponents/Fields";
 import {
-  SignInButton,
+  SignInButtonInSignup,
   SignInWithGoogle,
   Submitbutton,
 } from "../Smallcomponents/Buttons";
 import Horizontalrule from "../Smallcomponents/Horizontalrule";
 import { BgImage } from "../Smallcomponents/BackgroundImage";
 import { Formvalidation } from "./Formvalidation";
-
 //firebase imports
 function SignUppage() {
   const formik = Formvalidation();
@@ -38,7 +37,7 @@ function SignUppage() {
             <Horizontalrule />
             <SignInWithGoogle />
             <div>
-              <SignInButton />
+              <SignInButtonInSignup />
             </div>
           </div>
         </div>
