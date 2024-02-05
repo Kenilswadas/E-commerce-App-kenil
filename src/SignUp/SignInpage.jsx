@@ -1,4 +1,6 @@
 import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { Inputfield } from "../Smallcomponents/Fields";
 import { Button } from "../Smallcomponents/Buttons";
 import Horizontalrule from "../Smallcomponents/Horizontalrule";
@@ -7,9 +9,45 @@ import { ForgotPassword } from "../Smallcomponents/ForgotPassword";
 import { ToastContainer } from "react-toastify";
 import { FaGoogle } from "react-icons/fa";
 import signIncopy from "../images/signIncopy.jpeg";
-import SignUppage from "./SignUppage";
+import { toast } from "react-toastify";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../FirebaseConfig/Firebaseconfig";
+import { useNavigate } from "react-router-dom";
 function SignInpage() {
-  const formik = SignUppage();
+  const navigate = useNavigate();
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("invalid email").required("required"),
+      password: Yup.string()
+        .min(8, "must be 8 character long")
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
+          "must conatains upper case ,lower case , one special character and one digit"
+        )
+        .required("required"),
+    }),
+    onSubmit: (values) => {
+      handleSubmit();
+    },
+  });
+  function handleSubmit() {
+    signInWithEmailAndPassword(
+      auth,
+      formik.values.email,
+      formik.values.password
+    )
+      .then((userCredential) => {
+        toast("successfully signged in");
+        navigate("/Home");
+      })
+      .catch((errors) => {
+        console.log(errors);
+      });
+  }
   return (
     <div className="flex items-center justify-center  bg-white h-screen">
       <ToastContainer />
@@ -19,7 +57,7 @@ function SignInpage() {
           <div className=" h-3/5 w-4/5 text-center flex flex-col items-center">
             <h1 className="text-3xl font-bold text-[#3C3633]">Sign In</h1>
             <form>
-              {/* <Inputfield
+              <Inputfield
                 fieldName={"email"}
                 fieldtype={"email"}
                 formik={formik}
@@ -28,10 +66,9 @@ function SignInpage() {
                 fieldName={"password"}
                 fieldtype={"password"}
                 formik={formik}
-              /> */}
-              {/* error occurs  */}
+              />
               <Button
-                btnName={"Sign In Button"}
+                btnName={"Sign in"}
                 formik={formik}
                 clickHandler={formik.handleSubmit}
               />

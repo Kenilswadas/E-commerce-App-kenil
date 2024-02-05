@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import SignupImage from "../images/signupcopy.jpeg";
 import { FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -6,12 +8,16 @@ import { Inputfield } from "../Smallcomponents/Fields";
 import { Button } from "../Smallcomponents/Buttons";
 import Horizontalrule from "../Smallcomponents/Horizontalrule";
 import { BgImage } from "../Smallcomponents/BackgroundImage";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router";
+import { auth } from "../FirebaseConfig/Firebaseconfig";
+// import { onAuthStateChanged } from "firebase/auth";
+
+
 function SignUppage() {
-  // const [iscreated, setIscreated] = useState(false);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -37,27 +43,27 @@ function SignUppage() {
     }),
     onSubmit: (values) => {
       toast.success(JSON.stringify(values, null, 2));
-      // firebaseMethod(iscreated);
-      // createuser();
-      // authenticate();
+      navigate("/SignInpage");
+
+      console.log(auth);
+      createUserWithEmailAndPassword(
+        auth,
+        formik.values.email,
+        formik.values.password
+      )
+        .then((userCredential) => {
+          toast.success("user is created");
+        })
+        .catch((error) => {
+          toast.error("oppes error !!");
+          console.log(error);
+        });
     },
   });
-  const firebaseMethod = (a) => {
-    alert("yy");
-    if (a === "false") {
-      const createuser = () => {
-        toast("createuser");
-      };
-    } else if (a === "true") {
-      const authenticate = () => {
-        toast("authenticate");
-      };
-    }
-  };
 
   return (
     <div className="flex items-center justify-center  bg-white h-screen">
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <BgImage />
       <div className="bg-[#D9D9D9] h-5/6 w-3/5 flex relative">
         <div className="w-3/6 flex">
