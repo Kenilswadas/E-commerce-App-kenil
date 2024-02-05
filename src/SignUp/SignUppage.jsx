@@ -13,8 +13,6 @@ import { toast, ToastContainer } from "react-toastify";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
-// import { onAuthStateChanged } from "firebase/auth";
-
 
 function SignUppage() {
   const navigate = useNavigate();
@@ -53,6 +51,7 @@ function SignUppage() {
       )
         .then((userCredential) => {
           toast.success("user is created");
+          localStorage.setItem("usrEmail", userCredential.user.email);
         })
         .catch((error) => {
           toast.error("oppes error !!");
@@ -60,7 +59,7 @@ function SignUppage() {
         });
     },
   });
-
+  console.log(auth);
   return (
     <div className="flex items-center justify-center  bg-white h-screen">
       {/* <ToastContainer /> */}

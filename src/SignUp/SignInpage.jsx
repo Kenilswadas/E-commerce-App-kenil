@@ -13,7 +13,9 @@ import { toast } from "react-toastify";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 function SignInpage() {
+  const [error, setError] = useState();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -45,7 +47,9 @@ function SignInpage() {
         navigate("/Home");
       })
       .catch((errors) => {
+        toast.error(errors.message);
         console.log(errors);
+        setError(errors);
       });
   }
   return (
@@ -72,6 +76,7 @@ function SignInpage() {
                 formik={formik}
                 clickHandler={formik.handleSubmit}
               />
+              {error ? <div>{error.message}</div> : null}
             </form>
             <Horizontalrule />
             <Button
