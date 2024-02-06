@@ -13,7 +13,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
-
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 function SignUppage() {
   const navigate = useNavigate();
   const formik = useFormik({
@@ -41,7 +42,6 @@ function SignUppage() {
     }),
     onSubmit: (values) => {
       toast.success(JSON.stringify(values, null, 2));
-      navigate("/SignInpage");
 
       console.log(auth);
       createUserWithEmailAndPassword(
@@ -52,12 +52,24 @@ function SignUppage() {
         .then((userCredential) => {
           toast.success("user is created");
           localStorage.setItem("usrEmail", userCredential.user.email);
+          navigate("/SignInpage");
         })
         .catch((error) => {
           toast.error("oppes error !!");
           console.log(error);
         });
     },
+  });
+  useEffect(() => {
+    // if (localStorage.getItem("usrEmail") === null) {
+    //   navigate("/SignInpage");
+    // }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+        navigate("/Home");
+      }
+    });
   });
   console.log(auth);
   return (

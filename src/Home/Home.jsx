@@ -5,23 +5,83 @@ import { Search } from "../Smallcomponents/Searchbar";
 import { NavButton } from "../Smallcomponents/NavButton";
 import { FaUserCircle } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
-import AliceCarousel from "react-alice-carousel";
 import image1 from "../images/image1.jpg";
 import image2 from "../images/image2.webp";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import { FaArrowAltCircleRight } from "react-icons/fa";
-
+import { auth } from "../FirebaseConfig/Firebaseconfig";
+import { onAuthStateChanged } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
+import { toast } from "react-toastify";
+import {
+  BrandsToBag,
+  TrendingInFashion,
+  TrendingInGrocery,
+} from "../Smallcomponents/CardView";
+import Tv_32inchs from "../images/BrandsToBag/32._SY116_CB584962515_.jpg";
+import Tv_43inchs from "../images/BrandsToBag/43._SY116_CB584962515_.jpg";
+import Tv_55inchs from "../images/BrandsToBag/55._SY116_CB584962515_.jpg";
+import Tv_65inchs from "../images/BrandsToBag/65._SY116_CB584962515_.jpg";
+import KitchenItem1 from "../images/BrandsToBag/KicthenItem1.jpg";
+import KitchenItem2 from "../images/BrandsToBag/KicthenItem2.jpg";
+import KitchenItem3 from "../images/BrandsToBag/KicthenItem3.jpg";
+import KitchenItem4 from "../images/BrandsToBag/KicthenItem4.jpg";
+import MenCategory1 from "../images/BrandsToBag/MenCategory1.jpg";
+import MenCategory2 from "../images/BrandsToBag/MenCategory2.jpg";
+import MenCategory3 from "../images/BrandsToBag/MenCategory3.jpg";
+import MenCategory4 from "../images/BrandsToBag/MenCategory4.jpg";
+import WomenCategory1 from "../images/BrandsToBag/WomenCategory1.jpg";
+import WomenCategory2 from "../images/BrandsToBag/WomenCategory2.jpg";
+import WomenCategory3 from "../images/BrandsToBag/WomenCategory3.jpg";
+import WomenCategory4 from "../images/BrandsToBag/WomenCategory4.jpg";
+import TrendingImage1 from "../images/TrendingInFashion/TrendingImage1.jpg";
+import TrendingImage2 from "../images/TrendingInFashion/TrendingImage2.jpg";
+import TrendingImage3 from "../images/TrendingInFashion/TrendingImage3.jpg";
+import TrendingImage4 from "../images/TrendingInFashion/TrendingImage4.jpg";
+import GroceryItem1 from "../images/TrendingInGrocery/GroceryItem1.webp";
+import GroceryItem2 from "../images/TrendingInGrocery/GroceryItem2.webp";
+import GroceryItem3 from "../images/TrendingInGrocery/GroceryItem3.webp";
+import GroceryItem4 from "../images/TrendingInGrocery/GroceryItem4.webp";
+import GroceryLogo1 from "../images/TrendingInGrocery/GroceryLogo1.webp";
+import GroceryLogo2 from "../images/TrendingInGrocery/GroceryLogo2.webp";
+import GroceryLogo3 from "../images/TrendingInGrocery/GroceryLogo3.webp";
+import GroceryLogo4 from "../images/TrendingInGrocery/GroceryLogo4.webp";
 function Home() {
   const navigate = useNavigate();
   const [myimage, setMyimage] = useState(image1);
   useEffect(() => {
-    if (localStorage.getItem("usrEmail") === null) {
-      navigate("/SignInpage");
-    }
-  }, []);
+    // if (localStorage.getItem("usrEmail") === null) {
+    //   navigate("/SignInpage");
+    // }
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        console.log(user);
+        navigate("/SignInpage");
+      } else {
+        // console.log(user);
+      }
+      if (user) {
+        console.log(user);
+        navigate("/Home");
+      }
+    });
+  });
   const handleImage = (id) => {
-    id == 1 ? setMyimage(image1) : setMyimage(image2);
+    id === 1 ? setMyimage(image1) : setMyimage(image2);
   };
+  const handleLogout = () => {
+    const auth = getAuth();
+    console.log(auth);
+    signOut(auth)
+      .then(() => {
+        navigate("/SignInpage");
+        toast("Sign-out successful.");
+      })
+      .catch((error) => {
+        toast.error("opps ! error occurs ...");
+      });
+  };
+
   return (
     <div className="bg-[#D9D9D9]">
       <nav className="bg-[#D9D9D9] p-2">
@@ -35,6 +95,7 @@ function Home() {
             <NavButton buttonName={"Fashion"} />
             <NavButton buttonName={"Mobiles"} />
             <NavButton buttonName={"Travel"} />
+            <button onClick={handleLogout}>log me out</button>
           </li>
           <Search />
           <NavButton
@@ -47,6 +108,7 @@ function Home() {
           />
         </ul>
       </nav>
+      {/* image Carousel */}
       <div className="bg-red-200 h-96 text-center">
         <img src={myimage} alt="" className="h-96 " />
         <button onClick={() => handleImage(1)} className="p-4 ">
@@ -56,45 +118,60 @@ function Home() {
           <FaArrowAltCircleRight size={40} />
         </button>
       </div>
-      <div className="bg-[#E0CCBE] h-96 m-16">
-        <p className="text-center pt-10">MEDEL WORTHY BRANDS TO BAG</p>
-        <div className="flex m-10 mt-0 items-center justify-between">
-          <div className="bg-red-500 w-56 m-4 p-2 rounded-xl">
-            <p className="bg-gray-200">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium ipsa fugit delectus suscipit. Voluptatem incidunt
-              magnam facilis maiores inventore expedita ut itaque libero
-              consequatur. Est minima molestias autem dicta consequuntur.
-            </p>
-            <p>hello</p>
-          </div>
-          <div className="bg-red-500 w-56 m-4 p-2 rounded-xl">
-            <p className="bg-gray-200">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium ipsa fugit delectus suscipit. Voluptatem incidunt
-              magnam facilis maiores inventore expedita ut itaque libero
-              consequatur. Est minima molestias autem dicta consequuntur.
-            </p>
-            <p>hello</p>
-          </div>
-          <div className="bg-red-500 w-56 m-4 p-2 rounded-xl">
-            <p className="bg-gray-200">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium ipsa fugit delectus suscipit. Voluptatem incidunt
-              magnam facilis maiores inventore expedita ut itaque libero
-              consequatur. Est minima molestias autem dicta consequuntur.
-            </p>
-            <p>hello</p>
-          </div>
-          <div className="bg-red-500 w-56 m-4 p-2 rounded-xl">
-            <p className="bg-gray-200">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium ipsa fugit delectus suscipit. Voluptatem incidunt
-              magnam facilis maiores inventore expedita ut itaque libero
-              consequatur. Est minima molestias autem dicta consequuntur.
-            </p>
-            <p>hello</p>
-          </div>
+      {/* BMEDEL WORTHY BRANDS TO BAG */}
+      <div className="bg-white h-80 m-16">
+        <p className="text-center bg-red-100 pt-4 text-[#747264]">
+          MEDEL WORTHY BRANDS TO BAG
+        </p>
+        <div className="flex m-6 mt-0 items-center justify-between">
+          <BrandsToBag
+            image1={Tv_32inchs}
+            image2={Tv_43inchs}
+            image3={Tv_55inchs}
+            image4={Tv_65inchs}
+          />
+          <BrandsToBag
+            image1={MenCategory1}
+            image2={MenCategory2}
+            image3={MenCategory3}
+            image4={MenCategory4}
+          />
+          <BrandsToBag
+            image1={KitchenItem1}
+            image2={KitchenItem2}
+            image3={KitchenItem3}
+            image4={KitchenItem4}
+          />
+          <BrandsToBag
+            image1={WomenCategory1}
+            image2={WomenCategory2}
+            image3={WomenCategory3}
+            image4={WomenCategory4}
+          />
+        </div>
+      </div>
+      {/* TREANDING IN FASHION */}
+      <div className="bg-white m-16">
+        <p className="text-center mb-1 bg-red-100 pt-4 text-[#747264]">
+          TREANDING IN FASHION
+        </p>
+        <div className="flex m-6 mt-0 items-center justify-between">
+          <TrendingInFashion image={TrendingImage1} />
+          <TrendingInFashion image={TrendingImage2} />
+          <TrendingInFashion image={TrendingImage3} />
+          <TrendingInFashion image={TrendingImage4} />
+        </div>
+      </div>
+      {/* TRENDING IN GROCERY */}
+      <div className="bg-white h-80 m-16">
+        <p className="text-center mb-1 bg-red-100 pt-4 text-[#747264] ">
+          TREANDING IN GROCERY
+        </p>
+        <div className="flex m-6 mt-0 items-center justify-between">
+          <TrendingInGrocery logo={GroceryLogo1} image={GroceryItem1} />
+          <TrendingInGrocery logo={GroceryLogo2} image={GroceryItem2} />
+          <TrendingInGrocery logo={GroceryLogo3} image={GroceryItem3} />
+          <TrendingInGrocery logo={GroceryLogo4} image={GroceryItem4} />
         </div>
       </div>
     </div>

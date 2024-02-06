@@ -10,10 +10,10 @@ import { ToastContainer } from "react-toastify";
 import { FaGoogle } from "react-icons/fa";
 import signIncopy from "../images/signIncopy.jpeg";
 import { toast } from "react-toastify";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 function SignInpage() {
   const [error, setError] = useState();
   const navigate = useNavigate();
@@ -52,6 +52,17 @@ function SignInpage() {
         setError(errors);
       });
   }
+  useEffect(() => {
+    // if (localStorage.getItem("usrEmail") === null) {
+    //   navigate("/SignInpage");
+    // }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+        navigate("/Home");
+      }
+    });
+  });
   return (
     <div className="flex items-center justify-center  bg-white h-screen">
       <ToastContainer />
@@ -84,6 +95,12 @@ function SignInpage() {
               btnName={"Sign In With Google"}
             />
             <ForgotPassword />
+            <p>
+              {"New to this Site : "}
+              <Link className="underline text-blue-900" to={"/"}>
+                {"Sign Up"}
+              </Link>
+            </p>
           </div>
         </div>
         <div className="bg-red-200 w-3/6 flex">
