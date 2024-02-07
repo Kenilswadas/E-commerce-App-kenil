@@ -16,4 +16,4 @@ const Button = ({ btnName, faicon, clickHandler }) => {
   );
 };
 
-export { Button};
+export { Button };
