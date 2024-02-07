@@ -15,4 +15,5 @@ const Button = ({ btnName, faicon, clickHandler }) => {
     </div>
   );
 };
-export { Button };
+
+export { Button};
