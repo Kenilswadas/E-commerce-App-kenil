@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../images/logo.png";
 import { Search } from "../Smallcomponents/Searchbar";
@@ -46,23 +46,23 @@ import GroceryLogo1 from "../images/TrendingInGrocery/GroceryLogo1.webp";
 import GroceryLogo2 from "../images/TrendingInGrocery/GroceryLogo2.webp";
 import GroceryLogo3 from "../images/TrendingInGrocery/GroceryLogo3.webp";
 import GroceryLogo4 from "../images/TrendingInGrocery/GroceryLogo4.webp";
-//Storage
+// Storage
 import {
   ref,
   listAll,
   getDownloadURL,
-  // uploadBytes,
+  uploadBytes,
 } from "firebase/storage";
 import { storage } from "../FirebaseConfig/Firebaseconfig";
 function Home() {
-  // const [image, setImage] = useState();
+  const [image, setImage] = useState();
   // console.log(image);
   const [imageList, setImageList] = useState([]);
-  // function upload() {
-  //   console.log(image);
-    // const ImageRef = ref(storage, `Images/${image.name}`);
-  //   uploadBytes(ImageRef, image);
-  // }
+  function upload() {
+    console.log(image);
+  const ImageRef = ref(storage, `Images/${image.name}`);
+    uploadBytes(ImageRef, image);
+  }
   function getImage() {
     const imageListRef = ref(storage, "/");
     listAll(imageListRef).then((response) => {
@@ -86,10 +86,6 @@ function Home() {
       } else {
         // console.log(user);
       }
-      if (user) {
-        // console.log(user);
-        navigate("/Home");
-      }
     });
   });
   const handleImage = (id) => {
@@ -97,9 +93,9 @@ function Home() {
   };
   const handleLogout = () => {
     const auth = getAuth();
-    console.log(auth);
     signOut(auth)
       .then(() => {
+        localStorage.clear();
         navigate("/SignInpage");
         toast("Sign-out successful.");
       })
@@ -110,7 +106,7 @@ function Home() {
 
   return (
     <div className="bg-[#D9D9D9]">
-      {/* <input
+      <input
         type="file"
         name=""
         id=""
@@ -118,7 +114,7 @@ function Home() {
       />
       <button onClick={upload} className="bg-red-200 mr-5">
         Upload
-      </button> */}
+      </button>
       <button onClick={getImage}>get me</button>
       <nav className="bg-[#D9D9D9] p-2">
         <ul className="flex items-center justify-around">
@@ -136,7 +132,7 @@ function Home() {
           <Search />
           <NavButton
             page={"/Admin"}
-            buttonName={"My Profile"}
+            buttonName={localStorage.getItem("userName")}
             FaIons={<FaUserCircle className="mr-1" />}
           />
           <NavButton
@@ -211,10 +207,8 @@ function Home() {
           <TrendingInGrocery logo={GroceryLogo4} image={GroceryItem4} />
         </div>
       </div>
-      {imageList.map((url) => {
-        return (
-          <img src={`url`} alt=""/>
-        )
+      {imageList.map((url, index) => {
+        return <img key={index} src={`url`} alt="" />;
       })}
     </div>
   );

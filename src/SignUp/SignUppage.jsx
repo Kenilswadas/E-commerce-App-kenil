@@ -54,7 +54,7 @@ function SignUppage() {
       )
         .then((userCredential) => {
           toast.success("user is created");
-          localStorage.setItem("usrEmail", userCredential.user.email);
+          localStorage.setItem("userName",formik.values.name);
           navigate("/SignInpage");
         })
         .catch((error) => {
