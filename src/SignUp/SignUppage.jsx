@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import SignupImage from "../images/signupcopy.jpeg";
@@ -12,11 +12,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router";
-import { auth } from "../FirebaseConfig/Firebaseconfig";
+import { auth, db } from "../FirebaseConfig/Firebaseconfig";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+//for fireStore
+import { collection, addDoc } from "firebase/firestore";
 function SignUppage() {
   const navigate = useNavigate();
+  // const [userCount, setUserCount] = useState(0);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -43,7 +46,7 @@ function SignUppage() {
     onSubmit: (values) => {
       toast.success(JSON.stringify(values, null, 2));
 
-      console.log(auth);
+      // console.log(auth);
       createUserWithEmailAndPassword(
         auth,
         formik.values.email,
@@ -58,6 +61,18 @@ function SignUppage() {
           toast.error("oppes error !!");
           console.log(error);
         });
+
+      //fireStore
+      const mycollection = collection(db, "Myusers");
+      // console.log(mycollection);
+      const adddocument = addDoc(mycollection, {
+        UserEmail: formik.values.email,
+        UserName: formik.values.name,
+        UserPassword: formik.values.password,
+        // Id: userCount,
+      });
+      // console.log(adddocument.id);
+      // setUserCount(userCount+1);
     },
   });
   useEffect(() => {
@@ -71,7 +86,7 @@ function SignUppage() {
       }
     });
   });
-  console.log(auth);
+  // console.log(auth);
   return (
     <div className="flex items-center justify-center  bg-white h-screen">
       {/* <ToastContainer /> */}

@@ -23,6 +23,7 @@
     "react-swipeable-views-utils": "^0.14.0",
     "react-toastify": "^10.0.4",
     "styled-components": "^6.1.8",
+    "uuidv4": "^6.2.13",
     "web-vitals": "^2.1.4",
     "yup": "^1.3.3"
   },
