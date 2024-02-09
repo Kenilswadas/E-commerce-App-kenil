@@ -82,7 +82,7 @@ function Home() {
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         // console.log(user);
-        navigate("/SignInpage");
+        navigate("/");
       } else {
         // console.log(user);
       }
@@ -96,7 +96,7 @@ function Home() {
     signOut(auth)
       .then(() => {
         localStorage.clear();
-        navigate("/SignInpage");
+        navigate("/");
         toast("Sign-out successful.");
       })
       .catch((error) => {

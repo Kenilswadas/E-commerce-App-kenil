@@ -1,5 +1,6 @@
 import { getAuth } from "@firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+
 const VerticalNavbar = () => {
   const user = getAuth();
   return (
@@ -10,28 +11,53 @@ const VerticalNavbar = () => {
       <nav className="flex-1 bg-gray-600 p-4">
         <ul>
           <li>
-            <Link className="block text-white py-2 px-4 hover:bg-[#D9D9D9] hover:text-[#747264]">
-              Deshbord
-            </Link>
+            <NavLink
+              className={({ isActive }) =>
+                `block text-white py-2 px-4  ${
+                  isActive ? "bg-[#D9D9D9]" : null
+                } hover:bg-[#D9D9D9] hover:text-[#747264] `
+              }
+              to={"/Admin/Dashboard"}
+            >
+              Dashboard
+            </NavLink>
           </li>
-          <li>
-            <Link className="block text-white py-2 px-4 hover:bg-[#D9D9D9] hover:text-[#747264]">
+          {/* <li>
+            <NavLink
+              className={({ isActive }) =>
+                `block text-white py-2 px-4  ${
+                  isActive ? "bg-[#D9D9D9]" : null
+                } hover:bg-[#D9D9D9] hover:text-[#747264] `
+              }
+              to={""}
+            >
               users
-            </Link>
-          </li>
+            </NavLink>
+          </li> */}
           <li>
-            <Link
-              className="block text-white py-2 px-4 hover:bg-[#D9D9D9] hover:text-[#747264]"
+            <NavLink
+              className={({ isActive }) =>
+                `block text-white py-2 px-4  ${
+                  isActive ? "bg-[#D9D9D9]" : null
+                } hover:bg-[#D9D9D9] hover:text-[#747264] `
+              }
               to={"/Admin/Products"}
             >
               Products
-            </Link>
+            </NavLink>
           </li>
-          <li>
-            <Link className="block text-white py-2 px-4 hover:bg-[#D9D9D9] hover:text-[#747264]">
+          {/* <li>
+            <NavLink
+              className={({ isActive }) =>
+                `block text-white py-2 px-4  ${
+                  isActive ? "bg-[#D9D9D9]" : null
+                } hover:bg-[#D9D9D9] hover:text-[#747264] `
+              }
+              to={"#"}
+            >
               Settings
-            </Link>
-          </li>
+            </NavLink>
+          </li> */}
         </ul>
       </nav>
     </div>

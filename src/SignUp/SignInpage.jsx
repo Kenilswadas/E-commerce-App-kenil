@@ -43,6 +43,7 @@ function SignInpage() {
       formik.values.password
     )
       .then((userCredential) => {
+        // localStorage.setItem("userName", formik.values.name); //Bug
         toast("successfully signged in");
         navigate("/Home");
       })
@@ -97,7 +98,7 @@ function SignInpage() {
             <ForgotPassword />
             <p>
               {"New to this Site : "}
-              <Link className="underline text-blue-900" to={"/"}>
+              <Link className="underline text-blue-900" to={"/SignUppage"}>
                 {"Sign Up"}
               </Link>
             </p>
