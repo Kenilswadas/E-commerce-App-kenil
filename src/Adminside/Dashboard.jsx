@@ -5,37 +5,23 @@ import { VerticalNavbar } from "../Smallcomponents/VerticalNavbar";
 import { Button } from "../Smallcomponents/Buttons";
 import Addproductform from "../Smallcomponents/Addproductform";
 import { useState } from "react";
-import { addDoc, collection, doc, getDocs } from "@firebase/firestore";
-import { db, storage } from "../FirebaseConfig/Firebaseconfig";
+// import { addDoc, collection, doc, getDocs } from "@firebase/firestore";
+// import { db, storage } from "../FirebaseConfig/Firebaseconfig";
 
-function Dashboard() {
-  const [items, setItems] = useState([]);
+function Dashboard({ userName }) {
+  // const [items, setItems] = useState([]);
   const [displayform, setDisplayform] = useState(false);
   //addProducts function
   const addProducts = () => {
-    // alert("ki");
-    // setDisplayform("true");
-    return <Addproductform />;
+    if (displayform) {
+      setDisplayform(false);
+    } else setDisplayform(true);
   };
-
-  //getProducts function
-  const getProducts = async () => {
-    alert("ji");
-    let arr = [];
-    const mycollection = collection(db, "MyProducts");
-    const querySnapshot = await getDocs(mycollection);
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      arr.push(data);
-      console.log(data);
-    });
-    setItems(arr);
-  };
-
+  console.log(displayform);
   return (
     <div className="flex">
       <div>
-        <VerticalNavbar />
+        <VerticalNavbar userName={userName} />
       </div>
       <div className="bg-gray-200 flex flex-col items-center justify-center w-full">
         <Button
@@ -44,16 +30,12 @@ function Dashboard() {
             addProducts();
           }}
         />
-        {/* <Button
-          btnName="Get Product"
-          clickHandler={() => {
-            getProducts();
-          }}
-        /> */}
         <div className="m-10">
-          <CustomizedTables />
+          <CustomizedTables setDisplayform={setDisplayform} displayform={displayform} />
         </div>
-        {addProducts()}
+        {displayform ? (
+          <Addproductform setDisplayform={setDisplayform} />
+        ) : null}
       </div>
     </div>
   );

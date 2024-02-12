@@ -1,12 +1,10 @@
-import { getAuth } from "@firebase/auth";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-const VerticalNavbar = () => {
-  const user = getAuth();
+const VerticalNavbar = ({userName}) => {
   return (
     <div className="h-screen flex flex-col bg-[#D9D9D9] w-64">
       <div className="h-16 flex items-center justify-center text-[#747264] text-xl font-bold">
-        {localStorage.getItem("userName")}
+        {userName}
       </div>
       <nav className="flex-1 bg-gray-600 p-4">
         <ul>

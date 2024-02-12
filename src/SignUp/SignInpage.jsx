@@ -14,9 +14,13 @@ import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
 function SignInpage() {
   const [error, setError] = useState();
   const navigate = useNavigate();
+  const provider = new GoogleAuthProvider();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -53,6 +57,9 @@ function SignInpage() {
         setError(errors);
       });
   }
+  function SignInWithGoogle() {
+    
+  }
   useEffect(() => {
     // if (localStorage.getItem("usrEmail") === null) {
     //   navigate("/SignInpage");
@@ -64,6 +71,7 @@ function SignInpage() {
       }
     });
   });
+  console.log(auth);
   return (
     <div className="flex items-center justify-center  bg-white h-screen">
       <ToastContainer />
@@ -94,6 +102,7 @@ function SignInpage() {
             <Button
               faicon={<FaGoogle className="mr-2" />}
               btnName={"Sign In With Google"}
+              clickHandler={()=>SignInWithGoogle()}
             />
             <ForgotPassword />
             <p>

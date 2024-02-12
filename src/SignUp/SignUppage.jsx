@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable no-undef */
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import SignupImage from "../images/signupcopy.jpeg";
@@ -9,8 +10,14 @@ import { Button } from "../Smallcomponents/Buttons";
 import Horizontalrule from "../Smallcomponents/Horizontalrule";
 import { BgImage } from "../Smallcomponents/BackgroundImage";
 import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
+import {
+  ProviderId,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { useNavigate } from "react-router";
 import { auth, db } from "../FirebaseConfig/Firebaseconfig";
 import { useEffect } from "react";
@@ -19,6 +26,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 function SignUppage() {
   const navigate = useNavigate();
+  const provider = new GoogleAuthProvider();
+
+  // const user = auth;
   // const [userCount, setUserCount] = useState(0);
   const formik = useFormik({
     initialValues: {
@@ -45,17 +55,22 @@ function SignUppage() {
     }),
     onSubmit: (values) => {
       toast.success(JSON.stringify(values, null, 2));
-
-      // console.log(auth);
       createUserWithEmailAndPassword(
         auth,
         formik.values.email,
         formik.values.password
       )
         .then((userCredential) => {
-          toast.success("user is created");
-          localStorage.setItem("userName", formik.values.name);
-          navigate("/Home");
+          updateProfile(auth.currentUser, {
+            displayName: formik.values.name,
+          })
+            .then(() => {
+              toast.success("user is created successfully.");
+              navigate("/Home");
+            })
+            .catch((error) => {
+              toast.error("oppes error occurs !!");
+            });
         })
         .catch((error) => {
           toast.error("oppes error !!");
@@ -65,28 +80,36 @@ function SignUppage() {
       //fireStore
       const mycollection = collection(db, "Myusers");
       // console.log(mycollection);
-      const adddocument = addDoc(mycollection, {
+      addDoc(mycollection, {
         UserEmail: formik.values.email,
         UserName: formik.values.name,
         UserPassword: formik.values.password,
         // Id: userCount,
       });
-      // console.log(adddocument.id);
-      // setUserCount(userCount+1);
     },
   });
+  function SignInWithGoogle() {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
+  }
   useEffect(() => {
     // if (localStorage.getItem("usrEmail") === null) {
     //   navigate("/SignInpage");
     // }
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
+        // console.log(user);
         navigate("/Home");
       }
     });
   });
-  // console.log(auth);
+  console.log(auth);
   return (
     <div className="flex items-center justify-center  bg-white h-screen">
       {/* <ToastContainer /> */}
@@ -129,6 +152,7 @@ function SignUppage() {
             <Button
               btnName={"Sign In With Google"}
               faicon={<FaGoogle className="mr-2" />}
+              clickHandler={() => SignInWithGoogle()}
             />
             <div className="mt-2">
               <p>

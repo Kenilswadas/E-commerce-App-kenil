@@ -1,14 +1,14 @@
 import React from "react";
 import { VerticalNavbar } from "../Smallcomponents/VerticalNavbar";
-const Admin = () => {
+const Admin = ({userName}) => {
   return (
     <div className="flex">
       <div>
-        <VerticalNavbar />
+        <VerticalNavbar  userName = {userName}/>
       </div>
       <div className="bg-gray-200 flex items-center justify-center w-full">
         <h1 className="text-4xl text-[#747264]">
-          Wellcome {localStorage.getItem("userName")}
+          Wellcome {userName}
         </h1>
       </div>
     </div>

@@ -15,11 +15,13 @@ import {
   getDocs,
   deleteDoc,
   onSnapshot,
+  updateDoc,
 } from "@firebase/firestore";
 import { db } from "../FirebaseConfig/Firebaseconfig";
 import { Button } from "../Smallcomponents/Buttons";
 import { MdDelete } from "react-icons/md";
 import { MdUpdate } from "react-icons/md";
+import Addproductform from "./Addproductform";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,9 +48,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function CustomizedTables() {
+export default function CustomizedTables({ setDisplayform, displayform }) {
   const [items, setItems] = useState([]);
   const [Products, setproducts] = useState([]);
+  const [isupdate, setisupdate] = useState(false);
   const getItems = async () => {
     let arr = [];
     const mycollection = collection(db, "MyProducts");
@@ -76,6 +79,18 @@ export default function CustomizedTables() {
   const handleDelete = async (id) => {
     console.log(id);
     await deleteDoc(doc(db, "MyProducts", id));
+  };
+  //handleUpdate
+  const handleUpdate = async (id) => {
+    alert("ji");
+    setisupdate(true);
+    if (displayform) {
+      setDisplayform(false);
+    } else {
+      setDisplayform(true);
+    }
+    <Addproductform isupdate={isupdate} DocId={id} />;
+    // await updateDoc(doc(db, "MyProducts", id), {});
   };
   return (
     <div className="flex">
@@ -126,7 +141,11 @@ export default function CustomizedTables() {
                   />
                 </StyledTableCell>{" "}
                 <StyledTableCell align="center">
-                  <Button btnName={"update"} faicon={<MdUpdate size={20} />} />
+                  <Button
+                    btnName={"update"}
+                    faicon={<MdUpdate size={20} />}
+                    clickHandler={() => handleUpdate(data.id)}
+                  />
                 </StyledTableCell>
               </StyledTableRow>
             ))}
