@@ -1,35 +1,63 @@
-import { Link } from "react-router-dom";
+import { getAuth } from "@firebase/auth";
+import { Link, NavLink } from "react-router-dom";
+
 const VerticalNavbar = () => {
+  const user = getAuth();
   return (
-    <div className="h-screen flex flex-col bg-[#747264] w-64">
-      <div className="h-16 flex items-center justify-center text-white text-xl font-bold">
-        Admin Panel
+    <div className="h-screen flex flex-col bg-[#D9D9D9] w-64">
+      <div className="h-16 flex items-center justify-center text-[#747264] text-xl font-bold">
+        {localStorage.getItem("userName")}
       </div>
       <nav className="flex-1 bg-gray-600 p-4">
         <ul>
           <li>
-            <Link className="block text-white py-2 px-4 hover:bg-[#D9D9D9] hover:text-[#747264]">
-              Deshbord
-            </Link>
+            <NavLink
+              className={({ isActive }) =>
+                `block text-white py-2 px-4  ${
+                  isActive ? "bg-[#D9D9D9]" : null
+                } hover:bg-[#D9D9D9] hover:text-[#747264] `
+              }
+              to={"/Admin/Dashboard"}
+            >
+              Dashboard
+            </NavLink>
           </li>
-          <li>
-            <Link className="block text-white py-2 px-4 hover:bg-[#D9D9D9] hover:text-[#747264]">
+          {/* <li>
+            <NavLink
+              className={({ isActive }) =>
+                `block text-white py-2 px-4  ${
+                  isActive ? "bg-[#D9D9D9]" : null
+                } hover:bg-[#D9D9D9] hover:text-[#747264] `
+              }
+              to={""}
+            >
               users
-            </Link>
-          </li>
+            </NavLink>
+          </li> */}
           <li>
-            <Link
-              className="block text-white py-2 px-4 hover:bg-[#D9D9D9] hover:text-[#747264]"
+            <NavLink
+              className={({ isActive }) =>
+                `block text-white py-2 px-4  ${
+                  isActive ? "bg-[#D9D9D9]" : null
+                } hover:bg-[#D9D9D9] hover:text-[#747264] `
+              }
               to={"/Admin/Products"}
             >
               Products
-            </Link>
+            </NavLink>
           </li>
-          <li>
-            <Link className="block text-white py-2 px-4 hover:bg-[#D9D9D9] hover:text-[#747264]">
+          {/* <li>
+            <NavLink
+              className={({ isActive }) =>
+                `block text-white py-2 px-4  ${
+                  isActive ? "bg-[#D9D9D9]" : null
+                } hover:bg-[#D9D9D9] hover:text-[#747264] `
+              }
+              to={"#"}
+            >
               Settings
-            </Link>
-          </li>
+            </NavLink>
+          </li> */}
         </ul>
       </nav>
     </div>

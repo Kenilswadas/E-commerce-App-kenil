@@ -54,8 +54,8 @@ function SignUppage() {
       )
         .then((userCredential) => {
           toast.success("user is created");
-          localStorage.setItem("usrEmail", userCredential.user.email);
-          navigate("/SignInpage");
+          localStorage.setItem("userName", formik.values.name);
+          navigate("/Home");
         })
         .catch((error) => {
           toast.error("oppes error !!");
@@ -134,10 +134,7 @@ function SignUppage() {
               <p>
                 {"Already have an account ? "}
                 <span>
-                  <Link
-                    to={"/SignInpage"}
-                    className="underline underline-offset-1"
-                  >
+                  <Link to={"/"} className="underline underline-offset-1">
                     {"Sign In"}
                   </Link>
                 </span>
