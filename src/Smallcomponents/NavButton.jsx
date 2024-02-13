@@ -6,7 +6,7 @@ const NavButton = ({ buttonName, FaIons, page }) => {
   return (
     <button
       type="button"
-      className=" flex items-center bg-white text-[#747264] rounded-full p-1 m-1 pl-6 pr-6 hover:bg-[#747264] hover:text-[#ffffff]"
+      className=" flex items-center bg-[#217aa9] text-[#ebf1f1] rounded-full p-1 m-1 pl-6 pr-6 hover:bg-[#96002e] hover:text-[#ffffff]"
       onClick={() => navigate(`${page}`)}
     >
       {FaIons}

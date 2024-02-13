@@ -57,9 +57,7 @@ function SignInpage() {
         setError(errors);
       });
   }
-  function SignInWithGoogle() {
-    
-  }
+  function SignInWithGoogle() {}
   useEffect(() => {
     // if (localStorage.getItem("usrEmail") === null) {
     //   navigate("/SignInpage");
@@ -76,10 +74,10 @@ function SignInpage() {
     <div className="flex items-center justify-center  bg-white h-screen">
       <ToastContainer />
       <BgImage />
-      <div className="bg-[#D9D9D9] h-5/6 w-3/5 flex relative">
+      <div className="bg-[#ebf1f1] h-5/6 w-3/5 flex relative">
         <div className="w-3/5  flex items-center justify-center">
           <div className=" h-3/5 w-4/5 text-center flex flex-col items-center">
-            <h1 className="text-3xl font-bold text-[#3C3633]">Sign In</h1>
+            <h1 className="text-3xl font-bold text-[#96002e]">Sign In</h1>
             <form>
               <Inputfield
                 fieldName={"email"}
@@ -102,7 +100,7 @@ function SignInpage() {
             <Button
               faicon={<FaGoogle className="mr-2" />}
               btnName={"Sign In With Google"}
-              clickHandler={()=>SignInWithGoogle()}
+              clickHandler={() => SignInWithGoogle()}
             />
             <ForgotPassword />
             <p>

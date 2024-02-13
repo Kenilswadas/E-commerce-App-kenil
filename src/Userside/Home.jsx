@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../images/logo.png";
+import logo from "../images/logo2.png";
 import { Search } from "../Smallcomponents/Searchbar";
 import { NavButton } from "../Smallcomponents/NavButton";
 import { FaUserCircle } from "react-icons/fa";
@@ -84,14 +84,14 @@ function Home({ userName }) {
       }
     });
     //fetch data from fireStore
-    const imagelistRef = ref(storage, `/`);
-    listAll(imagelistRef).then((response) => {
-      response.items.map((item) => {
-        return getDownloadURL(item).then((url) => {
-          setImageList((prev) => [...prev, url]);
-        });
-      });
-    });
+    // const imagelistRef = ref(storage, `/`);
+    // listAll(imagelistRef).then((response) => {
+    //   response.items.map((item) => {
+    //     return getDownloadURL(item).then((url) => {
+    //       setImageList((prev) => [...prev, url]);
+    //     });
+    //   });
+    // });
   });
   const handleImage = (id) => {
     id === 1 ? setMyimage(image1) : setMyimage(image2);
@@ -109,7 +109,7 @@ function Home({ userName }) {
   };
   console.log(auth);
   return (
-    <div className="bg-[#D9D9D9]">
+    <div className="bg-[#ffffff] m-0">
       {/* <input
         type="file"
         name=""
@@ -119,7 +119,7 @@ function Home({ userName }) {
       <button onClick={upload} className="bg-red-200 mr-5">
         Upload
       </button> */}
-      <nav className="bg-[#D9D9D9] p-2">
+      <nav className="bg-[#ebf1f1] p-2">
         <ul className="flex items-center justify-around">
           <li className="flex">
             <img src={logo} alt="" className="w-auto h-20" />
@@ -145,8 +145,8 @@ function Home({ userName }) {
         </ul>
       </nav>
       {/* image Carousel */}
-      <div className="bg-red-200 h-96 text-center">
-        <img src={myimage} alt="" className="h-96 " />
+      <div className=" h-96 text-center">
+        <img src={myimage} alt="" className="h-96 w-full " />
         <button onClick={() => handleImage(1)} className="p-4 ">
           <FaArrowAltCircleLeft size={40} />
         </button>

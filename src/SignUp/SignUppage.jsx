@@ -120,7 +120,7 @@ function SignUppage() {
         </div>
         <div className="w-3/5  flex items-center justify-center">
           <div className=" h-4/3 w-4/5 text-center flex flex-col items-center">
-            <h1 className="text-3xl font-bold text-[#3C3633]">Sign Up</h1>
+            <h1 className="text-3xl font-bold text-[#96002e]">Sign Up</h1>
             <form>
               <Inputfield
                 fieldName={"name"}
