@@ -4,7 +4,11 @@ const InputField = ({ type, placeholder, setFunction }) => {
       type={type}
       placeholder={placeholder}
       className="mb-4 rounded-full pl-4"
-      onChange={(type==='file') ? (e) => setFunction(e.target.files[0]) : (e) => setFunction(e.target.value)}
+      onChange={
+        type === "file"
+          ? (e) => setFunction(e.target.files[0])
+          : (e) => setFunction(e.target.value)
+      }
     />
   );
 };

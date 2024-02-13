@@ -7,17 +7,34 @@ import Admin from "./Adminside/Admin";
 import Products from "./Adminside/Products";
 import Items from "./Adminside/Items";
 import Dashboard from "./Adminside/Dashboard";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./FirebaseConfig/Firebaseconfig";
+import { useState } from "react";
 function App() {
+  const [userName, setUserName] = useState("");
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setUserName(auth?.currentUser?.displayName);
+    } else {
+      setUserName(null);
+    }
+  });
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/SignUppage" element={<SignUppage />} />
+          <Route
+            path="/SignUppage"
+            element={<SignUppage userName={userName} />}
+          />
           <Route path="/" element={<SignInpage />} />
-          <Route path="/Home" element={<Home />} />
-          <Route path="/Admin" element={<Admin />} />
-          <Route path="/Admin/Dashboard" element={<Dashboard />} />
-          <Route path="/Admin/Products" element={<Products />} />
+          <Route path="/Home" element={<Home userName={userName} />} />
+          <Route path="/Admin" element={<Admin userName={userName} />} />
+          <Route
+            path="/Admin/Dashboard"
+            element={<Dashboard userName={userName} />}
+          />
+          <Route path="/Admin/Products" element={<Products userName={userName}/>} />
           <Route path="/Admin/Products/Items" element={<Items />} />
         </Routes>
       </BrowserRouter>

@@ -11,7 +11,7 @@ import { FaArrowAltCircleLeft } from "react-icons/fa";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { onAuthStateChanged } from "firebase/auth";
-import { getAuth, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { toast } from "react-toastify";
 import {
   BrandsToBag,
@@ -47,52 +47,56 @@ import GroceryLogo2 from "../images/TrendingInGrocery/GroceryLogo2.webp";
 import GroceryLogo3 from "../images/TrendingInGrocery/GroceryLogo3.webp";
 import GroceryLogo4 from "../images/TrendingInGrocery/GroceryLogo4.webp";
 // Storage
-import {
-  ref,
-  listAll,
-  getDownloadURL,
-  uploadBytes,
-} from "firebase/storage";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../FirebaseConfig/Firebaseconfig";
-function Home() {
-  const [image, setImage] = useState();
+function Home({ userName }) {
+  // const [image, setImage] = useState();
+  // const [userName, setUserName] = useState("");
+
   // console.log(image);
   const [imageList, setImageList] = useState([]);
-  function upload() {
-    console.log(image);
-  const ImageRef = ref(storage, `Images/${image.name}`);
-    uploadBytes(ImageRef, image);
-  }
-  function getImage() {
-    const imageListRef = ref(storage, "/");
-    listAll(imageListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          setImageList((prev) => [...prev, url]);
-        });
-      });
-    });
-  }
+  // function upload() {
+  //   console.log(image);
+  //   const ImageRef = ref(storage, `Images/${image.name}`);
+  //   uploadBytes(ImageRef, image);
+  // }
+
+  // const imageListRef = ref(storage, "/");
+  // listAll(imageListRef).then((response) => {
+  //   response.items.forEach((item) => {
+  //     getDownloadURL(item).then((url) => {
+  //       setImageList((prev) => [...prev, url]);
+  //     });
+  //   });
+  // });
+
   const navigate = useNavigate();
   const [myimage, setMyimage] = useState(image1);
   useEffect(() => {
-    // if (localStorage.getItem("usrEmail") === null) {
-    //   navigate("/SignInpage");
-    // }
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         // console.log(user);
+
         navigate("/");
       } else {
         // console.log(user);
+        // setUserName(auth.currentUser.displayName);
       }
+    });
+    //fetch data from fireStore
+    const imagelistRef = ref(storage, `/`);
+    listAll(imagelistRef).then((response) => {
+      response.items.map((item) => {
+        return getDownloadURL(item).then((url) => {
+          setImageList((prev) => [...prev, url]);
+        });
+      });
     });
   });
   const handleImage = (id) => {
     id === 1 ? setMyimage(image1) : setMyimage(image2);
   };
   const handleLogout = () => {
-    const auth = getAuth();
     signOut(auth)
       .then(() => {
         localStorage.clear();
@@ -103,10 +107,10 @@ function Home() {
         toast.error("opps ! error occurs ...");
       });
   };
-
+  console.log(auth);
   return (
     <div className="bg-[#D9D9D9]">
-      <input
+      {/* <input
         type="file"
         name=""
         id=""
@@ -114,8 +118,7 @@ function Home() {
       />
       <button onClick={upload} className="bg-red-200 mr-5">
         Upload
-      </button>
-      <button onClick={getImage}>get me</button>
+      </button> */}
       <nav className="bg-[#D9D9D9] p-2">
         <ul className="flex items-center justify-around">
           <li className="flex">
@@ -132,7 +135,7 @@ function Home() {
           <Search />
           <NavButton
             page={"/Admin"}
-            buttonName={localStorage.getItem("userName")}
+            buttonName={auth.currentUser ? userName : null}
             FaIons={<FaUserCircle className="mr-1" />}
           />
           <NavButton
