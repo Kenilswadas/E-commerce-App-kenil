@@ -16,11 +16,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-function SignInpage() {
+function SignInpage({ userName }) {
   const [error, setError] = useState();
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
-
+  console.log(userName);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -57,11 +57,17 @@ function SignInpage() {
         setError(errors);
       });
   }
-  function SignInWithGoogle() {}
+  function SignInWithGoogle() {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
+  }
   useEffect(() => {
-    // if (localStorage.getItem("usrEmail") === null) {
-    //   navigate("/SignInpage");
-    // }
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);

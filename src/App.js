@@ -9,16 +9,18 @@ import Items from "./Adminside/Items";
 import Dashboard from "./Adminside/Dashboard";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./FirebaseConfig/Firebaseconfig";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 function App() {
-  const [userName, setUserName] = useState("");
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUserName(auth?.currentUser?.displayName);
-    } else {
-      setUserName(null);
-    }
-  });
+  const [userName, setUserName] = useState(null);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserName(user.displayName);
+      } else {
+        setUserName(null);
+      }
+    });
+  }, []);
   return (
     <div>
       <BrowserRouter>
@@ -27,14 +29,18 @@ function App() {
             path="/SignUppage"
             element={<SignUppage userName={userName} />}
           />
-          <Route path="/" element={<SignInpage />} />
+
+          <Route path="/" element={<SignInpage userName={userName} />} />
           <Route path="/Home" element={<Home userName={userName} />} />
           <Route path="/Admin" element={<Admin userName={userName} />} />
           <Route
             path="/Admin/Dashboard"
             element={<Dashboard userName={userName} />}
           />
-          <Route path="/Admin/Products" element={<Products userName={userName}/>} />
+          <Route
+            path="/Admin/Products"
+            element={<Products userName={userName} />}
+          />
           <Route path="/Admin/Products/Items" element={<Items />} />
         </Routes>
       </BrowserRouter>

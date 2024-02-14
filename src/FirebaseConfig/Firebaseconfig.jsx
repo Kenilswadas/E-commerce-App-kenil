@@ -23,15 +23,14 @@ import { getStorage } from "firebase/storage";
 //   measurementId: "G-WHF4EZ8VH1",
 // };
 const firebaseConfig = {
-  apiKey: "AIzaSyCev-Nm6j-6WhP9Yplzz48PVgX2EaqUKgc",
-  authDomain: "practiceproject-eb98c.firebaseapp.com",
-  projectId: "practiceproject-eb98c",
-  storageBucket: "practiceproject-eb98c.appspot.com",
-  messagingSenderId: "735512195918",
-  appId: "1:735512195918:web:0f015fa3823ce0ceda641f",
-  measurementId: "G-RX00TKHB01"
+  apiKey: "AIzaSyC38QuUME3rD5BPYZNUKb2vBjcAJ8r7RJ8",
+  authDomain: "myproject-6eb74.firebaseapp.com",
+  projectId: "myproject-6eb74",
+  storageBucket: "myproject-6eb74.appspot.com",
+  messagingSenderId: "1057503329349",
+  appId: "1:1057503329349:web:05910a309ec95e0fbab72c",
+  measurementId: "G-5ZTWPB27CC"
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);

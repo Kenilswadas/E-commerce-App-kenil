@@ -24,12 +24,10 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 //for fireStore
 import { collection, addDoc } from "firebase/firestore";
-function SignUppage() {
+function SignUppage({ userName }) {
+  console.log(userName);
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
-
-  // const user = auth;
-  // const [userCount, setUserCount] = useState(0);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -65,6 +63,7 @@ function SignUppage() {
             displayName: formik.values.name,
           })
             .then(() => {
+              localStorage.setItem("userName",formik.values.name);
               toast.success("user is created successfully.");
               navigate("/Home");
             })
@@ -76,7 +75,6 @@ function SignUppage() {
           toast.error("oppes error !!");
           console.log(error);
         });
-
       //fireStore
       const mycollection = collection(db, "Myusers");
       // console.log(mycollection);
