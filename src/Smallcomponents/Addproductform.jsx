@@ -7,8 +7,10 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   updateDoc,
+  deleteDoc,
 } from "@firebase/firestore";
 //firebase storage
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
@@ -17,16 +19,15 @@ import { db, storage } from "../FirebaseConfig/Firebaseconfig";
 //uuidv4
 import { v4 as uuid } from "uuid";
 
-function Addproductform({ setDisplayform, isupdate, DocId }) {
+function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
   const [name, setName] = useState("");
   const [details, setDetails] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
-
+  const mycollection = collection(db, "MyProducts");
+  const uId = uuid();
   const AddProducts = async () => {
-    const uId = uuid();
-    const mycollection = collection(db, "MyProducts");
     const imageRef = ref(storage, `${image.name}`);
     await uploadBytes(imageRef, image);
     const url = await getDownloadURL(imageRef);
@@ -38,15 +39,28 @@ function Addproductform({ setDisplayform, isupdate, DocId }) {
       ProductId: uId,
       ProductImage: url,
     });
+    setDisplayform(false);
   };
-  console.log(isupdate);
-  // Conditionally update the document if isupdate is true
-  if (isupdate) {
+  async function update() {
+    alert("updating");
+    console.log(image);
+    const imageRef = ref(storage, `${image.name}`);
+    console.log(imageRef);
+    await uploadBytes(imageRef, image);
+    const url = await getDownloadURL(imageRef);
+    console.log(url);
     updateDoc(doc(db, "MyProducts", DocId), {
-      ProductName: "Tv",
+      ProductName: name,
+      ProductDetails: details,
+      ProductPrice: price,
+      Category: category,
+      ProductId: uId,
+      ProductImage: url,
     });
+    setDisplayform(false);
+    setisupdate(false);
   }
-
+  // console.log(name);
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 absolute z-50 bg-opacity-50 ">
       <div className="bg-gray-200 p-10">
@@ -55,6 +69,7 @@ function Addproductform({ setDisplayform, isupdate, DocId }) {
           <InputField
             type={"text"}
             placeholder={"Product Name"}
+            value={name}
             setFunction={setName}
           />
           <Label name={"Product Details"} />
@@ -83,7 +98,7 @@ function Addproductform({ setDisplayform, isupdate, DocId }) {
           <InputField type={"file"} placeholder={""} setFunction={setImage} />
           <div className="flex justify-around">
             {isupdate ? (
-              <Button btnName={"Update"} clickHandler={""} />
+              <Button btnName={"Update"} clickHandler={update} />
             ) : (
               <Button
                 btnName={"Add Product"}

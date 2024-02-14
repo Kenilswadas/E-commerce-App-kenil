@@ -5,25 +5,23 @@ import { VerticalNavbar } from "../Smallcomponents/VerticalNavbar";
 import { Button } from "../Smallcomponents/Buttons";
 import Addproductform from "../Smallcomponents/Addproductform";
 import { useState } from "react";
-// import { addDoc, collection, doc, getDocs } from "@firebase/firestore";
-// import { db, storage } from "../FirebaseConfig/Firebaseconfig";
 
 function Dashboard({ userName }) {
-  // const [items, setItems] = useState([]);
   const [displayform, setDisplayform] = useState(false);
+  const [isupdate, setisupdate] = useState(false);
+  const [DocId, setDocId] = useState(null);
   //addProducts function
   const addProducts = () => {
     if (displayform) {
       setDisplayform(false);
     } else setDisplayform(true);
   };
-  console.log(displayform);
   return (
     <div className="flex">
       <div>
         <VerticalNavbar userName={userName} />
       </div>
-      <div className="bg-gray-200 flex flex-col items-center justify-center w-full">
+      <div className="bg-[#ebf1f1] flex flex-col items-center justify-center h-screen w-full">
         <Button
           btnName="Add Product"
           clickHandler={() => {
@@ -31,10 +29,21 @@ function Dashboard({ userName }) {
           }}
         />
         <div className="m-10">
-          <CustomizedTables setDisplayform={setDisplayform} displayform={displayform} />
+          <CustomizedTables
+            setDisplayform={setDisplayform}
+            displayform={displayform}
+            isupdate={isupdate}
+            setisupdate={setisupdate}
+            setDocId={setDocId}
+          />
         </div>
         {displayform ? (
-          <Addproductform setDisplayform={setDisplayform} />
+          <Addproductform
+            setDisplayform={setDisplayform}
+            isupdate={isupdate}
+            setisupdate={setisupdate}
+            DocId={DocId}
+          />
         ) : null}
       </div>
     </div>

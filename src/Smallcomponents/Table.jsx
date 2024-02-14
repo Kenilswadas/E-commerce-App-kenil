@@ -48,21 +48,27 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function CustomizedTables({ setDisplayform, displayform }) {
-  const [items, setItems] = useState([]);
+export default function CustomizedTables({
+  setDisplayform,
+  displayform,
+  isupdate,
+  setisupdate,
+  setDocId,
+}) {
+  // const [items, setItems] = useState([]);
   const [Products, setproducts] = useState([]);
-  const [isupdate, setisupdate] = useState(false);
+
   const getItems = async () => {
-    let arr = [];
+    // let arr = [];
     const mycollection = collection(db, "MyProducts");
-    const querySnapshot = await getDocs(mycollection);
+    // const querySnapshot = await getDocs(mycollection);
     // querySnapshot.map((doc) => {
     //   const data = doc.data();
     //   arr.push(data);
     //   console.log(data);
     // });
     // setItems(arr);
-    const alldata = onSnapshot(mycollection, (snapshot) => {
+    const alldata = onSnapshot(mycollection, async (snapshot) => {
       const data = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -77,30 +83,27 @@ export default function CustomizedTables({ setDisplayform, displayform }) {
 
   //handleDelete
   const handleDelete = async (id) => {
-    console.log(id);
     await deleteDoc(doc(db, "MyProducts", id));
   };
   //handleUpdate
   const handleUpdate = async (id) => {
-    alert("ji");
     setisupdate(true);
+    setDocId(id);
     if (displayform) {
       setDisplayform(false);
     } else {
       setDisplayform(true);
     }
-    <Addproductform isupdate={isupdate} DocId={id} />;
-    // await updateDoc(doc(db, "MyProducts", id), {});
   };
   return (
     <div className="flex">
-      <TableContainer component={Paper} className="p-10 bg-red-200">
+      <TableContainer component={Paper} className="p-10 bg-red-700">
         <Table
           sx={{ minWidth: 900 }}
           aria-label="customized table"
           className="w-full"
         >
-          <TableHead className="bg-gray-600">
+          <TableHead className="bg-[#217aa9]">
             <TableRow>
               <StyledTableCell align="center">Product Image</StyledTableCell>
               <StyledTableCell align="center">Name</StyledTableCell>
