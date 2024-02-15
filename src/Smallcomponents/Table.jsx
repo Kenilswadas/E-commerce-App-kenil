@@ -21,8 +21,9 @@ import { db } from "../FirebaseConfig/Firebaseconfig";
 import { Button } from "../Smallcomponents/Buttons";
 import { MdDelete } from "react-icons/md";
 import { MdUpdate } from "react-icons/md";
-import Addproductform from "./Addproductform";
-
+import Pagination from "@mui/material/Pagination";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "",
@@ -47,16 +48,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: "rgb(75, 85, 99,0.2)",
   },
 }));
+// Function to slice products based on current page and items per page
+const paginate = (array, pageNumber, itemsPerPage) => {
+  const startIndex = (pageNumber - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return array.slice(startIndex, endIndex);
+};
 
 export default function CustomizedTables({
   setDisplayform,
   displayform,
-  isupdate,
+  // isupdate,
   setisupdate,
   setDocId,
 }) {
   // const [items, setItems] = useState([]);
   const [Products, setproducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Number of items per page
 
   const getItems = async () => {
     // let arr = [];
@@ -95,28 +104,46 @@ export default function CustomizedTables({
       setDisplayform(true);
     }
   };
+
+  // Function to handle page change
+  const handlePageChange = (event, pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Function to handle items per page change
+  const handleItemsPerPageChange = (event) => {
+    const newItemsPerPage = parseInt(event.target.value);
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1); // Reset to the first page when changing items per page
+  };
+
   return (
-    <div className="flex">
-      <TableContainer component={Paper} className="p-10 bg-red-700">
+    <div className="flex shadow-xl w-full ">
+      <TableContainer component={Paper}>
         <Table
-          sx={{ minWidth: 900 }}
+          sx={{ minWidth: 700 }}
           aria-label="customized table"
           className="w-full"
         >
           <TableHead className="bg-[#217aa9]">
             <TableRow>
               <StyledTableCell align="center">Product Image</StyledTableCell>
-              <StyledTableCell align="center">Name</StyledTableCell>
-              <StyledTableCell align="center">Details</StyledTableCell>
-              <StyledTableCell align="center">Price</StyledTableCell>
-              <StyledTableCell align="center">id</StyledTableCell>
+              <StyledTableCell align="center">Product Name</StyledTableCell>
+              <StyledTableCell align="center">
+                Product Description
+              </StyledTableCell>
+              <StyledTableCell align="center">Product Price</StyledTableCell>
+              <StyledTableCell align="center">Discounted Price</StyledTableCell>
+              <StyledTableCell align="center">Category</StyledTableCell>
+              <StyledTableCell align="center">Sub Category</StyledTableCell>
+              <StyledTableCell align="center">Product Id</StyledTableCell>
               <StyledTableCell align="center" colSpan={2}>
-                update
+                Actions
               </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {Products.map((data) => (
+            {paginate(Products, currentPage, itemsPerPage).map((data) => (
               <StyledTableRow key={data.id}>
                 <StyledTableCell
                   scope="row"
@@ -128,21 +155,30 @@ export default function CustomizedTables({
                   {data.ProductName}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {data.ProductDetails}
+                  {data.ProductDescription}
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   {data.ProductPrice}
                 </StyledTableCell>
                 <StyledTableCell align="center">
+                  {data.DiscountedPrice}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {data.Category}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {data.SubCategory}
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {data.ProductId}
-                </StyledTableCell>{" "}
+                </StyledTableCell>
                 <StyledTableCell align="center">
                   <Button
                     btnName={"delete"}
-                    faicon={<MdDelete size={20} color="#4b5563" />}
+                    faicon={<MdDelete size={20} color="#ebf1f1" />}
                     clickHandler={() => handleDelete(data.id)}
                   />
-                </StyledTableCell>{" "}
+                </StyledTableCell>
                 <StyledTableCell align="center">
                   <Button
                     btnName={"update"}
@@ -154,6 +190,28 @@ export default function CustomizedTables({
             ))}
           </TableBody>
         </Table>
+        <div className="flex items-center justify-center m-4">
+          <Select
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            sx={{ height: "30px" }}
+            style={{
+              color: "#ebf1f1",
+              backgroundColor: "#217aa9",
+              borderRadius: "200px",
+            }} // Set the minimum width of the select
+          >
+            <MenuItem value={5}>5 per page</MenuItem>
+            <MenuItem value={10}>10 per page</MenuItem>
+            <MenuItem value={15}>15 per page</MenuItem>
+          </Select>
+          <Pagination
+            count={Math.ceil(Products.length / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </div>
       </TableContainer>
     </div>
   );

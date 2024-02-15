@@ -17,35 +17,38 @@ function Dashboard({ userName }) {
     } else setDisplayform(true);
   };
   return (
-    <div className="flex">
-      <div>
-        <VerticalNavbar userName={userName} />
-      </div>
-      <div className="bg-[#ebf1f1] flex flex-col items-center justify-center h-screen w-full">
-        <Button
-          btnName="Add Product"
-          clickHandler={() => {
-            addProducts();
-          }}
-        />
-        <div className="m-10">
-          <CustomizedTables
-            setDisplayform={setDisplayform}
-            displayform={displayform}
-            isupdate={isupdate}
-            setisupdate={setisupdate}
-            setDocId={setDocId}
+    <div>
+      <VerticalNavbar userName={userName} />
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex mt-10">
+          <Button
+            btnName="Add Product"
+            clickHandler={() => {
+              addProducts();
+            }}
           />
         </div>
-        {displayform ? (
-          <Addproductform
-            setDisplayform={setDisplayform}
-            isupdate={isupdate}
-            setisupdate={setisupdate}
-            DocId={DocId}
-          />
-        ) : null}
+
+        <div className="flex items-center justify-center mt-10 ml-10">
+          <div className="w-3/4 h-screen">
+            <CustomizedTables
+              setDisplayform={setDisplayform}
+              displayform={displayform}
+              isupdate={isupdate}
+              setisupdate={setisupdate}
+              setDocId={setDocId}
+            />
+          </div>
+        </div>
       </div>
+      {displayform ? (
+        <Addproductform
+          setDisplayform={setDisplayform}
+          isupdate={isupdate}
+          setisupdate={setisupdate}
+          DocId={DocId}
+        />
+      ) : null}
     </div>
   );
 }

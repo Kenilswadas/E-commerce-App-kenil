@@ -46,13 +46,14 @@ import GroceryLogo1 from "../images/TrendingInGrocery/GroceryLogo1.webp";
 import GroceryLogo2 from "../images/TrendingInGrocery/GroceryLogo2.webp";
 import GroceryLogo3 from "../images/TrendingInGrocery/GroceryLogo3.webp";
 import GroceryLogo4 from "../images/TrendingInGrocery/GroceryLogo4.webp";
+import colorimage from "../images/backgroundcolorpic.png";
 // Storage
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../FirebaseConfig/Firebaseconfig";
 function Home({ userName }) {
+  console.log(userName);
   // const [image, setImage] = useState();
   // const [userName, setUserName] = useState("");
-
   // console.log(image);
   const [imageList, setImageList] = useState([]);
   // function upload() {
@@ -84,14 +85,14 @@ function Home({ userName }) {
       }
     });
     //fetch data from fireStore
-    // const imagelistRef = ref(storage, `/`);
-    // listAll(imagelistRef).then((response) => {
-    //   response.items.map((item) => {
-    //     return getDownloadURL(item).then((url) => {
-    //       setImageList((prev) => [...prev, url]);
-    //     });
-    //   });
-    // });
+    const imagelistRef = ref(storage, `/`);
+    listAll(imagelistRef).then((response) => {
+      response.items.map((item) => {
+        return getDownloadURL(item).then((url) => {
+          setImageList((prev) => [...prev, url]);
+        });
+      });
+    });
   });
   const handleImage = (id) => {
     id === 1 ? setMyimage(image1) : setMyimage(image2);
@@ -107,7 +108,7 @@ function Home({ userName }) {
         toast.error("opps ! error occurs ...");
       });
   };
-  console.log(auth);
+  // console.log(auth);
   return (
     <div className="bg-[#ffffff] m-0">
       {/* <input
@@ -135,7 +136,7 @@ function Home({ userName }) {
           <Search />
           <NavButton
             page={"/Admin"}
-            buttonName={auth.currentUser ? userName : null}
+            buttonName={userName ? userName : localStorage.getItem("userName")}
             FaIons={<FaUserCircle className="mr-1" />}
           />
           <NavButton
@@ -156,7 +157,7 @@ function Home({ userName }) {
       </div>
       {/* BMEDEL WORTHY BRANDS TO BAG */}
       <div className="bg-white h-80 m-16">
-        <p className="text-center bg-red-100 pt-4 text-[#747264]">
+        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4 ">
           MEDEL WORTHY BRANDS TO BAG
         </p>
         <div className="flex m-6 mt-0 items-center justify-between">
@@ -188,7 +189,7 @@ function Home({ userName }) {
       </div>
       {/* TREANDING IN FASHION */}
       <div className="bg-white m-16">
-        <p className="text-center mb-1 bg-red-100 pt-4 text-[#747264]">
+        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
           TREANDING IN FASHION
         </p>
         <div className="flex m-6 mt-0 items-center justify-between">
@@ -200,7 +201,7 @@ function Home({ userName }) {
       </div>
       {/* TRENDING IN GROCERY */}
       <div className="bg-white h-80 m-16">
-        <p className="text-center mb-1 bg-red-100 pt-4 text-[#747264] ">
+        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
           TREANDING IN GROCERY
         </p>
         <div className="flex m-6 mt-0 items-center justify-between">
