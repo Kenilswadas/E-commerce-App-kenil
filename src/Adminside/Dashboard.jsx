@@ -30,7 +30,7 @@ function Dashboard({ userName }) {
         </div>
 
         <div className="flex items-center justify-center mt-10 ml-10">
-          <div className="w-3/4">
+          <div className="w-3/4 h-screen">
             <CustomizedTables
               setDisplayform={setDisplayform}
               displayform={displayform}

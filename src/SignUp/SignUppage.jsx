@@ -1,18 +1,16 @@
-/* eslint-disable no-undef */
 import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import SignupImage from "../images/signupcopy.jpeg";
-import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { Inputfield } from "../Smallcomponents/Fields";
-import { Button } from "../Smallcomponents/Buttons";
-import Horizontalrule from "../Smallcomponents/Horizontalrule";
-import { BgImage } from "../Smallcomponents/BackgroundImage";
+import { useFormik } from "formik"; //formik
+import * as Yup from "yup"; //formik
+import SignupImage from "../images/signupcopy.jpeg"; //Image
+import { FaGoogle } from "react-icons/fa"; //react icons
+import { Link } from "react-router-dom"; //react router dom
+import { Inputfield } from "../Smallcomponents/Fields"; //Inputfield component
+import { Button } from "../Smallcomponents/Buttons"; //Button component
+import Horizontalrule from "../Smallcomponents/Horizontalrule"; //Horizontalrule component
+import { BgImage } from "../Smallcomponents/BackgroundImage"; //BackgroundImage component
+import { toast } from "react-toastify"; //react toastify
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
 import {
-  ProviderId,
   createUserWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
@@ -63,7 +61,7 @@ function SignUppage({ userName }) {
             displayName: formik.values.name,
           })
             .then(() => {
-              localStorage.setItem("userName",formik.values.name);
+              localStorage.setItem("userName", formik.values.name);
               toast.success("user is created successfully.");
               navigate("/Home");
             })
@@ -89,7 +87,7 @@ function SignUppage({ userName }) {
   function SignInWithGoogle() {
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
       })
       .catch((error) => {
         const errorMessage = error.message;

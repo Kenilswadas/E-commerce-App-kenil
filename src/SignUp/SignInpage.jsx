@@ -1,26 +1,36 @@
 import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Inputfield } from "../Smallcomponents/Fields";
-import { Button } from "../Smallcomponents/Buttons";
-import Horizontalrule from "../Smallcomponents/Horizontalrule";
-import { BgImage } from "../Smallcomponents/BackgroundImage";
-import { ForgotPassword } from "../Smallcomponents/ForgotPassword";
-import { ToastContainer } from "react-toastify";
-import { FaGoogle } from "react-icons/fa";
-import signIncopy from "../images/signIncopy.jpeg";
-import { toast } from "react-toastify";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../FirebaseConfig/Firebaseconfig";
-import { useNavigate, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useFormik } from "formik"; //formik
+import * as Yup from "yup"; //formik
+import { Inputfield } from "../Smallcomponents/Fields"; //Inputfield component
+import { Button } from "../Smallcomponents/Buttons"; //Button component
+import Horizontalrule from "../Smallcomponents/Horizontalrule"; //Horizontalrule component
+import { BgImage } from "../Smallcomponents/BackgroundImage"; //BackgroundImage component
+import { ForgotPassword } from "../Smallcomponents/ForgotPassword"; //ForgotPassword component
+import { ToastContainer } from "react-toastify"; //react toastify
+import { FaGoogle } from "react-icons/fa"; //react icon
+import signIncopy from "../images/signIncopy.jpeg"; //image
+import { toast } from "react-toastify"; // react toastify
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"; //firebase authentication
+import { auth } from "../FirebaseConfig/Firebaseconfig"; //auth from FirebaseConfig
+import { useNavigate, Link } from "react-router-dom"; //react-router-dom methods
+import { useState, useEffect } from "react"; //useState useEffect
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"; //SignInWithGoogle methods
 
 function SignInpage({ userName }) {
   const [error, setError] = useState();
   const navigate = useNavigate();
-  const provider = new GoogleAuthProvider();
-  console.log(userName);
+  const provider = new GoogleAuthProvider(); //SignInWithGoogle
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+        navigate("/Home");
+      }
+    });
+  });
+
+  //formik
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -57,6 +67,8 @@ function SignInpage({ userName }) {
         setError(errors);
       });
   }
+
+  //SignInWithGoogle function
   function SignInWithGoogle() {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -67,19 +79,11 @@ function SignInpage({ userName }) {
         alert(errorMessage);
       });
   }
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(user);
-        navigate("/Home");
-      }
-    });
-  });
-  console.log(auth);
+  //return
   return (
     <div className="flex items-center justify-center  bg-white h-screen">
       <ToastContainer />
-      <BgImage />
+      <BgImage backgroundImage={signIncopy} />
       <div className="bg-[#ebf1f1] h-5/6 w-3/5 flex relative">
         <div className="w-3/5  flex items-center justify-center">
           <div className=" h-3/5 w-4/5 text-center flex flex-col items-center">
@@ -100,7 +104,7 @@ function SignInpage({ userName }) {
                 formik={formik}
                 clickHandler={formik.handleSubmit}
               />
-              {error ? <div>{error.message}</div> : null}
+              {error ? <div className="m-1">{error.message}</div> : null}
             </form>
             <Horizontalrule />
             <Button
@@ -117,6 +121,7 @@ function SignInpage({ userName }) {
             </p>
           </div>
         </div>
+        {/* backgroundImage */}
         <div className="bg-red-200 w-3/6 flex">
           <img src={signIncopy} alt="" className="w-full" />
         </div>

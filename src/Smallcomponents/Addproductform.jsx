@@ -37,7 +37,7 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
       ProductName: name,
       ProductDescription: description,
       ProductPrice: price,
-      DiscountedPrice:price - price * 0.4,
+      DiscountedPrice: price - price * 0.4,
       Category: category,
       SubCategory: subcategory,
       ProductId: uId,
@@ -66,8 +66,8 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
   }
   // console.log(name);
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-[#ebf1f1] absolute z-50 bg-opacity-50 ">
-      <div className="bg-slate-300 p-10">
+    <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-[#000000] absolute z-50 bg-opacity-70 ">
+      <div className=" p-10">
         <form action="" className=" w-full p-4 bg-[#ebf1f1] ">
           <div className="flex justify-center">
             <div className="flex flex-col w-1/2 m-2">
