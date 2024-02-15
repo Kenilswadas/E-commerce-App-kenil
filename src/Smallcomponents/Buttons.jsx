@@ -7,7 +7,7 @@ const Button = ({ btnName, faicon, clickHandler }) => {
         onClick={() => {
           clickHandler();
         }}
-        className="flex items-center justify-center bg-[#217aa9] text-[#ebf1f1] rounded-full mt-5 p-px pl-2 pr-2 w-fit hover:bg-[#96002e]"
+        className=" flex items-center justify-center px-4 p-2 bg-gradient-to-r from-[#96002e] to-[#217aa9] text-white rounded-full transition-transform transform-gpu  hover:shadow-lg hover:underline underline-offset-2 mt-4	"
       >
         {faicon}
         {btnName}

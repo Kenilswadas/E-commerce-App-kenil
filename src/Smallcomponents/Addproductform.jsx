@@ -66,7 +66,7 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
   }
   // console.log(name);
   return (
-    <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-[#000000] absolute z-50 bg-opacity-70 ">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
       <div className=" p-10">
         <form action="" className=" w-full p-4 bg-[#ebf1f1] ">
           <div className="flex justify-center">
