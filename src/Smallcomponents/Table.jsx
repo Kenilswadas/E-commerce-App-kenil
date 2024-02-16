@@ -86,6 +86,7 @@ export default function CustomizedTables({
     });
     return alldata;
   };
+  console.log(Products);
   useEffect(() => {
     getItems();
   }, []);
@@ -118,7 +119,7 @@ export default function CustomizedTables({
   };
 
   return (
-    <div className="flex shadow-xl w-full ">
+    <div className="flex shadow-xl w-full ml-20">
       <TableContainer component={Paper}>
         <Table
           sx={{ minWidth: 700 }}
@@ -175,7 +176,7 @@ export default function CustomizedTables({
                 <StyledTableCell align="center">
                   <Button
                     btnName={"delete"}
-                    faicon={<MdDelete size={20} color="#ebf1f1" />}
+                    faicon={<MdDelete size={20} />}
                     clickHandler={() => handleDelete(data.id)}
                   />
                 </StyledTableCell>

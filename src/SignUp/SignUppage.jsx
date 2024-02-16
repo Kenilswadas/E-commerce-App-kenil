@@ -23,7 +23,6 @@ import { onAuthStateChanged } from "firebase/auth";
 //for fireStore
 import { collection, addDoc } from "firebase/firestore";
 function SignUppage({ userName }) {
-  console.log(userName);
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   const formik = useFormik({
