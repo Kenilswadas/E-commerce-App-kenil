@@ -154,8 +154,9 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
                           Women's Festive Wear
                         </option>
                         <option key="Boy's Clothing">Boy's Clothing</option>
-                        <option key="Gril's Clothing">Boy's Clothing</option>
+                        <option key="Girl's Clothing">Girl's Clothing</option>
                         <option key="Child Footwear">Child Footwear</option>
+                        <option key="Beauty Product">Beauty Product</option>
                       </>
                     )}
                     {category === "Electronics" && (

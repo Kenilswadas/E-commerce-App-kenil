@@ -58,10 +58,12 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import AdminKey from "../Smallcomponents/AdminKey";
 function Home({ userName }) {
   // const [image, setImage] = useState();
   // const [userName, setUserName] = useState("");
   // console.log(image);
+  const [displayadminkeyform, setdisplayadminkeyform] = useState(false);
   const [imageList, setImageList] = useState([]);
   const [Menscollection, setMenscollection] = useState([]);
   const [Womenscollection, setWomenscollection] = useState([]);
@@ -201,7 +203,7 @@ function Home({ userName }) {
       <button onClick={upload} className="bg-red-200 mr-5">
         Upload
       </button> */}
-      <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl">
+      <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
           <li className="flex">
             <img src={logo} alt="" className="w-auto h-20 p-2" />
@@ -209,15 +211,18 @@ function Home({ userName }) {
           <li className="flex items-center w-2/4 ml-8">
             <NavButton buttonName={"Grocery"} />
             <NavButton buttonName={"Electronic"} />
-            <NavButton buttonName={"Fashion"} />
+            <NavButton buttonName={"Fashion"} page={"/Home/Fashion"} />
             <NavButton buttonName={"Mobiles"} />
             <NavButton buttonName={"Travel"} />
           </li>
           <Search />
           <NavButton
-            page={"/Admin"}
+            // page={"/Admin"}
             buttonName={userName ? userName : localStorage.getItem("userName")}
             FaIons={<FaUserCircle className="mr-1" />}
+            clickHandler={() => {
+              setdisplayadminkeyform(true);
+            }}
           />
           <NavButton
             buttonName={"LogOut"}
@@ -241,11 +246,12 @@ function Home({ userName }) {
         </button>
       </div>
       {/* BMEDEL WORTHY BRANDS TO BAG */}
-      <div className="bg-white h-full m-16">
+      <div className="bg-white h-full m-16 ">
         <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4 ">
-          MEDEL WORTHY BRANDS TO BAG
+          MEDEL WORTHY BRANDS TO BAG{" "}
         </p>
-        <div className="flex m-6 mt-0 items-center justify-between w-full">
+
+        <div className="flex m-6 mt-0 items-center justify-between w-fit ">
           {/* <BrandsToBag
             image1={imageList.map((e) => e.ProductImage).slice(2, 3)}
             image2={imageList.map((e) => e.ProductImage).slice(3, 4)}
@@ -270,22 +276,41 @@ function Home({ userName }) {
             image3={imageList.map((e) => e.ProductImage).slice(4, 5)}
             image4={imageList.map((e) => e.ProductImage).slice(4, 5)}
           /> */}
-          {Womenscollection.map((items) => {
-            return (
-              <>
-                <BrandsToBag
-                  key={items.ProductId}
-                  image1={items.ProductImage}
-                  image2={items.ProductImage}
-                  image3={items.ProductImage}
-                  image4={items.ProductImage}
-                />
-              </>
-            );
-          })}
+          {Womenscollection.length > 0 ? (
+            <BrandsToBag
+              image1={Womenscollection[0].ProductImage}
+              image2={Womenscollection[1].ProductImage}
+              image3={Womenscollection[2].ProductImage}
+              image4={Womenscollection[3].ProductImage}
+            />
+          ) : null}
+          {Menscollection.length > 0 ? (
+            <BrandsToBag
+              image1={Menscollection[0].ProductImage}
+              image2={Menscollection[1].ProductImage}
+              image3={Menscollection[2].ProductImage}
+              image4={Menscollection[3].ProductImage}
+            />
+          ) : null}
+          {Womenscollection.length > 0 ? (
+            <BrandsToBag
+              image1={Womenscollection[0].ProductImage}
+              image2={Womenscollection[1].ProductImage}
+              image3={Womenscollection[2].ProductImage}
+              image4={Womenscollection[3].ProductImage}
+            />
+          ) : null}
+          {Womenscollection.length > 0 ? (
+            <BrandsToBag
+              image1={Menscollection[0].ProductImage}
+              image2={Menscollection[1].ProductImage}
+              image3={Menscollection[2].ProductImage}
+              image4={Menscollection[3].ProductImage}
+            />
+          ) : null}
         </div>
       </div>
-      {/* TREANDING IN FASHION WOMEN'S COLLECTION */}
+      {/* TREANDING IN FASHION WOMEN'S COLLECTION  */}
       <div className="bg-white m-16">
         <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
           WOMEN'S COLLECTION
@@ -320,15 +345,15 @@ function Home({ userName }) {
       </div>
       {/* TRENDING IN GROCERY */}
       <div className="bg-white h-full m-16">
-        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
+        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4  ">
           TREANDING IN GROCERY
         </p>
-        <div className="flex m-6 mt-0 items-center justify-between">
+        <div className="flex m-6 mt-0 items-center justify-between bg-gray-200">
           {/* <TrendingInGrocery logo={GroceryLogo1} image={GroceryItem1} />
           <TrendingInGrocery logo={GroceryLogo2} image={GroceryItem2} />
           <TrendingInGrocery logo={GroceryLogo3} image={GroceryItem3} />
           <TrendingInGrocery logo={GroceryLogo4} image={GroceryItem4} /> */}
-          {GroceryCollection.map((items, index) => {
+          {GroceryCollection.slice(1, 4).map((items, index) => {
             return (
               <TrendingInGrocery logourl={""} image={items.ProductImage} />
             );
@@ -338,6 +363,7 @@ function Home({ userName }) {
       {/* {imageList.map((url, index) => {
         return <img key={index} src={`url`} alt="" />;
       })} */}
+      {displayadminkeyform ? <AdminKey setdisplayadminkeyform={setdisplayadminkeyform} /> : null}
     </div>
   );
 }
