@@ -10,6 +10,7 @@ import Dashboard from "./Adminside/Dashboard";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./FirebaseConfig/Firebaseconfig";
 import { useEffect, useState } from "react";
+import Fashion from "./Userside/Fashion";
 function App() {
   const [userName, setUserName] = useState(null);
   useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
 
           <Route path="/" element={<SignInpage userName={userName} />} />
           <Route path="/Home" element={<Home userName={userName} />} />
+          <Route path="/Home/Fashion" element={<Fashion userName={userName} />} />
           <Route path="/Admin" element={<Admin userName={userName} />} />
           <Route
             path="/Admin/Dashboard"
