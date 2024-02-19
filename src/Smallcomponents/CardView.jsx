@@ -51,15 +51,8 @@ const TrendingInFashion = ({ image, name }) => {
 const TrendingInGrocery = ({ logourl, image }) => {
   return (
     <div className=" flex flex-col bg-[#96002e] w-3/4 h-3/4  m-2 p-1 rounded-xl hover:translate-y-2">
-      <div className="flex items-center justify-center mb-px">
-        <img
-          src={logourl}
-          alt=""
-          className=" w-10 absolute rounded-xl border-0"
-        />
-      </div>
-      <div className="w-fit">
-        <img src={image} alt="" className="h-3/4 rounded-xl border-0" />
+      <div className="w-full h-48 flex">
+        <img src={image} alt="" className=" h-3/4 rounded-xl border-0" />
       </div>
       <p className="ml-4 text-[#ebf1f1]">
         <Link className="underline">{"Explore More"}</Link>
