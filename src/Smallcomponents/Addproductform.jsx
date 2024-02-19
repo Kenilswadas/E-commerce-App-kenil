@@ -11,6 +11,7 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
+  onSnapshot,
 } from "@firebase/firestore";
 //firebase storage
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
@@ -20,12 +21,21 @@ import { db, storage } from "../FirebaseConfig/Firebaseconfig";
 import { v4 as uuid } from "uuid";
 
 function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
+  const [Alldata, setAlldata] = useState([]);
+  onSnapshot(collection(db, "MyProducts"), (snapshot) => {
+    const alldata = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setAlldata(alldata);
+  });
   const [name, setName] = useState("");
   const [description, setDiscription] = useState("");
   const [price, setPrice] = useState("");
   // const [discountedprice, setdiscountedPrice] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubCategory] = useState("");
+  const [basecategory, setBaseCategory] = useState("");
   const [image, setImage] = useState(null);
   const mycollection = collection(db, "MyProducts");
   const uId = uuid();
@@ -40,6 +50,7 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
       DiscountedPrice: price - price * 0.4,
       Category: category,
       SubCategory: subcategory,
+      BaseCategory: basecategory,
       ProductId: uId,
       ProductImage: url,
     });
@@ -57,7 +68,10 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
       ProductName: name,
       ProductDescription: description,
       ProductPrice: price,
+      DiscountedPrice: price - price * 0.4,
       Category: category,
+      SubCategory: subcategory,
+      BaseCategory: basecategory,
       ProductId: uId,
       ProductImage: url,
     });
@@ -179,6 +193,44 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
                         <option key="Samsung">Samsung</option>
                         <option key="Redmi">Redmi</option>
                         <option key="OnePlus">OnePlus</option>
+                      </>
+                    )}
+                  </select>
+                </>
+              ) : null}
+              {/* Based on Brands -- base category */}
+              {subcategory ? (
+                <>
+                  <Label name={"Base Category"} />
+                  <select
+                    className=" text-[#747264] mb-4 rounded-full pl-4"
+                    name="Brands"
+                    id=""
+                    onChange={(e) => setBaseCategory(e.target.value)}
+                  >
+                    <option value="">base category</option>
+                    {subcategory === "Men's Top Wear" && (
+                      <>
+                        <option value="Roadster">Roadster</option>
+                        <option value="U.S. Polo Assn.">U.S. Polo Assn.</option>
+                      </>
+                    )}
+                    {subcategory === "Men's Bottom Wear" && (
+                      <>
+                        <option value="Roadster">Roadster</option>
+                        <option value="U.S. Polo Assn.">U.S. Polo Assn.</option>
+                      </>
+                    )}{" "}
+                    {subcategory === "Men's Foot Wear" && (
+                      <>
+                        <option value="Sparx">Sparx</option>
+                        <option value="ADIDAS">ADIDAS</option>
+                      </>
+                    )}
+                    {subcategory === "Men's Festive Wear" && (
+                      <>
+                        <option value="SOJANYA">SOJANYA</option>
+                        <option value="DEVOILER">DEVOILER</option>
                       </>
                     )}
                   </select>

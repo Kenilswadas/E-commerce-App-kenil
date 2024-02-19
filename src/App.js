@@ -11,6 +11,11 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./FirebaseConfig/Firebaseconfig";
 import { useEffect, useState } from "react";
 import Fashion from "./Userside/Fashion";
+import Menpage from "./Userside/Menpage";
+import Cart from "./Smallcomponents/Cart";
+import Page from "./Smallcomponents/Page";
+import { CartProvider, useCart } from "react-use-cart";
+
 function App() {
   const [userName, setUserName] = useState(null);
   useEffect(() => {
@@ -30,10 +35,24 @@ function App() {
             path="/SignUppage"
             element={<SignUppage userName={userName} />}
           />
-
           <Route path="/" element={<SignInpage userName={userName} />} />
           <Route path="/Home" element={<Home userName={userName} />} />
-          <Route path="/Home/Fashion" element={<Fashion userName={userName} />} />
+          <Route
+            path="/Home/Fashion"
+            element={<Fashion userName={userName} />}
+          />
+          <Route
+            path="/Home/Fashion/Men"
+            element={<Menpage userName={userName} />}
+          />
+          <Route
+            path="/Home/Fashion/Men/cart"
+            element={<Cart userName={userName} />}
+          />{" "}
+          <Route
+            path="/Home/Fashion/Men/Page"
+            element={<Page userName={userName} />}
+          />
           <Route path="/Admin" element={<Admin userName={userName} />} />
           <Route
             path="/Admin/Dashboard"
@@ -46,6 +65,10 @@ function App() {
           <Route path="/Admin/Products/Items" element={<Items />} />
         </Routes>
       </BrowserRouter>
+      {/* <CartProvider>
+        <Page />
+        <Cart />
+      </CartProvider> */}
     </div>
   );
 }
