@@ -8,7 +8,10 @@ import { FaUserCircle } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../FirebaseConfig/Firebaseconfig";
-import { TrendingInFashion, TrendingInGrocery } from "../Smallcomponents/CardView";
+import {
+  TrendingInFashion,
+  TrendingInGrocery,
+} from "../Smallcomponents/CardView";
 function Fashion({ userName }) {
   const [Menscollection, setMenscollection] = useState([]);
   const [Womenscollection, setWomenscollection] = useState([]);
@@ -82,7 +85,7 @@ function Fashion({ userName }) {
           </li>
           <li className="flex items-center w-2/4 ml-8">
             <NavButton buttonName={"Home"} page={"/Home"} />
-            <NavButton buttonName={"Men"} />
+            <NavButton buttonName={"Men"} page={"/Home/Fashion/Men"} />
             <NavButton buttonName={"Women"} />
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
@@ -125,11 +128,12 @@ function Fashion({ userName }) {
           MEN'S COLLECTION
         </p>
         <div className="flex">
-          {Menscollection.map((item) => {
+          {Menscollection.slice(0, 5).map((item) => {
             return (
               <TrendingInFashion
                 image={item.ProductImage}
                 name={item.ProductName}
+                page={"/Home/Fashion/Men"}
               />
             );
           })}
@@ -158,9 +162,7 @@ function Fashion({ userName }) {
         </p>
         <div className="flex">
           {beautycollection.map((item) => {
-            return (
-             <TrendingInGrocery image={item.ProductImage}  />
-            );
+            return <TrendingInGrocery image={item.ProductImage} />;
           })}
         </div>
       </div>

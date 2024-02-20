@@ -137,6 +137,7 @@ export default function CustomizedTables({
               <StyledTableCell align="center">Discounted Price</StyledTableCell>
               <StyledTableCell align="center">Category</StyledTableCell>
               <StyledTableCell align="center">Sub Category</StyledTableCell>
+              <StyledTableCell align="center">Base Category</StyledTableCell>
               <StyledTableCell align="center">Product Id</StyledTableCell>
               <StyledTableCell align="center" colSpan={2}>
                 Actions
@@ -169,6 +170,9 @@ export default function CustomizedTables({
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   {data.SubCategory}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {data.BaseCategory}
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   {data.ProductId}
