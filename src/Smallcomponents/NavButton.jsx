@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router";
-
-const NavButton = ({ buttonName, FaIons, page, clickHandler }) => {
+const NavButton = ({ buttonName, FaIons, page, clickHandler, totalItems }) => {
   const navigate = useNavigate();
 
   return (
@@ -10,7 +9,12 @@ const NavButton = ({ buttonName, FaIons, page, clickHandler }) => {
       className="flex items-center bg-transparent text-[#96002e] w-fit rounded-full p-2 w-fit m-1 pl-6 pr-6 hover:underline underline-offset-2  "
       onClick={() => (page ? navigate(`${page}`) : clickHandler())}
     >
-      {FaIons}
+      <span>
+        <span className="absolute top-3 right-16 rounded-full p-px size-2">
+          {totalItems}
+        </span>
+        {FaIons}
+      </span>
       {buttonName}
     </button>
   );

@@ -12,12 +12,18 @@ import {
   TrendingInFashion,
   TrendingInGrocery,
 } from "../Smallcomponents/CardView";
-function Fashion({ userName }) {
+import { HiOutlineLogout } from "react-icons/hi";
+import { signOut } from "firebase/auth";
+import { auth } from "../FirebaseConfig/Firebaseconfig";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+function Fashion({ userName, totalItems }) {
   const [Menscollection, setMenscollection] = useState([]);
   const [Womenscollection, setWomenscollection] = useState([]);
   const [Kidscollection, setKidscollection] = useState([]);
   const [beautycollection, setbeautycollection] = useState([]);
 
+  const navigate = useNavigate();
   //fetch products
 
   //fetch Womenscollection
@@ -76,6 +82,18 @@ function Fashion({ userName }) {
       setbeautycollection(data);
     }
   );
+  //LogOut function
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        localStorage.clear();
+        navigate("/");
+        toast("Sign-out successful.");
+      })
+      .catch((error) => {
+        toast.error("opps ! error occurs ...");
+      });
+  };
   return (
     <div>
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
@@ -97,7 +115,14 @@ function Fashion({ userName }) {
             FaIons={<FaUserCircle className="mr-1" />}
           />
           <NavButton
+            buttonName={"LogOut"}
+            clickHandler={handleLogout}
+            FaIons={<HiOutlineLogout />}
+          />
+          <NavButton
+            page={"/Home/Fashion/Men/Cartpage"}
             buttonName={"Cart"}
+            totalItems={totalItems}
             FaIons={<FaCartShopping className="mr-1" />}
           />
         </ul>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavButton } from "../Smallcomponents/NavButton";
+import { Button } from "../Smallcomponents/Buttons";
 import { Search } from "../Smallcomponents/Searchbar";
 import logo from "../images/logo2.png";
 import { FaUserCircle } from "react-icons/fa";
@@ -8,9 +9,20 @@ import CategoryNavbar from "../Smallcomponents/CategoryNavbar";
 import { PurchaseView } from "../Smallcomponents/CardView";
 import { collection, onSnapshot, query, where } from "@firebase/firestore";
 import { db } from "../FirebaseConfig/Firebaseconfig";
-function Menpage({ userName }) {
+import { HiOutlineLogout } from "react-icons/hi";
+
+//useCart
+import { useCart } from "react-use-cart";
+import { signOut } from "firebase/auth";
+import { auth } from "../FirebaseConfig/Firebaseconfig";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+function Menpage({ userName, totalItems }) {
   const [Menscollection, setMenscollection] = useState([]);
   const [mycategory, setMycategory] = useState(null);
+  const { addItem, totalUniqueItems, items, removeItem, emptyCart } = useCart();
+  const navigate = useNavigate();
   useEffect(() => {
     let categoryField = mycategory ? "BaseCategory" : "SubCategory";
     let categoryValue = mycategory ? mycategory : "Men's Top Wear";
@@ -31,6 +43,18 @@ function Menpage({ userName }) {
     return () => alldata();
   }, [mycategory]);
   //   console.log(Menscollection);
+  //LogOut function
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        localStorage.clear();
+        navigate("/");
+        toast("Sign-out successful.");
+      })
+      .catch((error) => {
+        toast.error("opps ! error occurs ...");
+      });
+  };
   return (
     <div>
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
@@ -52,25 +76,52 @@ function Menpage({ userName }) {
             FaIons={<FaUserCircle className="mr-1" />}
           />
           <NavButton
+            buttonName={"LogOut"}
+            clickHandler={handleLogout}
+            FaIons={<HiOutlineLogout />}
+          />
+          <NavButton
+            page={"/Home/Fashion/Men/Cartpage"}
             buttonName={"Cart"}
+            totalItems={totalItems}
             FaIons={<FaCartShopping className="mr-1" />}
           />
         </ul>
       </nav>
-
       <div className="flex">
         <CategoryNavbar setMycategory={setMycategory} />
         <div className="w-full  h-fit grid grid-cols-3">
           {Menscollection ? (
             Menscollection.map((e, index) => {
               return (
-                <PurchaseView
-                  key={index}
-                  image={e.ProductImage}
-                  name={e.ProductName}
-                  price={e.ProductPrice}
-                  discription={e.ProductDescription}
-                />
+                <div>
+                  <PurchaseView
+                    key={index}
+                    image={e.ProductImage}
+                    name={e.ProductName}
+                    price={e.ProductPrice}
+                    discription={e.ProductDescription}
+                  />
+                  <button
+                    className="p-3 bg-red-800"
+                    onClick={() =>
+                      addItem({
+                        id: e.id,
+                        ProductImage: e.ProductImage,
+                        ProductName: e.ProductName,
+                        ProductDescription: e.ProductDescription,
+                        price: e.ProductPrice,
+                        DiscountedPrice: e.DiscountedPrice,
+                        Category: e.Category,
+                        SubCategory: e.SubCategory,
+                        BaseCategory: e.BaseCategory,
+                        ProductId: e.uId,
+                      })
+                    }
+                  >
+                    Add to cart
+                  </button>
+                </div>
               );
             })
           ) : (

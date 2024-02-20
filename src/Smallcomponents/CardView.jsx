@@ -63,11 +63,19 @@ const TrendingInGrocery = ({ logourl, image }) => {
     </div>
   );
 };
-const PurchaseView = ({ image, name, discription, page, price, addItems }) => {
+const PurchaseView = ({
+  image,
+  name,
+  discription,
+  page,
+  price,
+  addItems,
+  event,
+}) => {
   return (
-    <div className="bg-[#ebf1f1] m-4 p-2 mb-8 hover:shadow-xl hover:-translate-y-2 rounded-3xl">
-      <div className="flex w-full h-fit flex items-centerjustify-center">
-        <img src={image} alt="" className="rounded-3xl w-full" />
+    <div className=" w-3/4 bg-gray-200 m-4 p-2 mb-8 hover:shadow-xl hover:-translate-y-2 rounded-3xl">
+      <div className="flex w-fit h-fit flex items-center justify-center">
+        <img src={image} alt="" className="rounded-xl  w-fit" />
       </div>
       <div>
         <p className="font-bold text-[#217aa9]"> {name}</p>
@@ -77,7 +85,7 @@ const PurchaseView = ({ image, name, discription, page, price, addItems }) => {
             {"Rs."}
             {price}
           </p>
-          <Button btnName={"Buy Now"} clickHandler={""} />
+          
         </div>
       </div>
     </div>

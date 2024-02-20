@@ -70,7 +70,7 @@ import {
 //Travel image
 import TravelImage from "../images/TravelSectionImage.png";
 import BgImage from "../Smallcomponents/BgImage";
-function Home({ userName }) {
+function Home({ userName ,totalItems }) {
   // const [image, setImage] = useState();
   // const [userName, setUserName] = useState("");
   // console.log(image);
@@ -248,7 +248,9 @@ function Home({ userName }) {
             FaIons={<HiOutlineLogout />}
           />
           <NavButton
+            page={"/Home/Fashion/Men/Cartpage"}
             buttonName={"Cart"}
+            totalItems={totalItems}
             FaIons={<FaCartShopping className="mr-1" />}
           />
         </ul>
