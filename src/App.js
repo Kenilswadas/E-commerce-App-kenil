@@ -4,23 +4,21 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUppage from "./SignUp/SignUppage";
 import Home from "./Userside/Home";
 import Admin from "./Adminside/Admin";
-import Products from "./Adminside/Products";
 import Items from "./Adminside/Items";
-import Dashboard from "./Adminside/Dashboard";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./FirebaseConfig/Firebaseconfig";
 import { useEffect, useState } from "react";
 import Fashion from "./Userside/Fashion";
-import Menpage from "./Userside/Menpage";
 import Page from "./Smallcomponents/Page";
 import Cartpage from "./Userside/Cartpage";
 import { useCart } from "react-use-cart";
-import Womenspage from "./Userside/Womenspage";
-
+import CategoryPage from "./Userside/CategoryPage";
+import Maintainorder from "./Adminside/Maintainorder";
+import Product from "./Adminside/Product"
 function App() {
   const [userName, setUserName] = useState(null);
   const { totalItems } = useCart();
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -48,12 +46,10 @@ function App() {
             element={<Fashion userName={userName} totalItems={totalItems} />}
           />
           <Route
-            path="/Home/Fashion/Men"
-            element={<Menpage userName={userName} totalItems={totalItems} />}
-          />
-          <Route
-            path="/Home/Fashion/:CategoryWomen"
-            element={<Womenspage userName={userName} totalItems={totalItems} />}
+            path="/Home/Fashion/:Category"
+            element={
+              <CategoryPage userName={userName} totalItems={totalItems} />
+            }
           />
 
           <Route
@@ -66,12 +62,12 @@ function App() {
           />
           <Route path="/Admin" element={<Admin userName={userName} />} />
           <Route
-            path="/Admin/Dashboard"
-            element={<Dashboard userName={userName} />}
+            path="/Admin/Product"
+            element={<Product userName={userName} setIsLoading={setIsLoading} isLoading={isLoading}  />}
           />
           <Route
-            path="/Admin/Products"
-            element={<Products userName={userName} />}
+            path="/Admin/Maintainorder"
+            element={<Maintainorder userName={userName} />}
           />
           <Route path="/Admin/Products/Items" element={<Items />} />
         </Routes>

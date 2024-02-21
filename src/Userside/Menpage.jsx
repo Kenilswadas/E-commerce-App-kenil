@@ -14,31 +14,39 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { useCart } from "react-use-cart";
 import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+
 function Menpage({ userName, totalItems }) {
   const [Menscollection, setMenscollection] = useState([]);
   const [mycategory, setMycategory] = useState(null);
-  const { addItem, totalUniqueItems, items, removeItem, emptyCart } = useCart();
+  const { addItem } = useCart();
   const navigate = useNavigate();
-  const {CategoryMen} = useParams();
+  const { Category } = useParams();
   useEffect(() => {
-    let categoryField = mycategory ? "BaseCategory" : "SubCategory";
-    let categoryValue = mycategory ? mycategory : "Men's Top Wear";
-    const alldata = onSnapshot(
-      query(
-        collection(db, "MyProducts"),
-        where(categoryField, "==", categoryValue)
-      ),
-      async (snapshort) => {
-        const data = snapshort.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setMenscollection(data);
-      }
-    );
+    // let categoryField = mycategory ? "BaseCategory" : "SubCategory";
+    // let categoryValue = mycategory ? mycategory : "Men's Top Wear";
+    // const alldata = onSnapshot(
+    //   query(
+    //     collection(db, "MyProducts"),
+    //     where(categoryField, "==", categoryValue)
+    //   ),
+    //   async (snapshort) => {
+    //     const data = snapshort.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setMenscollection(data);
+    //   }
+    // );
+    const alldata = onSnapshot(collection(db, "MyProducts"), (snapshort) => {
+      const data = snapshort.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMenscollection(data);
+    });
     console.log(mycategory);
     return () => alldata();
   }, [mycategory]);
@@ -57,9 +65,10 @@ function Menpage({ userName, totalItems }) {
   };
   return (
     <div>
+      <ToastContainer />
       <div>
         <h1>User Profile</h1>
-        <p>User ID: {CategoryMen}</p>
+        <p>User ID: {Category}</p>
       </div>
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
@@ -96,7 +105,17 @@ function Menpage({ userName, totalItems }) {
         <CategoryNavbar setMycategory={setMycategory} />
         <div className="w-full  h-fit grid grid-cols-4">
           {Menscollection ? (
-            Menscollection.map((e, index) => {
+            Menscollection.filter((data) =>
+              (mycategory === null
+                ? [
+                    "Men's Top Wear",
+                    "Men's Bottom Wear",
+                    "Men's Foot Wear",
+                    "Men's Festive Wear",
+                  ]
+                : [mycategory]
+              ).includes(data.SubCategory)
+            ).map((e, index) => {
               return (
                 <div>
                   <PurchaseView

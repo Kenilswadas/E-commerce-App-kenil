@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "../Smallcomponents/Buttons";
+import { toast } from "react-toastify";
 //BRANDS TO BAG
 const BrandsToBag = ({ image1, image2, image3, image4 }) => {
   return (
@@ -72,6 +73,21 @@ const PurchaseView = ({
   addItems,
   e,
 }) => {
+  function clickHandler() {
+    addItems({
+      id: e.id,
+      ProductImage: e.ProductImage,
+      ProductName: e.ProductName,
+      ProductDescription: e.ProductDescription,
+      price: e.ProductPrice,
+      DiscountedPrice: e.DiscountedPrice,
+      Category: e.Category,
+      SubCategory: e.SubCategory,
+      BaseCategory: e.BaseCategory,
+      ProductId: e.uId,
+    });
+    toast.success("Product is added to Cart !");
+  }
   return (
     <div className=" w-11/12 h-fit bg-[#ffffff] m-4 p-4 border-2 border-[#96002e] mb-8 hover:shadow-xl hover:-translate-y-2 rounded-3xl">
       <div className="flex w-fit h-fit flex items-center justify-center">
@@ -87,21 +103,9 @@ const PurchaseView = ({
           </p>
           <button
             className="p-1 rounded-full border-2 border-[#96200e] hover:text-[#ffffff] hover:bg-[#96200e]"
-            onClick={() =>
-              addItems({
-                id: e.id,
-                ProductImage: e.ProductImage,
-                ProductName: e.ProductName,
-                ProductDescription: e.ProductDescription,
-                price: e.ProductPrice,
-                DiscountedPrice: e.DiscountedPrice,
-                Category: e.Category,
-                SubCategory: e.SubCategory,
-                BaseCategory: e.BaseCategory,
-                ProductId: e.uId,
-              })
-            }
-            F
+            onClick={() => {
+              clickHandler();
+            }}
           >
             Add to cart
           </button>

@@ -15,17 +15,17 @@ import { useParams } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 function Womenspage({ userName, totalItems }) {
   const [Womenscollection, setWomenscollection] = useState([]);
   const [mycategory, setMycategory] = useState(null);
   const navigate = useNavigate();
-  let { CategoryWomen } = useParams();
-  const { addItem, totalUniqueItems, items, removeItem, emptyCart } = useCart();
+  let { Category } = useParams();
+  const { addItem } = useCart();
 
   useEffect(() => {
-    console.log("run");
+    // console.log("run");
     // let categoryField = mycategory ? "BaseCategory" : "SubCategory";
     // let categoryValue = "Women's Bottom Wear";
     // let combinedCategoryValue =
@@ -44,9 +44,13 @@ function Womenspage({ userName, totalItems }) {
     //     setWomenscollection(data);
     //   }
     // );
-    const alldata = onSnapshot(collection(db,"MyProducts"),(e)=>{
-      return setWomenscollection(e)
-    })
+    const alldata = onSnapshot(collection(db, "MyProducts"), (snapshort) => {
+      const data = snapshort.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setWomenscollection(data);
+    });
     console.log(mycategory);
     return () => alldata();
   }, [mycategory]);
@@ -68,8 +72,9 @@ function Womenspage({ userName, totalItems }) {
     <div>
       <div>
         <h1>User Profile</h1>
-        <p>User ID: {CategoryWomen}</p>
+        <p>User ID: {Category}</p>
       </div>
+      <ToastContainer />
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
           <li className="flex">
@@ -77,7 +82,7 @@ function Womenspage({ userName, totalItems }) {
           </li>
           <li className="flex items-center w-2/4 ml-8">
             <NavButton buttonName={"Home"} page={"/Home"} />
-            <NavButton buttonName={"Men"} page={"/Home/Fashion/Men"} />
+            <NavButton buttonName={"Men"} page={`/Home/Fashion/Men`} />
             <NavButton buttonName={"Women"} page={"/Home/Fashion/Women"} />
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
@@ -101,11 +106,22 @@ function Womenspage({ userName, totalItems }) {
           />
         </ul>
       </nav>
+
       <div className="flex">
         <CategoryNavbar setMycategory={setMycategory} />
         <div className="w-full  h-fit grid grid-cols-4">
           {Womenscollection ? (
-            Womenscollection.map((e, index) => {
+            Womenscollection.filter((data) =>
+              (mycategory === null
+                ? [
+                    "Women's Top Wear",
+                    "Women's Bottom Wear",
+                    "Women's Foot Wear",
+                    "Women's Festive Wear",
+                  ]
+                : mycategory
+              ).includes(data.SubCategory)
+            ).map((e, index) => {
               return (
                 <div>
                   <PurchaseView

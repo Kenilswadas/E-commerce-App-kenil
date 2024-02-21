@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../images/logo2.png";
 import { NavButton } from "../Smallcomponents/NavButton";
 import { Search } from "../Smallcomponents/Searchbar";
@@ -17,10 +17,12 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { CiCircleRemove } from "react-icons/ci";
 import { FaMinus } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
+import Swal from "sweetalert2";
+import DisplayProduct from "../Smallcomponents/DisplayProduct";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,6 +33,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 16,
+    backgroundColor: "#ebf1f1",
     textAlign: "center",
     alignItems: "center",
     padding: 2,
@@ -39,7 +42,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
     alignItems: "center",
   },
   "&:last-child td, &:last-child th": {
@@ -51,8 +53,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function Cartpage({ totalItems, userName }) {
   const navigate = useNavigate();
   const { items, removeItem, updateItemQuantity } = useCart();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [showProduct, setShowProduct] = useState(false);
+  const [productId, setProductId] = useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -74,9 +78,58 @@ function Cartpage({ totalItems, userName }) {
         toast.error("Oops! An error occurred.");
       });
   };
-
+  //handleDelete
+  function handleDelete(id) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeItem(id);
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+    });
+  }
+  //handleDecrement
+  function handleDecrement(item) {
+    item.quantity !== 1
+      ? updateItemQuantity(item.id, item.quantity - 1)
+      : Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, remove it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            removeItem(item.id);
+            Swal.fire({
+              title: "Removed!",
+              text: "Your file has been removed.",
+              icon: "success",
+            });
+          }
+        });
+  }
+  const ViewProducts = (row) => {
+    setShowProduct(true);
+    setProductId(row.id)
+  };
   return (
     <div className="">
+      <ToastContainer />
+      {showProduct && <DisplayProduct items={items} productId={productId} setShowProduct={setShowProduct} />}
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex flex-wrap items-center justify-around">
           <li className="flex">
@@ -146,9 +199,9 @@ function Cartpage({ totalItems, userName }) {
                         className="flex items-center"
                       >
                         <button
-                          onClick={() =>
-                            updateItemQuantity(row.id, row.quantity - 1)
-                          }
+                          onClick={() => {
+                            handleDecrement(row);
+                          }}
                         >
                           <span className=" flex bg-gray-200 p-2 pb-2">
                             <FaMinus />
@@ -170,13 +223,22 @@ function Cartpage({ totalItems, userName }) {
                         </button>
                       </StyledTableCell>
                       <StyledTableCell key={`remove-${row.id}`}>
-                        <button onClick={() => removeItem(row.id)}>
+                        <button
+                          onClick={() => {
+                            handleDelete(row.id);
+                          }}
+                        >
                           <CiCircleRemove size={20} />
                         </button>
                       </StyledTableCell>
                       <StyledTableCell key={`place-order-${row.id}`}>
-                        <button className="bg-red-200 rounded-full p-1">
-                          {"Place Order"}
+                        <button
+                          className="bg-[#ffffff] border-2 border-[#96200e] text-[#96200e] rounded-full p-1 hover:-translate-y-2"
+                          onClick={() => {
+                            ViewProducts(row);
+                          }}
+                        >
+                          View Product
                         </button>
                       </StyledTableCell>
                     </StyledTableRow>
