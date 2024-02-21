@@ -9,6 +9,7 @@ import { PurchaseView } from "../Smallcomponents/CardView";
 import { collection, onSnapshot, query, where } from "@firebase/firestore";
 import { db } from "../FirebaseConfig/Firebaseconfig";
 import { HiOutlineLogout } from "react-icons/hi";
+import { useParams } from "react-router-dom";
 
 //useCart
 import { useCart } from "react-use-cart";
@@ -16,33 +17,41 @@ import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-function Menpage({ userName, totalItems }) {
-  const [Menscollection, setMenscollection] = useState([]);
+function Womenspage({ userName, totalItems }) {
+  const [Womenscollection, setWomenscollection] = useState([]);
   const [mycategory, setMycategory] = useState(null);
-  const { addItem, totalUniqueItems, items, removeItem, emptyCart } = useCart();
   const navigate = useNavigate();
-  const {CategoryMen} = useParams();
+  let { CategoryWomen } = useParams();
+  const { addItem, totalUniqueItems, items, removeItem, emptyCart } = useCart();
+
   useEffect(() => {
-    let categoryField = mycategory ? "BaseCategory" : "SubCategory";
-    let categoryValue = mycategory ? mycategory : "Men's Top Wear";
-    const alldata = onSnapshot(
-      query(
-        collection(db, "MyProducts"),
-        where(categoryField, "==", categoryValue)
-      ),
-      async (snapshort) => {
-        const data = snapshort.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setMenscollection(data);
-      }
-    );
+    console.log("run");
+    // let categoryField = mycategory ? "BaseCategory" : "SubCategory";
+    // let categoryValue = "Women's Bottom Wear";
+    // let combinedCategoryValue =
+    //   mycategory === null ? [categoryValue] : ["KALINI"];
+    // console.log(mycategory === null);
+    // const alldata = onSnapshot(
+    //   query(
+    //     collection(db, "MyProducts"),
+    //     where(categoryField, "in", combinedCategoryValue)
+    //   ),
+    //   async (snapshort) => {
+    //     const data = snapshort.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setWomenscollection(data);
+    //   }
+    // );
+    const alldata = onSnapshot(collection(db,"MyProducts"),(e)=>{
+      return setWomenscollection(e)
+    })
     console.log(mycategory);
     return () => alldata();
   }, [mycategory]);
-  //   console.log(Menscollection);
+  console.log(Womenscollection);
+
   //LogOut function
   const handleLogout = () => {
     signOut(auth)
@@ -59,7 +68,7 @@ function Menpage({ userName, totalItems }) {
     <div>
       <div>
         <h1>User Profile</h1>
-        <p>User ID: {CategoryMen}</p>
+        <p>User ID: {CategoryWomen}</p>
       </div>
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
@@ -95,8 +104,8 @@ function Menpage({ userName, totalItems }) {
       <div className="flex">
         <CategoryNavbar setMycategory={setMycategory} />
         <div className="w-full  h-fit grid grid-cols-4">
-          {Menscollection ? (
-            Menscollection.map((e, index) => {
+          {Womenscollection ? (
+            Womenscollection.map((e, index) => {
               return (
                 <div>
                   <PurchaseView
@@ -120,4 +129,4 @@ function Menpage({ userName, totalItems }) {
   );
 }
 
-export default Menpage;
+export default Womenspage;

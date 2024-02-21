@@ -63,21 +63,48 @@ const TrendingInGrocery = ({ logourl, image }) => {
     </div>
   );
 };
-const PurchaseView = ({ image, name, discription, page, price, addItems }) => {
+const PurchaseView = ({
+  image,
+  name,
+  discription,
+  page,
+  price,
+  addItems,
+  e,
+}) => {
   return (
-    <div className="bg-[#ebf1f1] m-4 p-2 mb-8 hover:shadow-xl hover:-translate-y-2 rounded-3xl">
-      <div className="flex w-full h-fit flex items-centerjustify-center">
-        <img src={image} alt="" className="rounded-3xl w-full" />
+    <div className=" w-11/12 h-fit bg-[#ffffff] m-4 p-4 border-2 border-[#96002e] mb-8 hover:shadow-xl hover:-translate-y-2 rounded-3xl">
+      <div className="flex w-fit h-fit flex items-center justify-center">
+        <img src={image} alt="" className="rounded-xl  w-fit" />
       </div>
-      <div>
+      <div className="border-t-2 mt-2 border-[#96002e]">
         <p className="font-bold text-[#217aa9]"> {name}</p>
-        <p className="hover:object">{discription}</p>
+        <p className="hover:object h-32">{discription}</p>
         <div className="flex items-center  justify-between ">
           <p className="font-bold text-4xl text-[#217aa9]">
             {"Rs."}
             {price}
           </p>
-          <Button btnName={"Buy Now"} clickHandler={""} />
+          <button
+            className="p-1 rounded-full border-2 border-[#96200e] hover:text-[#ffffff] hover:bg-[#96200e]"
+            onClick={() =>
+              addItems({
+                id: e.id,
+                ProductImage: e.ProductImage,
+                ProductName: e.ProductName,
+                ProductDescription: e.ProductDescription,
+                price: e.ProductPrice,
+                DiscountedPrice: e.DiscountedPrice,
+                Category: e.Category,
+                SubCategory: e.SubCategory,
+                BaseCategory: e.BaseCategory,
+                ProductId: e.uId,
+              })
+            }
+            F
+          >
+            Add to cart
+          </button>
         </div>
       </div>
     </div>

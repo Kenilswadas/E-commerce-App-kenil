@@ -209,6 +209,7 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
                     onChange={(e) => setBaseCategory(e.target.value)}
                   >
                     <option value="">base category</option>
+                    {/* men section */}
                     {subcategory === "Men's Top Wear" && (
                       <>
                         <option value="Roadster">Roadster</option>
@@ -231,6 +232,31 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
                       <>
                         <option value="SOJANYA">SOJANYA</option>
                         <option value="DEVOILER">DEVOILER</option>
+                      </>
+                    )}
+                    {/* Women section */}
+                    {subcategory === "Women's Top Wear" && (
+                      <>
+                        <option value="Dress Berry">Dress Berry</option>
+                        <option value="FOREVER 21">FOREVER 21</option>
+                      </>
+                    )}
+                    {subcategory === "Women's Bottom Wear" && (
+                      <>
+                        <option value="Roadster">Roadster</option>
+                        <option value="DressBerry">DressBerry</option>
+                      </>
+                    )}{" "}
+                    {subcategory === "Women's Foot Wear" && (
+                      <>
+                        <option value="Puma">Puma</option>
+                        <option value="DressBerry">DressBerry</option>
+                      </>
+                    )}
+                    {subcategory === "Women's Festive Wear" && (
+                      <>
+                        <option value="KALINI">KALINI</option>
+                        <option value="Shae by SASSAFRAS">Shae by SASSAFRAS</option>
                       </>
                     )}
                   </select>
