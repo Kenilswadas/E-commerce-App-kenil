@@ -104,7 +104,7 @@ function Fashion({ userName, totalItems }) {
           <li className="flex items-center w-2/4 ml-8">
             <NavButton buttonName={"Home"} page={"/Home"} />
             <NavButton buttonName={"Men"} page={"/Home/Fashion/Men"} />
-            <NavButton buttonName={"Women"} />
+            <NavButton buttonName={"Women"} page={"/Home/Fashion/Women"} />
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
           </li>

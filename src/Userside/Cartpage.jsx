@@ -139,7 +139,7 @@ function Cartpage({ totalItems, userName }) {
                         {row.ProductName}
                       </StyledTableCell>
                       <StyledTableCell key={`price-${row.id}`}>
-                        {row.price}
+                        {row.price * row.quantity}
                       </StyledTableCell>
                       <StyledTableCell
                         key={`quantity-${row.id}`}

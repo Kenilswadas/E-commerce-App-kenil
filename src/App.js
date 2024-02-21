@@ -15,10 +15,11 @@ import Menpage from "./Userside/Menpage";
 import Page from "./Smallcomponents/Page";
 import Cartpage from "./Userside/Cartpage";
 import { useCart } from "react-use-cart";
+import Womenspage from "./Userside/Womenspage";
 
 function App() {
   const [userName, setUserName] = useState(null);
-  const {totalItems} = useCart();
+  const { totalItems } = useCart();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -38,7 +39,10 @@ function App() {
             element={<SignUppage userName={userName} />}
           />
           <Route path="/" element={<SignInpage userName={userName} />} />
-          <Route path="/Home" element={<Home userName={userName} totalItems={totalItems} />} />
+          <Route
+            path="/Home"
+            element={<Home userName={userName} totalItems={totalItems} />}
+          />
           <Route
             path="/Home/Fashion"
             element={<Fashion userName={userName} totalItems={totalItems} />}
@@ -47,10 +51,14 @@ function App() {
             path="/Home/Fashion/Men"
             element={<Menpage userName={userName} totalItems={totalItems} />}
           />
+          <Route
+            path="/Home/Fashion/:CategoryWomen"
+            element={<Womenspage userName={userName} totalItems={totalItems} />}
+          />
 
           <Route
             path="/Home/Fashion/Men/Cartpage"
-            element={<Cartpage userName={userName} totalItems={totalItems}/>}
+            element={<Cartpage userName={userName} totalItems={totalItems} />}
           />
           <Route
             path="/Home/Fashion/Men/Page"
