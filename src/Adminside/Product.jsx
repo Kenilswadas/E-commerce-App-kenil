@@ -42,6 +42,7 @@ function Product({ userName, setIsLoading, isLoading }) {
               setDocId={setDocId}
               setIsLoading={setIsLoading}
               isLoading={isLoading}
+
             />
           </div>
         </div>
