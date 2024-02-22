@@ -15,23 +15,11 @@ const VerticalNavbar = ({ userName }) => {
                   isActive ? "bg-[#D9D9D9]" : null
                 } hover:bg-[#217aa9] hover:text-[#ebf1f1] `
               }
-              to={"/Admin/Dashboard"}
+              to={"/Admin/Product"}
             >
-              Dashboard
+              Products
             </NavLink>
           </li>
-          {/* <li>
-            <NavLink
-              className={({ isActive }) =>
-                `block text-white py-2 px-4  ${
-                  isActive ? "bg-[#D9D9D9]" : null
-                } hover:bg-[#D9D9D9] hover:text-[#747264] `
-              }
-              to={""}
-            >
-              users
-            </NavLink>
-          </li> */}
           <li>
             <NavLink
               className={({ isActive }) =>
@@ -39,23 +27,11 @@ const VerticalNavbar = ({ userName }) => {
                   isActive ? "bg-[#D9D9D9]" : null
                 } hover:bg-[#217aa9] hover:text-[#ebf1f1] `
               }
-              to={"/Admin/Products"}
+              to={"/Admin/Maintainorder"}
             >
-              Products
+              View current Order
             </NavLink>
           </li>
-          {/* <li>
-            <NavLink
-              className={({ isActive }) =>
-                `block text-white py-2 px-4  ${
-                  isActive ? "bg-[#D9D9D9]" : null
-                } hover:bg-[#D9D9D9] hover:text-[#747264] `
-              }
-              to={"#"}
-            >
-              Settings
-            </NavLink>
-          </li> */}
         </ul>
       </nav>
     </div>

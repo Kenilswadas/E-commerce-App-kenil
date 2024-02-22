@@ -18,12 +18,13 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 import { db } from "../FirebaseConfig/Firebaseconfig";
-import { Button } from "../Smallcomponents/Buttons";
+import { Button } from "./Buttons";
 import { MdDelete } from "react-icons/md";
 import { MdUpdate } from "react-icons/md";
 import Pagination from "@mui/material/Pagination";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { toast } from "react-toastify";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "",
@@ -61,6 +62,8 @@ export default function CustomizedTables({
   // isupdate,
   setisupdate,
   setDocId,
+  setIsLoading,
+  isLoading,
 }) {
   // const [items, setItems] = useState([]);
   const [Products, setproducts] = useState([]);
@@ -93,7 +96,16 @@ export default function CustomizedTables({
 
   //handleDelete
   const handleDelete = async (id) => {
-    await deleteDoc(doc(db, "MyProducts", id));
+    setIsLoading(true);
+    await deleteDoc(doc(db, "MyProducts", id))
+      .then((e) => {
+        toast.success("successfully deleted !");
+      })
+      .catch((error) => {
+        toast.error("opps ! error occurs ...");
+      }).finally((e)=>{
+        setIsLoading(false);
+      });
   };
   //handleUpdate
   const handleUpdate = async (id) => {

@@ -3,6 +3,7 @@ import { Label } from "../Smallcomponents/Label";
 import { InputField } from "../Smallcomponents/InputField";
 import { Button } from "../Smallcomponents/Buttons";
 import { useState } from "react";
+
 import {
   addDoc,
   collection,
@@ -19,8 +20,18 @@ import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
 import { db, storage } from "../FirebaseConfig/Firebaseconfig";
 //uuidv4
 import { v4 as uuid } from "uuid";
+import Loader from "./Loader";
+import { ToastContainer, toast } from "react-toastify";
 
-function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
+function Addproductform({
+  displayform,
+  setDisplayform,
+  isupdate,
+  DocId,
+  setisupdate,
+  setIsLoading,
+  isLoading,
+}) {
   const [Alldata, setAlldata] = useState([]);
   onSnapshot(collection(db, "MyProducts"), (snapshot) => {
     const alldata = snapshot.docs.map((doc) => ({
@@ -38,11 +49,13 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
   const [basecategory, setBaseCategory] = useState("");
   const [image, setImage] = useState(null);
   const mycollection = collection(db, "MyProducts");
+
   const uId = uuid();
   const AddProducts = async () => {
     const imageRef = ref(storage, `${image.name}`);
     await uploadBytes(imageRef, image);
     const url = await getDownloadURL(imageRef);
+    setIsLoading(true);
     addDoc(mycollection, {
       ProductName: name,
       ProductDescription: description,
@@ -53,17 +66,26 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
       BaseCategory: basecategory,
       ProductId: uId,
       ProductImage: url,
-    });
-    setDisplayform(false);
+    })
+      .then((e) => {
+        toast.success("Product added successfully");
+      })
+      .catch((error) => {
+        toast.error("opps ! error occurs ...");
+      })
+      .finally((e) => {
+        setIsLoading(false);
+        setDisplayform(false);
+      });
   };
   async function update() {
-    alert("updating");
     console.log(image);
     const imageRef = ref(storage, `${image.name}`);
     console.log(imageRef);
     await uploadBytes(imageRef, image);
     const url = await getDownloadURL(imageRef);
     console.log(url);
+    setIsLoading(true);
     updateDoc(doc(db, "MyProducts", DocId), {
       ProductName: name,
       ProductDescription: description,
@@ -74,13 +96,23 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
       BaseCategory: basecategory,
       ProductId: uId,
       ProductImage: url,
-    });
-    setDisplayform(false);
-    setisupdate(false);
+    })
+      .then((e) => {
+        toast.success("updated successfully !");
+      })
+      .catch((e) => {
+        toast.error("opps ! error occurs");
+      })
+      .finally((e) => {
+        setIsLoading(false);
+        setDisplayform(false);
+        setisupdate(false);
+      });
   }
   // console.log(name);
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+      {isLoading ? <Loader /> : null}
       <div className=" p-10">
         <form action="" className=" w-full p-4 bg-[#ebf1f1] ">
           <div className="flex justify-center">
@@ -256,7 +288,9 @@ function Addproductform({ setDisplayform, isupdate, DocId, setisupdate }) {
                     {subcategory === "Women's Festive Wear" && (
                       <>
                         <option value="KALINI">KALINI</option>
-                        <option value="Shae by SASSAFRAS">Shae by SASSAFRAS</option>
+                        <option value="Shae by SASSAFRAS">
+                          Shae by SASSAFRAS
+                        </option>
                       </>
                     )}
                   </select>
