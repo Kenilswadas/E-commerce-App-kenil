@@ -12,9 +12,9 @@ function DisplayProduct({ productId, setShowProduct }) {
   }, []);
   console.log(data);
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-cover bg-black bg-opacity-50 z-50 ">
-      <div className="flex p-4 w-1/2 h-fit  bg-[#ebf1f1] mt-4 border-2 border-[#96200e]">
-        <div className=" w-3/4 flex items-center justify-center">
+    <div className="fixed inset-0 flex items-center justify-center bg-cover bg-black bg-opacity-50 z-50  mt-10">
+      <div className="flex p-4 w-fit h-fit  bg-[#ebf1f1] mt-4">
+        <div className="  flex items-center justify-center">
           <img src={data.ProductImage} alt="" className="opacity-100 h-full " />
         </div>
         <div className="bg-[#ffffff] p-10 w-full">

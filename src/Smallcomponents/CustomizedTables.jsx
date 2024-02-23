@@ -25,6 +25,7 @@ import Pagination from "@mui/material/Pagination";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { toast } from "react-toastify";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "",
@@ -69,7 +70,6 @@ export default function CustomizedTables({
   const [Products, setproducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5); // Number of items per page
-
   const getItems = async () => {
     // let arr = [];
     const mycollection = collection(db, "MyProducts");
@@ -103,7 +103,8 @@ export default function CustomizedTables({
       })
       .catch((error) => {
         toast.error("opps ! error occurs ...");
-      }).finally((e)=>{
+      })
+      .finally((e) => {
         setIsLoading(false);
       });
   };
@@ -162,6 +163,7 @@ export default function CustomizedTables({
                 <StyledTableCell
                   scope="row"
                   className="flex justify-center items-center w-24"
+                 
                 >
                   <img src={data.ProductImage} className="m-auto" alt="" />
                 </StyledTableCell>

@@ -29,7 +29,7 @@ const VerticalNavbar = ({ userName }) => {
               }
               to={"/Admin/Maintainorder"}
             >
-              View current Order
+              Maintain Order
             </NavLink>
           </li>
         </ul>

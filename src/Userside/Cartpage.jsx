@@ -23,7 +23,7 @@ import { FaMinus } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import DisplayProduct from "../Smallcomponents/DisplayProduct";
-
+import { Link } from "react-router-dom";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#217aa9",
@@ -50,14 +50,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function Cartpage({ totalItems, userName }) {
+function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
   const navigate = useNavigate();
-  const { items, removeItem, updateItemQuantity } = useCart();
+  const { items, removeItem, updateItemQuantity, cartTotal } = useCart();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [showProduct, setShowProduct] = useState(false);
   const [productId, setProductId] = useState(false);
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -124,12 +122,19 @@ function Cartpage({ totalItems, userName }) {
   }
   const ViewProducts = (row) => {
     setShowProduct(true);
-    setProductId(row.id)
+    setProductId(row.id);
   };
+
   return (
     <div className="">
       <ToastContainer />
-      {showProduct && <DisplayProduct items={items} productId={productId} setShowProduct={setShowProduct} />}
+      {showProduct && (
+        <DisplayProduct
+          items={items}
+          productId={productId}
+          setShowProduct={setShowProduct}
+        />
+      )}
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex flex-wrap items-center justify-around">
           <li className="flex">
@@ -156,15 +161,15 @@ function Cartpage({ totalItems, userName }) {
           <NavButton
             page={"/Home/Fashion/Men/Cartpage"}
             buttonName={"Cart"}
-            FaIons={<FaCartShopping className="mr-1" />}
+            FaIons={<FaCartShopping className="" />}
             totalItems={totalItems}
           />
         </ul>
       </nav>
-      <div className="flex flex-col items-center justify-center mt-10">
-        <p className="text-3xl p-2 text-[#217aa9] ">My Orders</p>
-        <div className="p-0 text-black">
-          <TableContainer sx={{ minWidth: 1400, maxHeight: 400 }}>
+      <p className="text-3xl p-2 text-[#217aa9] text-center ">My Orders</p>
+      <div className="flex items-top justify-center h-full  p-4">
+        <div className="p-0 text-black shadow-2xl">
+          <TableContainer sx={{ minWidth: 1000 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <StyledTableRow>
@@ -256,8 +261,61 @@ function Cartpage({ totalItems, userName }) {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </div>
+        <div className="bg-[#ebf1f1] ml-3 shadow-2xl p-4 flex flex-col  w-full">
+          <h1 className="text-center text-xl font-bold text-[#ebf1f1] bg-[#217aa9] p-2 m-0">
+            {"Order summary"}
+          </h1>
+          <div className="p-2 mt-5 ]">
+            <p className="flex justify-between">
+              <span>{`Items (${totalItems} items)`}</span>
+              <span>
+                {"Rs. "}
+                {cartTotal}
+              </span>
+            </p>
+            <p className="flex justify-between mt-2">
+              <span>{`Discount`}</span>
+              <span className="text-green-500">
+                {"Rs. "}
+                {0 - cartTotal * 0.2}
+              </span>
+            </p>
+            <p className="flex justify-between mt-2">
+              <span>{`Tax estimate`}</span>
+              <span className="text-green-500">
+                {"Rs. "}
+                {Math.round(0 - cartTotal * 0.018)}
+              </span>
+            </p>
+            <p className="flex justify-between mt-2">
+              <span>{`Delivery Charges`}</span>
+              <span>
+                <strike>
+                  <span>{"Rs. "}</span>
+                </strike>
+                <span className="text-green-500">{"Free"}</span>
+              </span>
+            </p>
+          </div>
+          <hr />
+          <p className="flex justify-between mt-2">
+            <span>{`Total Amount`}</span>
+            <span className="text-xl">
+              {"Rs. "}
+              {Math.round(
+                cartTotal - (0 - cartTotal * 0.2) - (0 - cartTotal * 0.018)
+              )}
+            </span>
+          </p>
+          <div className="mt-4 ">
+            <Link to={"/Home/Fashion/Men/Cartpage/Payment"} className="grid">
+              <button className="bg-green-500 rounded-xl text-center text-[#ffffff] p-2">
+                Check Out
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
-      {totalItems}
     </div>
   );
 }

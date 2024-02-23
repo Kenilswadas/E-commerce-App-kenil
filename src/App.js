@@ -14,11 +14,14 @@ import Cartpage from "./Userside/Cartpage";
 import { useCart } from "react-use-cart";
 import CategoryPage from "./Userside/CategoryPage";
 import Maintainorder from "./Adminside/Maintainorder";
-import Product from "./Adminside/Product"
+import Product from "./Adminside/Product";
+import Payment from "./Userside/Payment";
 function App() {
   const [userName, setUserName] = useState(null);
   const { totalItems } = useCart();
   const [isLoading, setIsLoading] = useState(false);
+  const [showProduct, setShowProduct] = useState(false);
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -54,7 +57,25 @@ function App() {
 
           <Route
             path="/Home/Fashion/Men/Cartpage"
-            element={<Cartpage userName={userName} totalItems={totalItems} />}
+            element={
+              <Cartpage
+                userName={userName}
+                totalItems={totalItems}
+                showProduct={showProduct}
+                setShowProduct={setShowProduct}
+              />
+            }
+          />
+          <Route
+            path="/Home/Fashion/Men/Cartpage/Payment"
+            element={
+              <Payment
+                userName={userName}
+                totalItems={totalItems}
+                showProduct={showProduct}
+                setShowProduct={setShowProduct}
+              />
+            }
           />
           <Route
             path="/Home/Fashion/Men/Page"
@@ -63,7 +84,13 @@ function App() {
           <Route path="/Admin" element={<Admin userName={userName} />} />
           <Route
             path="/Admin/Product"
-            element={<Product userName={userName} setIsLoading={setIsLoading} isLoading={isLoading}  />}
+            element={
+              <Product
+                userName={userName}
+                setIsLoading={setIsLoading}
+                isLoading={isLoading}
+              />
+            }
           />
           <Route
             path="/Admin/Maintainorder"
