@@ -8,6 +8,8 @@ import { Search } from "../Smallcomponents/Searchbar";
 import Cards from "react-credit-cards-2";
 import { Label } from "../Smallcomponents/Label";
 import { InputField } from "../Smallcomponents/InputField";
+import "react-credit-cards-2/dist/es/styles-compiled.css";
+
 function Payment({ userName }) {
   const { totalItems } = useCart();
   const [name, setName] = useState("");

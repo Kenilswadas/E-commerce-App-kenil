@@ -52,11 +52,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
   const navigate = useNavigate();
-  const { items, removeItem, updateItemQuantity } = useCart();
+  const { items, removeItem, updateItemQuantity, cartTotal } = useCart();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [productId, setProductId] = useState(false);
-  const [TotalPrice, setTotalPrice] = useState(0);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -125,14 +124,7 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
     setShowProduct(true);
     setProductId(row.id);
   };
-  useEffect(() => {
-    const total = items
-      .map((e) => {
-        return parseInt(e.price * e.quantity);
-      })
-      .reduce((acc, curr) => acc + curr, 0);
-    setTotalPrice(total);
-  }, []);
+
   return (
     <div className="">
       <ToastContainer />
@@ -278,31 +270,28 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
               <span>{`Items (${totalItems} items)`}</span>
               <span>
                 {"Rs. "}
-                {TotalPrice}
+                {cartTotal}
               </span>
             </p>
             <p className="flex justify-between mt-2">
               <span>{`Discount`}</span>
               <span className="text-green-500">
                 {"Rs. "}
-                {0 - TotalPrice * 0.04}
+                {0 - cartTotal * 0.2}
               </span>
             </p>
             <p className="flex justify-between mt-2">
               <span>{`Tax estimate`}</span>
               <span className="text-green-500">
                 {"Rs. "}
-                {TotalPrice * 0.001}
+                {Math.round(0 - cartTotal * 0.018)}
               </span>
             </p>
             <p className="flex justify-between mt-2">
               <span>{`Delivery Charges`}</span>
               <span>
                 <strike>
-                  <span>
-                    {"Rs. "}
-                    {TotalPrice * 0.002}
-                  </span>
+                  <span>{"Rs. "}</span>
                 </strike>
                 <span className="text-green-500">{"Free"}</span>
               </span>
@@ -313,10 +302,9 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
             <span>{`Total Amount`}</span>
             <span className="text-xl">
               {"Rs. "}
-              {TotalPrice -
-                (0 - TotalPrice * 0.04) -
-                TotalPrice * 0.001 -
-                TotalPrice * 0.002}
+              {Math.round(
+                cartTotal - (0 - cartTotal * 0.2) - (0 - cartTotal * 0.018)
+              )}
             </span>
           </p>
           <div className="mt-4 ">
