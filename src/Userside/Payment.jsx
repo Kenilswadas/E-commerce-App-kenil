@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavButton } from "../Smallcomponents/NavButton";
 import logo from "../images/logo2.png";
 import { FaUserCircle } from "react-icons/fa";
@@ -6,15 +6,14 @@ import { FaCartShopping } from "react-icons/fa6";
 import { useCart } from "react-use-cart";
 import { Search } from "../Smallcomponents/Searchbar";
 import Cards from "react-credit-cards-2";
-import { Label } from "../Smallcomponents/Label";
-import { InputField } from "../Smallcomponents/InputField";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
+import { number } from "prop-types";
 
 function Payment({ userName }) {
   const { totalItems } = useCart();
-  const [name, setName] = useState("");
-  const [description, setDiscription] = useState("");
-  const [price, setPrice] = useState("");
+  // const [name, setName] = useState("");
+  // const [description, setDiscription] = useState("");
+  // const [price, setPrice] = useState("");
   const [state, setState] = useState({
     number: "",
     expiry: "",
@@ -22,9 +21,24 @@ function Payment({ userName }) {
     name: "",
     focus: "",
   });
+  function numberValue(value) {
+    if (value == 1) {
+      return value + "11";
+    }
+  }
   const handleInputChange = (evt) => {
     const { name, value } = evt.target;
-
+    // Check if the input field is for the expiry date and if its length is greater than 4
+    if (name === "expiry" && value.length > 4) {
+      // If the length is greater than 4, return to prevent updating the state
+      return;
+    }
+    if (name === "number") {
+      value = numberValue(value);
+    }
+    // if (name === "number" && value.length > 16) {
+    //   return;
+    // }
     setState((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -69,16 +83,24 @@ function Payment({ userName }) {
               name={state.name}
               focused={state.focus}
             />
-            <Label name={"Name on card"} />
+            <label
+              htmlFor="Card Holder Name"
+              className="font-bold text-[#217aa9]"
+            >
+              {"Card Holder Name"}
+            </label>
             <input
               type="text"
               name="name"
-              placeholder="Card Number"
+              placeholder="Card Holder Name"
               value={state.name}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
+              className="mb-2"
             />
-            <Label name={"Card number"} />
+            <label htmlFor="Card Number" className="font-bold text-[#217aa9]">
+              {"Card Number"}
+            </label>
             <input
               type="number"
               name="number"
@@ -86,10 +108,15 @@ function Payment({ userName }) {
               value={state.number}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
+              className="mb-2"
             />
-            <Label name={"Expiration date"} />
+            <label htmlFor="Expiry Date" className="font-bold text-[#217aa9]">
+              {"Expiry Date"}
+            </label>
             <input
-              type="date"
+              type="number"
+              name="expiry"
+              pattern="\d{3,4}"
               value={state.expiry}
               onChange={handleInputChange}
               onFocus={handleInputFocus}

@@ -308,7 +308,7 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
             </span>
           </p>
           <div className="mt-4 ">
-            <Link to={"/Home/Fashion/Men/Cartpage/Payment"} className="grid">
+            <Link to={"/Home/Fashion/Men/Cartpage/Checkout/Payment"} className="grid">
               <button className="bg-green-500 rounded-xl text-center text-[#ffffff] p-2">
                 Check Out
               </button>

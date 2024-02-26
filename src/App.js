@@ -9,13 +9,13 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./FirebaseConfig/Firebaseconfig";
 import { useEffect, useState } from "react";
 import Fashion from "./Userside/Fashion";
-import Page from "./Smallcomponents/Page";
 import Cartpage from "./Userside/Cartpage";
 import { useCart } from "react-use-cart";
 import CategoryPage from "./Userside/CategoryPage";
 import Maintainorder from "./Adminside/Maintainorder";
 import Product from "./Adminside/Product";
 import Payment from "./Userside/Payment";
+import Errorpage from "./Smallcomponents/Errorpage";
 function App() {
   const [userName, setUserName] = useState(null);
   const { totalItems } = useCart();
@@ -67,7 +67,7 @@ function App() {
             }
           />
           <Route
-            path="/Home/Fashion/Men/Cartpage/Payment"
+            path="/Home/Fashion/Men/Cartpage/Checkout/Payment"
             element={
               <Payment
                 userName={userName}
@@ -77,10 +77,7 @@ function App() {
               />
             }
           />
-          <Route
-            path="/Home/Fashion/Men/Page"
-            element={<Page userName={userName} />}
-          />
+
           <Route path="/Admin" element={<Admin userName={userName} />} />
           <Route
             path="/Admin/Product"
@@ -97,6 +94,7 @@ function App() {
             element={<Maintainorder userName={userName} />}
           />
           <Route path="/Admin/Products/Items" element={<Items />} />
+          <Route path="/*" element={<Errorpage />} />
         </Routes>
       </BrowserRouter>
     </div>
