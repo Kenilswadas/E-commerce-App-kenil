@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/logo2.png";
 import { Search } from "../Smallcomponents/Searchbar";
 import { NavButton } from "../Smallcomponents/NavButton";
@@ -70,15 +70,16 @@ import {
 //Travel image
 import TravelImage from "../images/TravelSectionImage.png";
 import BgImage from "../Smallcomponents/BgImage";
-function Home({ userName ,totalItems }) {
+function Home({ userName, totalItems }) {
   // const [image, setImage] = useState();
   // const [userName, setUserName] = useState("");
   // console.log(image);
-  const [Carousel, setCarousel] = useState(Carouselimage01);
-  const [imageList, setImageList] = useState([]);
+  // const [Carousel, setCarousel] = useState(Carouselimage01);
+  // const [imageList, setImageList] = useState([]);
   const [Menscollection, setMenscollection] = useState([]);
   const [Womenscollection, setWomenscollection] = useState([]);
   const [GroceryCollection, setGroceryCollection] = useState([]);
+  const [KidsCollection, setKidsCollection] = useState([]);
   const [url, setUrl] = useState([]);
 
   const items = [
@@ -170,6 +171,20 @@ function Home({ userName ,totalItems }) {
         setWomenscollection(data);
       }
     );
+    //Women Top Wear
+    onSnapshot(
+      query(
+        collection(db, "MyProducts"),
+        where("SubCategory", "==", "Boy's Clothing")
+      ),
+      async (snapshot) => {
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setKidsCollection(data);
+      }
+    );
     //Grocery collection
     onSnapshot(
       query(collection(db, "MyProducts"), where("Category", "==", "Grocery")),
@@ -237,11 +252,23 @@ function Home({ userName ,totalItems }) {
             <NavButton buttonName={"Travel"} />
           </li>
           <Search />
-          <NavButton
-            page={"/Admin"}
-            buttonName={userName ? userName : localStorage.getItem("userName")}
-            FaIons={<FaUserCircle className="mr-1" />}
-          />
+          {auth.currentUser ? (
+            <NavButton
+              page={"/Admin"}
+              buttonName={
+                userName ? userName : localStorage.getItem("userName")
+              }
+              FaIons={<FaUserCircle className="mr-1" />}
+            />
+          ) : (
+            <Link
+              className="text-[#96200e] flex items-center"
+              to={"/SignInPage"}
+            >
+              <FaUserCircle className="mr-1" />
+              Login
+            </Link>
+          )}
           <NavButton
             buttonName={"LogOut"}
             clickHandler={handleLogout}
@@ -311,20 +338,20 @@ function Home({ userName ,totalItems }) {
               image4={Menscollection[3].ProductImage}
             />
           ) : null}
+            {KidsCollection.length > 0 ? (
+              <BrandsToBag
+                image1={KidsCollection[0].ProductImage}
+                image2={KidsCollection[1].ProductImage}
+                image3={KidsCollection[2].ProductImage}
+                image4={KidsCollection[3].ProductImage}
+              />
+            ) : null}
           {Womenscollection.length > 0 ? (
             <BrandsToBag
               image1={Womenscollection[0].ProductImage}
               image2={Womenscollection[1].ProductImage}
               image3={Womenscollection[2].ProductImage}
               image4={Womenscollection[3].ProductImage}
-            />
-          ) : null}
-          {Womenscollection.length > 0 ? (
-            <BrandsToBag
-              image1={Menscollection[0].ProductImage}
-              image2={Menscollection[1].ProductImage}
-              image3={Menscollection[2].ProductImage}
-              image4={Menscollection[3].ProductImage}
             />
           ) : null}
         </div>

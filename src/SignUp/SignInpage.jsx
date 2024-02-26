@@ -25,7 +25,7 @@ function SignInpage({ userName }) {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
-        navigate("/Home");
+        navigate("/");
       }
     });
   });
@@ -59,7 +59,7 @@ function SignInpage({ userName }) {
       .then((userCredential) => {
         // localStorage.setItem("userName", formik.values.name); //Bug
         toast("successfully signged in");
-        navigate("/Home");
+        navigate("/");
       })
       .catch((errors) => {
         toast.error(errors.message);

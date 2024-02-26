@@ -15,7 +15,7 @@ import {
 import { HiOutlineLogout } from "react-icons/hi";
 import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 function Fashion({ userName, totalItems }) {
   const [Menscollection, setMenscollection] = useState([]);
@@ -102,18 +102,30 @@ function Fashion({ userName, totalItems }) {
             <img src={logo} alt="" className="w-auto h-20 p-2" />
           </li>
           <li className="flex items-center w-2/4 ml-8">
-            <NavButton buttonName={"Home"} page={"/Home"} />
+            <NavButton buttonName={"Home"} page={"/"} />
             <NavButton buttonName={"Men"} page={"/Home/Fashion/Men"} />
             <NavButton buttonName={"Women"} page={"/Home/Fashion/Women"} />
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
           </li>
           <Search />
-          <NavButton
-            page={"/Admin"}
-            buttonName={userName ? userName : localStorage.getItem("userName")}
-            FaIons={<FaUserCircle className="mr-1" />}
-          />
+          {auth.currentUser ? (
+            <NavButton
+              page={"/Admin"}
+              buttonName={
+                userName ? userName : localStorage.getItem("userName")
+              }
+              FaIons={<FaUserCircle className="mr-1" />}
+            />
+          ) : (
+            <Link
+              className="text-[#96200e] flex items-center"
+              to={"/SignInPage"}
+            >
+              <FaUserCircle className="mr-1" />
+              Login
+            </Link>
+          )}
           <NavButton
             buttonName={"LogOut"}
             clickHandler={handleLogout}
@@ -137,7 +149,7 @@ function Fashion({ userName, totalItems }) {
           WOMEN'S COLLECTION
         </p>
         <div className="flex">
-          {Womenscollection.map((item) => {
+          {Womenscollection.slice(0, 5).map((item) => {
             return (
               <TrendingInFashion
                 image={item.ProductImage}
