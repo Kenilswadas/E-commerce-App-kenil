@@ -56,6 +56,26 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [productId, setProductId] = useState(false);
+
+  //handleCheckout function
+  function handleCheckout() {
+    Swal.fire({
+      title: "You are not Logged In",
+      text: "Please log in first",
+      confirmButtonText: "Login",
+      confirmButtonColor: "green",
+      showCancelButton: "true",
+      cancelButtonText: "Cancel",
+      cancelButtonColor: "red",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/SignInPage");
+      } else {
+        Swal.close();
+      }
+    });
+  }
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -148,11 +168,23 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
             <NavButton buttonName={"Beauty"} />
           </li>
           <Search />
-          <NavButton
-            page={"/Admin"}
-            buttonName={userName ? userName : localStorage.getItem("userName")}
-            FaIons={<FaUserCircle className="mr-1" />}
-          />
+          {auth.currentUser ? (
+            <NavButton
+              page={"/Admin"}
+              buttonName={
+                userName ? userName : localStorage.getItem("userName")
+              }
+              FaIons={<FaUserCircle className="mr-1" />}
+            />
+          ) : (
+            <Link
+              className="text-[#96200e] flex items-center"
+              to={"/SignInPage"}
+            >
+              <FaUserCircle className="mr-1" />
+              Login
+            </Link>
+          )}
           <NavButton
             buttonName={"LogOut"}
             clickHandler={handleLogout}
@@ -303,16 +335,24 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
             <span className="text-xl">
               {"Rs. "}
               {Math.round(
-                cartTotal - (0 - cartTotal * 0.2) - (0 - cartTotal * 0.018)
+                cartTotal + (0 - cartTotal * 0.2) + (0 - cartTotal * 0.018)
               )}
             </span>
           </p>
-          <div className="mt-4 ">
-            <Link to={"/Home/Fashion/Men/Cartpage/Checkout/Payment"} className="grid">
-              <button className="bg-green-500 rounded-xl text-center text-[#ffffff] p-2">
-                Check Out
-              </button>
-            </Link>
+          <div className="mt-4 grid ">
+            {/* <Link
+              to={"/Home/Fashion/Men/Cartpage/Checkout/Payment"}
+              className="grid"
+            > */}
+            <button
+              className="bg-green-500 rounded-xl text-center text-[#ffffff] p-2"
+              onClick={() => {
+                handleCheckout();
+              }}
+            >
+              Check Out
+            </button>
+            {/* </Link> */}
           </div>
         </div>
       </div>

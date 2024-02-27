@@ -39,9 +39,12 @@ function App() {
             path="/SignUppage"
             element={<SignUppage userName={userName} />}
           />
-          <Route path="/" element={<SignInpage userName={userName} />} />
           <Route
-            path="/Home"
+            path="/SignInpage"
+            element={<SignInpage userName={userName} />}
+          />
+          <Route
+            path="/"
             element={<Home userName={userName} totalItems={totalItems} />}
           />
           <Route

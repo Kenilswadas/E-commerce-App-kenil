@@ -10,7 +10,7 @@ import { collection, onSnapshot, query, where } from "@firebase/firestore";
 import { db } from "../FirebaseConfig/Firebaseconfig";
 import { HiOutlineLogout } from "react-icons/hi";
 import { useParams } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 //useCart
 import { useCart } from "react-use-cart";
 import { signOut } from "firebase/auth";
@@ -74,25 +74,37 @@ function Womenspage({ userName, totalItems }) {
         <h1>User Profile</h1>
         <p>User ID: {Category}</p>
       </div>
-      <ToastContainer />
+      <ToastContainer position="top-center" />
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
           <li className="flex">
             <img src={logo} alt="" className="w-auto h-20 p-2" />
           </li>
           <li className="flex items-center w-2/4 ml-8">
-            <NavButton buttonName={"Home"} page={"/Home"} />
+            <NavButton buttonName={"Home"} page={"/"} />
             <NavButton buttonName={"Men"} page={`/Home/Fashion/Men`} />
             <NavButton buttonName={"Women"} page={"/Home/Fashion/Women"} />
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
           </li>
           <Search />
-          <NavButton
-            page={"/Admin"}
-            buttonName={userName ? userName : localStorage.getItem("userName")}
-            FaIons={<FaUserCircle className="mr-1" />}
-          />
+          {auth.currentUser ? (
+            <NavButton
+              page={"/Admin"}
+              buttonName={
+                userName ? userName : localStorage.getItem("userName")
+              }
+              FaIons={<FaUserCircle className="mr-1" />}
+            />
+          ) : (
+            <Link
+              className="text-[#96200e] flex items-center"
+              to={"/SignInPage"}
+            >
+              <FaUserCircle className="mr-1" />
+              Login
+            </Link>
+          )}
           <NavButton
             buttonName={"LogOut"}
             clickHandler={handleLogout}

@@ -27,7 +27,7 @@ function Maintainorder({ userName }) {
           <div className="bg-red-100 w-1/2 h-3/4">
             <img src={items[0].ProductImage} alt="" className="h-full" />
           </div>
-          <div className="bg-green-100 w-1/2 h-full">\
+          <div className="bg-green-100 w-1/2 h-full">
           </div>
         </div>
       </div>
