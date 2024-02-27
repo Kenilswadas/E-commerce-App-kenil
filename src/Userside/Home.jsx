@@ -70,7 +70,7 @@ import {
 //Travel image
 import TravelImage from "../images/TravelSectionImage.png";
 import BgImage from "../Smallcomponents/BgImage";
-function Home({ userName, totalItems }) {
+function Home({ userName, totalItems, setIsUserLoggedOut, isUserLoggedOut }) {
   // const [image, setImage] = useState();
   // const [userName, setUserName] = useState("");
   // console.log(image);
@@ -220,6 +220,7 @@ function Home({ userName, totalItems }) {
     signOut(auth)
       .then(() => {
         localStorage.clear();
+        setIsUserLoggedOut(true);
         navigate("/");
         toast("Sign-out successful.");
       })
@@ -269,11 +270,13 @@ function Home({ userName, totalItems }) {
               Login
             </Link>
           )}
-          <NavButton
-            buttonName={"LogOut"}
-            clickHandler={handleLogout}
-            FaIons={<HiOutlineLogout />}
-          />
+          {!isUserLoggedOut ? (
+            <NavButton
+              buttonName={"LogOut"}
+              clickHandler={handleLogout}
+              FaIons={<HiOutlineLogout />}
+            />
+          ) : null}
           <NavButton
             page={"/Home/Fashion/Men/Cartpage"}
             buttonName={"Cart"}
@@ -338,14 +341,14 @@ function Home({ userName, totalItems }) {
               image4={Menscollection[3].ProductImage}
             />
           ) : null}
-            {KidsCollection.length > 0 ? (
-              <BrandsToBag
-                image1={KidsCollection[0].ProductImage}
-                image2={KidsCollection[1].ProductImage}
-                image3={KidsCollection[2].ProductImage}
-                image4={KidsCollection[3].ProductImage}
-              />
-            ) : null}
+          {KidsCollection.length > 0 ? (
+            <BrandsToBag
+              image1={KidsCollection[0].ProductImage}
+              image2={KidsCollection[1].ProductImage}
+              image3={KidsCollection[2].ProductImage}
+              image4={KidsCollection[3].ProductImage}
+            />
+          ) : null}
           {Womenscollection.length > 0 ? (
             <BrandsToBag
               image1={Womenscollection[0].ProductImage}

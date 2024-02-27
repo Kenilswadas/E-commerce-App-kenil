@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { VerticalNavbar } from "../Smallcomponents/VerticalNavbar";
+import { auth } from "../FirebaseConfig/Firebaseconfig";
+import { useNavigate } from "react-router-dom";
 const Admin = ({ userName }) => {
+  const navigate = useNavigate();
+  // useEffect(() => {
+  //   console.log(auth.currentUser);
+  //   if (!auth.currentUser.email === "admin@gmail.com") {
+  //     alert("admin")
+  //   }
+  // }, [auth]);
   return (
     <div className="flex h-screen">
       <div>

@@ -15,8 +15,16 @@ import { auth } from "../FirebaseConfig/Firebaseconfig"; //auth from FirebaseCon
 import { useNavigate, Link } from "react-router-dom"; //react-router-dom methods
 import { useState, useEffect } from "react"; //useState useEffect
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"; //SignInWithGoogle methods
+import PasswordResetForm from "../Smallcomponents/PasswordResetForm";
+import Loader from "../Smallcomponents/Loader";
 
-function SignInpage({ userName }) {
+function SignInpage({
+  userName,
+  setIsLoading,
+  isLoading,
+  displayPasswordResetFrom,
+  setDisplayPasswordResetForm,
+}) {
   const [error, setError] = useState();
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider(); //SignInWithGoogle
@@ -58,8 +66,13 @@ function SignInpage({ userName }) {
     )
       .then((userCredential) => {
         // localStorage.setItem("userName", formik.values.name); //Bug
+        console.log(userCredential);
+        if (userCredential.user.email === "admin@gmail.com") {
+          navigate("/Admin");
+        } else {
+          navigate("/");
+        }
         toast("successfully signged in");
-        navigate("/");
       })
       .catch((errors) => {
         toast.error(errors.message);
@@ -84,6 +97,15 @@ function SignInpage({ userName }) {
     <div className="flex items-center justify-center  bg-white h-screen">
       <ToastContainer />
       <BgImage backgroundImage={signIncopy} />
+      {/* {console.log(displayPasswordResetFrom)} */}
+      
+      {displayPasswordResetFrom ? (
+        <PasswordResetForm
+          setIsLoading={setIsLoading}
+          isLoading={isLoading}
+          setDisplayPasswordResetForm={setDisplayPasswordResetForm}
+        />
+      ) : null}
       <div className="bg-[#ebf1f1] h-5/6 w-3/5 flex relative">
         <div className="w-3/5  flex items-center justify-center">
           <div className=" h-3/5 w-4/5 text-center flex flex-col items-center">
@@ -112,7 +134,9 @@ function SignInpage({ userName }) {
               btnName={"Sign In With Google"}
               clickHandler={() => SignInWithGoogle()}
             />
-            <ForgotPassword />
+            <ForgotPassword
+              setDisplayPasswordResetForm={setDisplayPasswordResetForm}
+            />
             <p>
               {"New to this Site : "}
               <Link className="underline text-blue-900" to={"/SignUppage"}>
