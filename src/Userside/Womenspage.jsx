@@ -51,10 +51,8 @@ function Womenspage({ userName, totalItems }) {
       }));
       setWomenscollection(data);
     });
-    console.log(mycategory);
     return () => alldata();
   }, [mycategory]);
-  console.log(Womenscollection);
 
   //LogOut function
   const handleLogout = () => {

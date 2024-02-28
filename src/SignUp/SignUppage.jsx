@@ -62,7 +62,7 @@ function SignUppage({ userName }) {
             .then(() => {
               localStorage.setItem("userName", formik.values.name);
               toast.success("user is created successfully.");
-              navigate("/Home");
+              navigate("/");
             })
             .catch((error) => {
               toast.error("oppes error occurs !!");
@@ -100,7 +100,7 @@ function SignUppage({ userName }) {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // console.log(user);
-        navigate("/Home");
+        navigate("/");
       }
     });
   });

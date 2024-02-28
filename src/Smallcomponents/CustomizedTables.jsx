@@ -158,12 +158,11 @@ export default function CustomizedTables({
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginate(Products, currentPage, itemsPerPage).map((data) => (
+            {Products.map((data) => (
               <StyledTableRow key={data.id}>
                 <StyledTableCell
                   scope="row"
                   className="flex justify-center items-center w-24"
-                 
                 >
                   <img src={data.ProductImage} className="m-auto" alt="" />
                 </StyledTableCell>

@@ -21,6 +21,9 @@ function App() {
   const { totalItems } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [showProduct, setShowProduct] = useState(false);
+  const [displayPasswordResetFrom, setDisplayPasswordResetForm] =
+    useState(false);
+  const [isUserLoggedOut,setIsUserLoggedOut]=useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -37,15 +40,15 @@ function App() {
         <Routes>
           <Route
             path="/SignUppage"
-            element={<SignUppage userName={userName} />}
+            element={<SignUppage userName={userName}  displayPasswordResetFrom={displayPasswordResetFrom} setDisplayPasswordResetForm={setDisplayPasswordResetForm} setIsLoading={setIsLoading} isLoading={isLoading} />}
           />
           <Route
             path="/SignInpage"
-            element={<SignInpage userName={userName} />}
+            element={<SignInpage userName={userName} displayPasswordResetFrom={displayPasswordResetFrom} setDisplayPasswordResetForm={setDisplayPasswordResetForm} setIsLoading={setIsLoading} isLoading={isLoading}/>}
           />
           <Route
             path="/"
-            element={<Home userName={userName} totalItems={totalItems} />}
+            element={<Home userName={userName} totalItems={totalItems} setIsUserLoggedOut={setIsUserLoggedOut} isUserLoggedOut={isUserLoggedOut} />}
           />
           <Route
             path="/Home/Fashion"
