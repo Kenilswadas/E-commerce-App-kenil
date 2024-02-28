@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useCart } from "react-use-cart";
 import { useNavigate } from "react-router-dom";
-function PaymentForm({ setDisplayPaymentForm }) {
+function PaymentForm({ setDisplayPaymentForm ,FinalPrice}) {
   const { emptyCart } = useCart();
   const navigate = useNavigate();
   const [state, setState] = useState({
@@ -38,25 +38,23 @@ function PaymentForm({ setDisplayPaymentForm }) {
   };
   async function handlePayment(event) {
     event.preventDefault();
-    console.log(typeof state.name);
-    console.log(state.cvc);
-    console.log(state.expiry);
-    console.log(typeof state.number);
-    console.log(state.name);
+    // console.log(typeof state.name);
+    // console.log(state.cvc);
+    // console.log(state.expiry);
+    // console.log(typeof state.number);
+    // console.log(state.name);
     if (!(state.name || state.number || state.cvc || state.expiry)) {
       toast.error("Please fill up the values");
     } else {
       setDisplayPaymentForm(false);
       Swal.fire({
-        title: "Good job!",
-        text: "You clicked the button!",
+        titleText: `Thank You For Payment of ${FinalPrice}`,
+        text: "Have A Good Day.",
         icon: "success",
-      }).then((result)=>{
-        if(result.isConfirmed){
-            navigate("/Home")
-        }
+      }).then(() => {
+        emptyCart();
+        navigate("/Home");
       });
-      emptyCart();
       
     }
   }

@@ -2,14 +2,18 @@ import React, { useEffect } from "react";
 import { VerticalNavbar } from "../Smallcomponents/VerticalNavbar";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const Admin = ({ userName }) => {
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   console.log(auth.currentUser);
-  //   if (!auth.currentUser.email === "admin@gmail.com") {
-  //     alert("admin")
-  //   }
-  // }, [auth]);
+  useEffect(() => {
+    console.log(auth.currentUser.email);
+    if (auth?.currentUser?.email === "admin@gmail.com") {
+      // alert("admin");
+    } else {
+      toast.info("please Login with Admin's Email Id")
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="flex h-screen">
       <div>

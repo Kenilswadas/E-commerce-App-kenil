@@ -117,7 +117,7 @@ function Payment({ userName }) {
           </div>
           <div>
             {DisplayPaymentForm ? (
-              <PaymentForm setDisplayPaymentForm={setDisplayPaymentForm} />
+              <PaymentForm setDisplayPaymentForm={setDisplayPaymentForm} FinalPrice={FinalPrice} />
             ) : null}
           </div>
         </div>

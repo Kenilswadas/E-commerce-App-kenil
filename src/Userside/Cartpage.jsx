@@ -52,28 +52,35 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
   const navigate = useNavigate();
-  const { items, removeItem, updateItemQuantity, cartTotal } = useCart();
+  const { items, removeItem, updateItemQuantity, cartTotal, isEmpty } =
+    useCart();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [productId, setProductId] = useState(false);
 
   //handleCheckout function
   function handleCheckout() {
-    Swal.fire({
-      title: "You are not Logged In",
-      text: "Please log in first",
-      confirmButtonText: "Login",
-      confirmButtonColor: "green",
-      showCancelButton: "true",
-      cancelButtonText: "Cancel",
-      cancelButtonColor: "red",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate("/SignInPage");
-      } else {
-        Swal.close();
-      }
-    });
+    if (isEmpty) {
+      toast.info("Please add the Products.");
+    } else if (!auth.currentUser) {
+      Swal.fire({
+        title: "You are not Logged In",
+        text: "Please log in first",
+        confirmButtonText: "Login",
+        confirmButtonColor: "green",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: "red",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/SignInPage");
+        } else {
+          Swal.close();
+        }
+      });
+    } else {
+      navigate("/Home/Fashion/Men/Cartpage/Checkout/Payment");
+    }
   }
 
   const handleChangePage = (event, newPage) => {
