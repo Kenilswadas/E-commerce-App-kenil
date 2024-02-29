@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik"; //formik
 import * as Yup from "yup"; //formik
 import SignupImage from "../images/signupcopy.jpeg"; //Image
@@ -25,6 +25,7 @@ import { collection, addDoc } from "firebase/firestore";
 function SignUppage({ userName }) {
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
+  const [UserId, setUserId] = useState("");
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -61,6 +62,8 @@ function SignUppage({ userName }) {
           })
             .then(() => {
               localStorage.setItem("userName", formik.values.name);
+              const userId = userCredential.user.uid;
+              setUserId(userId);
               toast.success("user is created successfully.");
               navigate("/");
             })
@@ -73,16 +76,23 @@ function SignUppage({ userName }) {
           console.log(error);
         });
       //fireStore
-      const mycollection = collection(db, "Myusers");
-      // console.log(mycollection);
-      addDoc(mycollection, {
-        UserEmail: formik.values.email,
-        UserName: formik.values.name,
-        UserPassword: formik.values.password,
-        // Id: userCount,
-      });
+      createUserProfile();
     },
   });
+  function createUserProfile(){
+    const mycollection = collection(db, "userDetails");
+      addDoc(mycollection, {
+        UserName: formik.values.name,
+        Email: formik.values.email,
+        Password: formik.values.password,
+        user_UID: UserId,
+        Address: "",
+        DateofBirth: "",
+        Gender: "",
+        Image: "",
+        Mobile: "",
+      });
+  }
   function SignInWithGoogle() {
     signInWithPopup(auth, provider)
       .then((result) => {

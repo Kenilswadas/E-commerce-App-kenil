@@ -9,6 +9,10 @@ const Search = ({ searchInput, setSearchInput }) => {
     "Men's Bottom Wear",
     "Men's Foot Wear",
     "Men's Festive Wear",
+    "Women's Top Wear",
+    "Women's Bottom Wear",
+    "Women's Foot Wear",
+    "Women's Festive Wear",
   ];
   useEffect(() => {
     const alldata = onSnapshot(collection(db, "MyProducts"), (snapshort) => {

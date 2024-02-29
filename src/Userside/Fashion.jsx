@@ -17,7 +17,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-function Fashion({ userName, totalItems }) {
+function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
   const [Menscollection, setMenscollection] = useState([]);
   const [Womenscollection, setWomenscollection] = useState([]);
   const [Kidscollection, setKidscollection] = useState([]);
@@ -108,7 +108,7 @@ function Fashion({ userName, totalItems }) {
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
           </li>
-          <Search />
+          <Search setSearchInput={setSearchInput} searchInput={searchInput} />
           {auth.currentUser ? (
             <NavButton
               page={"/Admin"}

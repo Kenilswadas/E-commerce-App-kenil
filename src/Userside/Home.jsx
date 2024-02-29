@@ -110,7 +110,6 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         // console.log(user);
-        setIsUserLoggedOut(true);
         navigate("/");
       } else {
         // console.log(user);
@@ -223,7 +222,6 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
         toast.error("opps ! error occurs ...");
       });
   };
-  // console.log(auth);
   return (
     <div className="bg-[#ffffff] m-0">
       <ToastContainer position="top-center" />
