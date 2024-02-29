@@ -16,6 +16,7 @@ import Maintainorder from "./Adminside/Maintainorder";
 import Product from "./Adminside/Product";
 import Payment from "./Userside/Payment";
 import Errorpage from "./Smallcomponents/Errorpage";
+import UsersProfilePage from "./Userside/UsersProfilePage"
 function App() {
   const [userName, setUserName] = useState(null);
   const { totalItems } = useCart();
@@ -23,7 +24,7 @@ function App() {
   const [showProduct, setShowProduct] = useState(false);
   const [displayPasswordResetFrom, setDisplayPasswordResetForm] =
     useState(false);
-  const [searchInput, setSearchInput]=useState(null);
+  const [searchInput, setSearchInput] = useState(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -73,7 +74,12 @@ function App() {
           <Route
             path="/Home/Fashion/:Category"
             element={
-              <CategoryPage userName={userName} totalItems={totalItems} setSearchInput={setSearchInput} searchInput={searchInput} />
+              <CategoryPage
+                userName={userName}
+                totalItems={totalItems}
+                setSearchInput={setSearchInput}
+                searchInput={searchInput}
+              />
             }
           />
 
@@ -97,6 +103,12 @@ function App() {
                 showProduct={showProduct}
                 setShowProduct={setShowProduct}
               />
+            }
+          />
+          <Route
+            path="/Home/UsersProfilePage"
+            element={
+              <UsersProfilePage  userName={userName}/>
             }
           />
 

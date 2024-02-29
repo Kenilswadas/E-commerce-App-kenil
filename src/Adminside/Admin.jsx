@@ -10,7 +10,6 @@ const Admin = ({ userName }) => {
     if (auth?.currentUser?.email === "admin@gmail.com") {
       // alert("admin");
     } else {
-      toast.info("please Login with Admin's Email Id")
       navigate("/");
     }
   }, []);

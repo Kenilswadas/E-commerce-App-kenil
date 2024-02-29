@@ -69,7 +69,6 @@ import {
 } from "firebase/firestore";
 //Travel image
 import TravelImage from "../images/TravelSectionImage.png";
-import BgImage from "../Smallcomponents/BgImage";
 function Home({ userName, totalItems, setIsUserLoggedOut }) {
   // const [image, setImage] = useState();
   // const [userName, setUserName] = useState("");
@@ -212,9 +211,6 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
       });
   }, [navigate]);
 
-  //image carousel
-  const handleImage = (id) => {};
-
   //LogOut function
   const handleLogout = () => {
     signOut(auth)
@@ -230,15 +226,6 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
   // console.log(auth);
   return (
     <div className="bg-[#ffffff] m-0">
-      {/* <input
-        type="file"
-        name=""
-        id=""
-        onChange={(e) => setImage(e.target.files[0])}
-      />
-      <button onClick={upload} className="bg-red-200 mr-5">
-        Upload
-      </button> */}
       <ToastContainer position="top-center" />
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
@@ -255,7 +242,7 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
           <Search />
           {auth.currentUser ? (
             <NavButton
-              page={"/Admin"}
+              page={"/Home/UsersProfilePage"}
               buttonName={
                 userName ? userName : localStorage.getItem("userName")
               }
@@ -295,7 +282,7 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
         />
       </div>
       {/* BMEDEL WORTHY BRANDS TO BAG */}
-      <div className="bg-white h-full m-16 ">
+      <div className="bg-white h-full mb-16 ">
         <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4 ">
           BRANDS TO BAG{" "}
         </p>
