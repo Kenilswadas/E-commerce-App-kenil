@@ -18,12 +18,18 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
-function Menpage({ userName, totalItems }) {
+function Menpage({ userName, totalItems, searchInput, setSearchInput }) {
   const [Menscollection, setMenscollection] = useState([]);
-  const [mycategory, setMycategory] = useState(null);
+  const [mycategory, setMycategory] = useState([]);
   const { addItem } = useCart();
   const navigate = useNavigate();
   const { Category } = useParams();
+  const catagoryData = [
+    "Men's Top Wear",
+    "Men's Bottom Wear",
+    "Men's Foot Wear",
+    "Men's Festive Wear",
+  ];
   useEffect(() => {
     // let categoryField = mycategory ? "BaseCategory" : "SubCategory";
     // let categoryValue = mycategory ? mycategory : "Men's Top Wear";
@@ -47,10 +53,9 @@ function Menpage({ userName, totalItems }) {
       }));
       setMenscollection(data);
     });
-    console.log(mycategory);
     return () => alldata();
-  }, [mycategory]);
-  //   console.log(Menscollection);
+  }, []);
+  // console.log(Menscollection);
   //LogOut function
   const handleLogout = () => {
     signOut(auth)
@@ -82,7 +87,7 @@ function Menpage({ userName, totalItems }) {
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
           </li>
-          <Search />
+          <Search setSearchInput={setSearchInput} searchInput={searchInput} />
           {auth.currentUser ? (
             <NavButton
               page={"/Admin"}
@@ -114,19 +119,33 @@ function Menpage({ userName, totalItems }) {
         </ul>
       </nav>
       <div className="flex">
-        <CategoryNavbar setMycategory={setMycategory} />
+        <CategoryNavbar
+          setMycategory={setMycategory}
+          mycategory={mycategory}
+          catagoryData={catagoryData}
+        />
         <div className="w-full  h-fit grid grid-cols-4">
-          {Menscollection ? (
+          {searchInput !== null ? (
+            searchInput.map((e, index) => {
+              return (
+                <div>
+                  <PurchaseView
+                    key={index}
+                    image={e.ProductImage}
+                    name={e.ProductName}
+                    price={e.ProductPrice}
+                    discription={e.ProductDescription}
+                    addItems={addItem}
+                    e={e}
+                  />
+                </div>
+              );
+            })
+          ) : Menscollection ? (
             Menscollection.filter((data) =>
-              (mycategory === null
-                ? [
-                    "Men's Top Wear",
-                    "Men's Bottom Wear",
-                    "Men's Foot Wear",
-                    "Men's Festive Wear",
-                  ]
-                : [mycategory]
-              ).includes(data.SubCategory)
+              (mycategory.length === 0 ? catagoryData : mycategory).includes(
+                data.SubCategory
+              )
             ).map((e, index) => {
               return (
                 <div>

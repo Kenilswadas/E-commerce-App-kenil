@@ -11,7 +11,7 @@ const NavButton = ({ buttonName, FaIons, page, clickHandler, totalItems }) => {
     >
       <span>
         <span className="absolute top-3 right-16 rounded-full p-px size-2">
-          {totalItems}
+          {totalItems === 0 ? "" : totalItems}
         </span>
         {FaIons}
       </span>

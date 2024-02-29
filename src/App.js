@@ -16,6 +16,7 @@ import Maintainorder from "./Adminside/Maintainorder";
 import Product from "./Adminside/Product";
 import Payment from "./Userside/Payment";
 import Errorpage from "./Smallcomponents/Errorpage";
+import UsersProfilePage from "./Userside/UsersProfilePage"
 function App() {
   const [userName, setUserName] = useState(null);
   const { totalItems } = useCart();
@@ -23,7 +24,7 @@ function App() {
   const [showProduct, setShowProduct] = useState(false);
   const [displayPasswordResetFrom, setDisplayPasswordResetForm] =
     useState(false);
-  const [isUserLoggedOut,setIsUserLoggedOut]=useState(false);
+  const [searchInput, setSearchInput] = useState(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -40,15 +41,31 @@ function App() {
         <Routes>
           <Route
             path="/SignUppage"
-            element={<SignUppage userName={userName}  displayPasswordResetFrom={displayPasswordResetFrom} setDisplayPasswordResetForm={setDisplayPasswordResetForm} setIsLoading={setIsLoading} isLoading={isLoading} />}
+            element={
+              <SignUppage
+                userName={userName}
+                displayPasswordResetFrom={displayPasswordResetFrom}
+                setDisplayPasswordResetForm={setDisplayPasswordResetForm}
+                setIsLoading={setIsLoading}
+                isLoading={isLoading}
+              />
+            }
           />
           <Route
             path="/SignInpage"
-            element={<SignInpage userName={userName} displayPasswordResetFrom={displayPasswordResetFrom} setDisplayPasswordResetForm={setDisplayPasswordResetForm} setIsLoading={setIsLoading} isLoading={isLoading}/>}
+            element={
+              <SignInpage
+                userName={userName}
+                displayPasswordResetFrom={displayPasswordResetFrom}
+                setDisplayPasswordResetForm={setDisplayPasswordResetForm}
+                setIsLoading={setIsLoading}
+                isLoading={isLoading}
+              />
+            }
           />
           <Route
             path="/"
-            element={<Home userName={userName} totalItems={totalItems} setIsUserLoggedOut={setIsUserLoggedOut} isUserLoggedOut={isUserLoggedOut} />}
+            element={<Home userName={userName} totalItems={totalItems} />}
           />
           <Route
             path="/Home/Fashion"
@@ -57,7 +74,12 @@ function App() {
           <Route
             path="/Home/Fashion/:Category"
             element={
-              <CategoryPage userName={userName} totalItems={totalItems} />
+              <CategoryPage
+                userName={userName}
+                totalItems={totalItems}
+                setSearchInput={setSearchInput}
+                searchInput={searchInput}
+              />
             }
           />
 
@@ -81,6 +103,12 @@ function App() {
                 showProduct={showProduct}
                 setShowProduct={setShowProduct}
               />
+            }
+          />
+          <Route
+            path="/Home/UsersProfilePage"
+            element={
+              <UsersProfilePage  userName={userName}/>
             }
           />
 

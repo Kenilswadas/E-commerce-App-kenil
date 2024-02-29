@@ -20,7 +20,7 @@ import { FaArrowAltCircleRight } from "react-icons/fa";
 import { auth, db } from "../FirebaseConfig/Firebaseconfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { signOut } from "firebase/auth";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { HiOutlineLogout } from "react-icons/hi";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
@@ -69,8 +69,7 @@ import {
 } from "firebase/firestore";
 //Travel image
 import TravelImage from "../images/TravelSectionImage.png";
-import BgImage from "../Smallcomponents/BgImage";
-function Home({ userName, totalItems, setIsUserLoggedOut, isUserLoggedOut }) {
+function Home({ userName, totalItems, setIsUserLoggedOut }) {
   // const [image, setImage] = useState();
   // const [userName, setUserName] = useState("");
   // console.log(image);
@@ -111,7 +110,7 @@ function Home({ userName, totalItems, setIsUserLoggedOut, isUserLoggedOut }) {
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         // console.log(user);
-
+        setIsUserLoggedOut(true);
         navigate("/");
       } else {
         // console.log(user);
@@ -212,15 +211,11 @@ function Home({ userName, totalItems, setIsUserLoggedOut, isUserLoggedOut }) {
       });
   }, [navigate]);
 
-  //image carousel
-  const handleImage = (id) => {};
-
   //LogOut function
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
         localStorage.clear();
-        setIsUserLoggedOut(true);
         navigate("/");
         toast("Sign-out successful.");
       })
@@ -231,15 +226,7 @@ function Home({ userName, totalItems, setIsUserLoggedOut, isUserLoggedOut }) {
   // console.log(auth);
   return (
     <div className="bg-[#ffffff] m-0">
-      {/* <input
-        type="file"
-        name=""
-        id=""
-        onChange={(e) => setImage(e.target.files[0])}
-      />
-      <button onClick={upload} className="bg-red-200 mr-5">
-        Upload
-      </button> */}
+      <ToastContainer position="top-center" />
       <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
           <li className="flex">
@@ -255,7 +242,7 @@ function Home({ userName, totalItems, setIsUserLoggedOut, isUserLoggedOut }) {
           <Search />
           {auth.currentUser ? (
             <NavButton
-              page={"/Admin"}
+              page={"/Home/UsersProfilePage"}
               buttonName={
                 userName ? userName : localStorage.getItem("userName")
               }
@@ -270,7 +257,7 @@ function Home({ userName, totalItems, setIsUserLoggedOut, isUserLoggedOut }) {
               Login
             </Link>
           )}
-          {!isUserLoggedOut ? (
+          {auth.currentUser ? (
             <NavButton
               buttonName={"LogOut"}
               clickHandler={handleLogout}
@@ -295,7 +282,7 @@ function Home({ userName, totalItems, setIsUserLoggedOut, isUserLoggedOut }) {
         />
       </div>
       {/* BMEDEL WORTHY BRANDS TO BAG */}
-      <div className="bg-white h-full m-16 ">
+      <div className="bg-white h-full mb-16 ">
         <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4 ">
           BRANDS TO BAG{" "}
         </p>

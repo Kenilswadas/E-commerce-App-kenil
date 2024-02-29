@@ -1,10 +1,40 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-function CategoryNavbar({ setMycategory }) {
+//material ui
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
+
+function CategoryNavbar({ setMycategory, mycategory, catagoryData }) {
   const { Category } = useParams();
 
+  //material ui
+  const marks = [
+    {
+      value: 1000,
+      label: "1000",
+    },
+    {
+      value: 2000,
+      label: "2000",
+    },
+    {
+      value: 3000,
+      label: "3000",
+    },
+    {
+      value: 4000,
+      label: "4000",
+    },
+    {
+      value: 5000,
+      label: "5000",
+    },
+  ];
+  function valuetext(value) {
+    return `${value}Rs`;
+  }
   return (
-    <div className=" h-screen w-1/6 shadow-3xl bg-[#ebf1f1] text-sm ">
+    <div className="  w-1/6 h-fit-sc shadow-3xl bg-[#ebf1f1] text-sm ">
       <div className="text-center m-2 font-bold text-[#96200e] border-b-2 border-[#217aa9]">
         {"Filter For "}
         {Category}
@@ -12,119 +42,74 @@ function CategoryNavbar({ setMycategory }) {
       {Category === "Men" ? (
         <div className="p-4 flex flex-col">
           <div>
-            <input
-              type="checkbox"
-              name="Men's Top Wear"
-              id=""
-              className="mr-4"
-              onChange={(e) =>
-                e.target.checked
-                  ? setMycategory("Men's Top Wear")
-                  : setMycategory(null)
-              }
-            />
-            <label htmlFor="">Men's Top Wear</label>
+            {catagoryData.map((e, index) => {
+              return (
+                <div>
+                  <input
+                    type="checkbox"
+                    name="Men's Top Wear"
+                    id=""
+                    className="mr-4"
+                    onChange={(event) =>
+                      event.target.checked
+                        ? setMycategory((prev) => [
+                            ...prev,
+                            catagoryData[index],
+                          ])
+                        : setMycategory((prev) => {
+                            const newCategory = [...mycategory];
+                            newCategory.splice(mycategory.indexOf(e), 1);
+                            return newCategory;
+                          })
+                    }
+                  />
+                  <label htmlFor="">{e}</label>
+                </div>
+              );
+            })}
           </div>
-          <div>
-            <input
-              type="checkbox"
-              name="Men's Bottom Wear"
-              id=""
-              className="mr-4"
-              onChange={(e) =>
-                e.target.checked
-                  ? setMycategory("Men's Bottom Wear")
-                  : setMycategory(null)
-              }
+          <label className="mt-5 pt-2 border-t-2 border-[#217aa9]" htmlFor="">
+            {"Price Filter"}
+          </label>
+          <Box sx={{ width: "fit" }}>
+            <Slider
+              aria-label="Custom marks"
+              defaultValue={1000}
+              getAriaValueText={valuetext}
+              step={1000}
+              min={1000}
+              max={5000}
+              valueLabelDisplay="auto"
+              marks={marks}
             />
-            <label htmlFor="">Men's Bottom Wear</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="Men's Foot Wear"
-              id=""
-              className="mr-4"
-              onChange={(e) =>
-                e.target.checked
-                  ? setMycategory("Men's Foot Wear")
-                  : setMycategory(null)
-              }
-            />
-            <label htmlFor="">Men's Foot Wear</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="Men's Festive Wear"
-              id=""
-              className="mr-4"
-              onChange={(e) =>
-                e.target.checked
-                  ? setMycategory("Men's Festive Wear")
-                  : setMycategory(null)
-              }
-            />
-            <label htmlFor="">Men's Festive Wear</label>
-          </div>
+            {}
+          </Box>
         </div>
       ) : (
         <div className="p-4 flex flex-col">
           <div>
-            <input
-              type="checkbox"
-              name="Women's Top Wear"
-              id=""
-              className="mr-4"
-              onChange={(e) =>
-                e.target.checked
-                  ? setMycategory("Women's Top Wear")
-                  : setMycategory(null)
-              }
-            />
-            <label htmlFor="">Women's Top Wear</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="Women's Bottom Wear"
-              id=""
-              className="mr-4"
-              onChange={(e) =>
-                e.target.checked
-                  ? setMycategory("Women's Bottom Wear")
-                  : setMycategory(null)
-              }
-            />
-            <label htmlFor="">Women's Bottom Wear</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="Women's Foot Wear"
-              id=""
-              className="mr-4"
-              onChange={(e) =>
-                e.target.checked
-                  ? setMycategory("Women's Foot Wear")
-                  : setMycategory(null)
-              }
-            />
-            <label htmlFor="">Women's Foot Wear</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="Women's Festive Wear"
-              id=""
-              className="mr-4"
-              onChange={(e) =>
-                e.target.checked
-                  ? setMycategory("Women's Festive Wear")
-                  : setMycategory(null)
-              }
-            />
-            <label htmlFor="">Women's Festive Wear</label>
+            {catagoryData.map((e) => {
+              return (
+                <div>
+                  <input
+                    type="checkbox"
+                    name="Men's Top Wear"
+                    id=""
+                    className="mr-4"
+                    onChange={(event, index) =>
+                      event.target.checked
+                        ? setMycategory((prev) => [...prev, e])
+                        : setMycategory((prev) => {
+                            const newCategory = [...mycategory];
+                            newCategory.splice(mycategory.indexOf(e), 1);
+                            return newCategory;
+                          })
+                    }
+                  />
+                  <label htmlFor="">{e}</label>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

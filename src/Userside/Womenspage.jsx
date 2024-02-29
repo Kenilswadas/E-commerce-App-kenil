@@ -19,11 +19,16 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 function Womenspage({ userName, totalItems }) {
   const [Womenscollection, setWomenscollection] = useState([]);
-  const [mycategory, setMycategory] = useState(null);
+  const [mycategory, setMycategory] = useState([]);
   const navigate = useNavigate();
   let { Category } = useParams();
   const { addItem } = useCart();
-
+  const catagoryData = [
+    "Women's Top Wear",
+    "Women's Bottom Wear",
+    "Women's Foot Wear",
+    "Women's Festive Wear",
+  ];
   useEffect(() => {
     // console.log("run");
     // let categoryField = mycategory ? "BaseCategory" : "SubCategory";
@@ -118,19 +123,17 @@ function Womenspage({ userName, totalItems }) {
       </nav>
 
       <div className="flex">
-        <CategoryNavbar setMycategory={setMycategory} />
+        <CategoryNavbar
+          setMycategory={setMycategory}
+          catagoryData={catagoryData}
+          mycategory={mycategory}
+        />
         <div className="w-full  h-fit grid grid-cols-4">
           {Womenscollection ? (
             Womenscollection.filter((data) =>
-              (mycategory === null
-                ? [
-                    "Women's Top Wear",
-                    "Women's Bottom Wear",
-                    "Women's Foot Wear",
-                    "Women's Festive Wear",
-                  ]
-                : mycategory
-              ).includes(data.SubCategory)
+              (mycategory.length === 0 ? catagoryData : mycategory).includes(
+                data.SubCategory
+              )
             ).map((e, index) => {
               return (
                 <div>
