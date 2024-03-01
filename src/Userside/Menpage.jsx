@@ -31,6 +31,9 @@ function Menpage({ userName, totalItems, searchInput, setSearchInput }) {
     "Men's Festive Wear",
   ];
   useEffect(() => {
+    setSearchInput(null);
+  }, [Category]);
+  useEffect(() => {
     // let categoryField = mycategory ? "BaseCategory" : "SubCategory";
     // let categoryValue = mycategory ? mycategory : "Men's Top Wear";
     // const alldata = onSnapshot(

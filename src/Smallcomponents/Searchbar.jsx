@@ -6,8 +6,6 @@ import { collection, onSnapshot } from "@firebase/firestore";
 import { useParams } from "react-router-dom";
 const Search = React.memo(({ searchInput, setSearchInput }) => {
   const { Category } = useParams();
-  // console.log(Category);
-  console.log("ji");
   const catagoryData = useMemo(() => {
     return Category === "Men"
       ? [
@@ -23,9 +21,7 @@ const Search = React.memo(({ searchInput, setSearchInput }) => {
           "Women's Festive Wear",
         ];
   }, [Category]);
-  useEffect(() => {
-    setSearchInput(null);
-  }, [Category]);
+
   useEffect(() => {
     const alldata = onSnapshot(collection(db, "MyProducts"), (snapshort) => {
       const data = snapshort.docs.map((doc) => ({
@@ -44,12 +40,12 @@ const Search = React.memo(({ searchInput, setSearchInput }) => {
   //handleSearch
   function searchHandle() {
     const search = refSearch.current.value.toLowerCase();
-    console.log(search);
+    // console.log(search);
     if (search.length > 3) {
       const finaldata = Products.filter((data) =>
         data.SubCategory.toLowerCase().includes(search)
       );
-      console.log(finaldata);
+      // console.log(finaldata);
       setSearchInput(finaldata);
     } else if (refSearch.current.value === "") {
       setSearchInput(null);

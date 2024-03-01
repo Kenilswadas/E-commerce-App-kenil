@@ -111,7 +111,7 @@ function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
           <Search setSearchInput={setSearchInput} searchInput={searchInput} />
           {auth.currentUser ? (
             <NavButton
-              page={"/Admin"}
+              page={"/Home/UsersProfilePage"}
               buttonName={
                 userName ? userName : localStorage.getItem("userName")
               }
