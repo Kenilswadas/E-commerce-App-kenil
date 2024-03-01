@@ -17,7 +17,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-function Womenspage({ userName, totalItems }) {
+function Womenspage({ userName, totalItems, searchInput, setSearchInput }) {
   const [Womenscollection, setWomenscollection] = useState([]);
   const [mycategory, setMycategory] = useState([]);
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ function Womenspage({ userName, totalItems }) {
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
           </li>
-          <Search />
+          <Search  setSearchInput={setSearchInput} searchInput={searchInput} />
           {auth.currentUser ? (
             <NavButton
               page={"/Admin"}
@@ -129,7 +129,23 @@ function Womenspage({ userName, totalItems }) {
           mycategory={mycategory}
         />
         <div className="w-full  h-fit grid grid-cols-4">
-          {Womenscollection ? (
+          {searchInput !== null ? (
+            searchInput.map((e, index) => {
+              return (
+                <div>
+                  <PurchaseView
+                    key={index}
+                    image={e.ProductImage}
+                    name={e.ProductName}
+                    price={e.ProductPrice}
+                    discription={e.ProductDescription}
+                    addItems={addItem}
+                    e={e}
+                  />
+                </div>
+              );
+            })
+          ) : Womenscollection ? (
             Womenscollection.filter((data) =>
               (mycategory.length === 0 ? catagoryData : mycategory).includes(
                 data.SubCategory

@@ -69,7 +69,7 @@ function App() {
           />
           <Route
             path="/Home/Fashion"
-            element={<Fashion userName={userName} totalItems={totalItems} />}
+            element={<Fashion userName={userName} totalItems={totalItems} setSearchInput={setSearchInput} searchInput={searchInput} />}
           />
           <Route
             path="/Home/Fashion/:Category"

@@ -5,9 +5,6 @@ import { Search } from "../Smallcomponents/Searchbar";
 import { NavButton } from "../Smallcomponents/NavButton";
 import { FaUserCircle } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
-//carousel images
-import image from "../images/backgroundcolorpic.png";
-
 import Carouselimage01 from "../images/Carouselimages/Carouselimage01.jpg";
 import Carouselimage02 from "../images/Carouselimages/Carouselimage02.webp";
 import Carouselimage03 from "../images/Carouselimages/Carouselimage03.webp";
@@ -15,8 +12,7 @@ import Carouselimage04 from "../images/Carouselimages/Carouselimage04.webp";
 import Carouselimage05 from "../images/Carouselimages/Carouselimage05.webp";
 import Carouselimage06 from "../images/Carouselimages/Carouselimage08.jpg";
 import Carouselimage07 from "../images/Carouselimages/Carouselimage09.webp";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
-import { FaArrowAltCircleRight } from "react-icons/fa";
+
 import { auth, db } from "../FirebaseConfig/Firebaseconfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { signOut } from "firebase/auth";
@@ -24,57 +20,14 @@ import { toast, ToastContainer } from "react-toastify";
 import { HiOutlineLogout } from "react-icons/hi";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import {
-  BrandsToBag,
-  TrendingInFashion,
-  TrendingInGrocery,
-} from "../Smallcomponents/CardView";
-// import Tv_32inchs from "../images/BrandsToBag/32._SY116_CB584962515_.jpg";
-// import Tv_43inchs from "../images/BrandsToBag/43._SY116_CB584962515_.jpg";
-// import Tv_55inchs from "../images/BrandsToBag/55._SY116_CB584962515_.jpg";
-// import Tv_65inchs from "../images/BrandsToBag/65._SY116_CB584962515_.jpg";
-// import KitchenItem1 from "../images/BrandsToBag/KicthenItem1.jpg";
-// import KitchenItem2 from "../images/BrandsToBag/KicthenItem2.jpg";
-// import KitchenItem3 from "../images/BrandsToBag/KicthenItem3.jpg";
-// import KitchenItem4 from "../images/BrandsToBag/KicthenItem4.jpg";
-// import MenCategory1 from "../images/BrandsToBag/MenCategory1.jpg";
-// import MenCategory2 from "../images/BrandsToBag/MenCategory2.jpg";
-// import MenCategory3 from "../images/BrandsToBag/MenCategory3.jpg";
-// import MenCategory4 from "../images/BrandsToBag/MenCategory4.jpg";
-// import WomenCategory1 from "../images/BrandsToBag/WomenCategory1.jpg";
-// import WomenCategory2 from "../images/BrandsToBag/WomenCategory2.jpg";
-// import WomenCategory3 from "../images/BrandsToBag/WomenCategory3.jpg";
-// import WomenCategory4 from "../images/BrandsToBag/WomenCategory4.jpg";
-// import TrendingImage1 from "../images/TrendingInFashion/TrendingImage1.jpg";
-// import TrendingImage2 from "../images/TrendingInFashion/TrendingImage2.jpg";
-// import TrendingImage3 from "../images/TrendingInFashion/TrendingImage3.jpg";
-// import TrendingImage4 from "../images/TrendingInFashion/TrendingImage4.jpg";
-// import GroceryItem1 from "../images/TrendingInGrocery/GroceryItem1.webp";
-// import GroceryItem2 from "../images/TrendingInGrocery/GroceryItem2.webp";
-// import GroceryItem3 from "../images/TrendingInGrocery/GroceryItem3.webp";
-// import GroceryItem4 from "../images/TrendingInGrocery/GroceryItem4.webp";
-// import GroceryLogo1 from "../images/TrendingInGrocery/GroceryLogo1.webp";
-// import GroceryLogo2 from "../images/TrendingInGrocery/GroceryLogo2.webp";
-// import GroceryLogo3 from "../images/TrendingInGrocery/GroceryLogo3.webp";
-// import GroceryLogo4 from "../images/TrendingInGrocery/GroceryLogo4.webp";
-// Storage
+import { BrandsToBag } from "../Smallcomponents/CardView";
+
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../FirebaseConfig/Firebaseconfig";
-import {
-  collection,
-  getDocs,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 //Travel image
 import TravelImage from "../images/TravelSectionImage.png";
-function Home({ userName, totalItems, setIsUserLoggedOut }) {
-  // const [image, setImage] = useState();
-  // const [userName, setUserName] = useState("");
-  // console.log(image);
-  // const [Carousel, setCarousel] = useState(Carouselimage01);
-  // const [imageList, setImageList] = useState([]);
+function Home({ userName, totalItems }) {
   const [Menscollection, setMenscollection] = useState([]);
   const [Womenscollection, setWomenscollection] = useState([]);
   const [GroceryCollection, setGroceryCollection] = useState([]);
@@ -90,57 +43,15 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
     <img src={Carouselimage05} alt="" className="w-full h-96  " />,
     <img src={Carouselimage06} alt="" className="w-full h-96  " />,
   ];
-  // function upload() {
-  //   console.log(image);
-  //   const ImageRef = ref(storage, `Images/${image.name}`);
-  //   uploadBytes(ImageRef, image);
-  // }
-
-  // const imageListRef = ref(storage, "/");
-  // listAll(imageListRef).then((response) => {
-  //   response.items.forEach((item) => {
-  //     getDownloadURL(item).then((url) => {
-  //       setImageList((prev) => [...prev, url]);
-  //     });
-  //   });
-  // });
 
   const navigate = useNavigate();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         // console.log(user);
-        setIsUserLoggedOut(true);
         navigate("/");
-      } else {
-        // console.log(user);
-        // setUserName(auth.currentUser.displayName);
       }
     });
-    // fetch data from fireStore
-    // const imagelistRef = ref(storage, `/`);
-    // listAll(imagelistRef).then((response) => {
-    //   response.items.map((item) => {
-    //     return getDownloadURL(item).then((url) => {
-    //       setImageList((prev) => [...prev, url]);
-    //     });
-    //   });
-    // });
-    const q = query(
-      collection(db, "MyProducts"),
-      where("SubCategory", "==", "Women's Top Wear")
-    );
-    const querySnapshot = getDocs(q);
-    // console.log(querySnapshot);
-    // querySnapshot.then((data) => {
-    //   data.docs.map((items) => {
-    //     const docdata = items.data();
-    //     console.log(items.id);
-    //     console.log(docdata);
-    //     return setImageList((prev) => [...prev, docdata]);
-    //   });
-    // });
-
     //Men Top Wear
     onSnapshot(
       query(
@@ -185,30 +96,16 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
       }
     );
     //Grocery collection
-    onSnapshot(
-      query(collection(db, "MyProducts"), where("Category", "==", "Grocery")),
-      async (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setGroceryCollection(data);
-      }
-    );
-    //logo from storage
-    const imageRef = ref(storage, `/Grocery`);
-    listAll(imageRef)
-      .then((images) => [
-        images.items.map((item) => {
-          getDownloadURL(item).then((url) => {
-            // return console.log(url);
-            setUrl((prev) => [...prev, url]);
-          });
-        }),
-      ])
-      .catch((error) => {
-        console.log(error);
-      });
+    // onSnapshot(
+    //   query(collection(db, "MyProducts"), where("Category", "==", "Grocery")),
+    //   async (snapshot) => {
+    //     const data = snapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setGroceryCollection(data);
+    //   }
+    // );
   }, [navigate]);
 
   //LogOut function
@@ -223,7 +120,6 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
         toast.error("opps ! error occurs ...");
       });
   };
-  // console.log(auth);
   return (
     <div className="bg-[#ffffff] m-0">
       <ToastContainer position="top-center" />
@@ -239,7 +135,7 @@ function Home({ userName, totalItems, setIsUserLoggedOut }) {
             <NavButton buttonName={"Mobiles"} />
             <NavButton buttonName={"Travel"} />
           </li>
-          <Search />
+          {/* <Search searchInput={} /> */}
           {auth.currentUser ? (
             <NavButton
               page={"/Home/UsersProfilePage"}

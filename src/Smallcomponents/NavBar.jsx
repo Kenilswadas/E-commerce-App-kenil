@@ -47,7 +47,7 @@ function NavBar({
             <NavButton buttonName={btn4name} />
             <NavButton buttonName={btn5name} />
           </li>
-          <Search />
+          {/* <Search /> */}
           {auth.currentUser ? (
             <NavButton
               page={"/Home/UsersProfilePage"}

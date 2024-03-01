@@ -17,7 +17,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-function Fashion({ userName, totalItems }) {
+function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
   const [Menscollection, setMenscollection] = useState([]);
   const [Womenscollection, setWomenscollection] = useState([]);
   const [Kidscollection, setKidscollection] = useState([]);
@@ -108,7 +108,7 @@ function Fashion({ userName, totalItems }) {
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
           </li>
-          <Search />
+          <Search setSearchInput={setSearchInput} searchInput={searchInput} />
           {auth.currentUser ? (
             <NavButton
               page={"/Admin"}
@@ -149,9 +149,10 @@ function Fashion({ userName, totalItems }) {
           WOMEN'S COLLECTION
         </p>
         <div className="flex">
-          {Womenscollection.slice(0, 5).map((item) => {
+          {Womenscollection.slice(0, 5).map((item, index) => {
             return (
               <TrendingInFashion
+                key={index}
                 image={item.ProductImage}
                 name={item.ProductName}
               />
@@ -165,9 +166,10 @@ function Fashion({ userName, totalItems }) {
           MEN'S COLLECTION
         </p>
         <div className="flex">
-          {Menscollection.slice(0, 5).map((item) => {
+          {Menscollection.slice(0, 5).map((item, index) => {
             return (
               <TrendingInFashion
+                key={index}
                 image={item.ProductImage}
                 name={item.ProductName}
                 page={"/Home/Fashion/Men"}
@@ -182,9 +184,10 @@ function Fashion({ userName, totalItems }) {
           KID'S COLLECTION
         </p>
         <div className="flex">
-          {Kidscollection.map((item) => {
+          {Kidscollection.map((item, index) => {
             return (
               <TrendingInFashion
+                key={index}
                 image={item.ProductImage}
                 name={item.ProductName}
               />
