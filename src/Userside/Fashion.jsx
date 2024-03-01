@@ -149,9 +149,10 @@ function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
           WOMEN'S COLLECTION
         </p>
         <div className="flex">
-          {Womenscollection.slice(0, 5).map((item) => {
+          {Womenscollection.slice(0, 5).map((item, index) => {
             return (
               <TrendingInFashion
+                key={index}
                 image={item.ProductImage}
                 name={item.ProductName}
               />
@@ -165,9 +166,10 @@ function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
           MEN'S COLLECTION
         </p>
         <div className="flex">
-          {Menscollection.slice(0, 5).map((item) => {
+          {Menscollection.slice(0, 5).map((item, index) => {
             return (
               <TrendingInFashion
+                key={index}
                 image={item.ProductImage}
                 name={item.ProductName}
                 page={"/Home/Fashion/Men"}
@@ -182,9 +184,10 @@ function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
           KID'S COLLECTION
         </p>
         <div className="flex">
-          {Kidscollection.map((item) => {
+          {Kidscollection.map((item, index) => {
             return (
               <TrendingInFashion
+                key={index}
                 image={item.ProductImage}
                 name={item.ProductName}
               />

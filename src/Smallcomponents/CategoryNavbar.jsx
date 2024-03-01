@@ -44,7 +44,7 @@ function CategoryNavbar({ setMycategory, mycategory, catagoryData }) {
           <div>
             {catagoryData.map((e, index) => {
               return (
-                <div>
+                <div key={index}>
                   <input
                     type="checkbox"
                     name="Men's Top Wear"

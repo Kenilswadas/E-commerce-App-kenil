@@ -1,19 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { useRef } from "react";
 import { db } from "../FirebaseConfig/Firebaseconfig";
 import { collection, onSnapshot } from "@firebase/firestore";
-const Search = ({ searchInput, setSearchInput }) => {
-  const catagoryData = [
-    "Men's Top Wear",
-    "Men's Bottom Wear",
-    "Men's Foot Wear",
-    "Men's Festive Wear",
-    "Women's Top Wear",
-    "Women's Bottom Wear",
-    "Women's Foot Wear",
-    "Women's Festive Wear",
-  ];
+import { useParams } from "react-router-dom";
+const Search = React.memo(({ searchInput, setSearchInput }) => {
+  const { Category } = useParams();
+  // console.log(Category);
+  console.log("ji");
+  const catagoryData = useMemo(() => {
+    return Category === "Men"
+      ? [
+          "Men's Top Wear",
+          "Men's Bottom Wear",
+          "Men's Foot Wear",
+          "Men's Festive Wear",
+        ]
+      : [
+          "Women's Top Wear",
+          "Women's Bottom Wear",
+          "Women's Foot Wear",
+          "Women's Festive Wear",
+        ];
+  }, [Category]);
+  useEffect(() => {
+    setSearchInput(null);
+  }, [Category]);
   useEffect(() => {
     const alldata = onSnapshot(collection(db, "MyProducts"), (snapshort) => {
       const data = snapshort.docs.map((doc) => ({
@@ -24,7 +36,8 @@ const Search = ({ searchInput, setSearchInput }) => {
       setProducts(menData);
     });
     return () => alldata();
-  }, []);
+  }, [searchInput, Category]);
+
   const [Products, setProducts] = useState();
   const refSearch = useRef();
 
@@ -38,6 +51,8 @@ const Search = ({ searchInput, setSearchInput }) => {
       );
       console.log(finaldata);
       setSearchInput(finaldata);
+    } else if (refSearch.current.value === "") {
+      setSearchInput(null);
     }
   }
   return (
@@ -52,6 +67,6 @@ const Search = ({ searchInput, setSearchInput }) => {
       <IoIosSearch size={24} className="mr-4" />
     </li>
   );
-};
+});
 
 export { Search };
