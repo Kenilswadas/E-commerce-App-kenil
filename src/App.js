@@ -16,7 +16,7 @@ import Maintainorder from "./Adminside/Maintainorder";
 import Product from "./Adminside/Product";
 import Payment from "./Userside/Payment";
 import Errorpage from "./Smallcomponents/Errorpage";
-import UsersProfilePage from "./Userside/UsersProfilePage"
+import UsersProfilePage from "./Userside/UsersProfilePage";
 function App() {
   const [userName, setUserName] = useState(null);
   const { totalItems } = useCart();
@@ -69,7 +69,14 @@ function App() {
           />
           <Route
             path="/Home/Fashion"
-            element={<Fashion userName={userName} totalItems={totalItems} setSearchInput={setSearchInput} searchInput={searchInput} />}
+            element={
+              <Fashion
+                userName={userName}
+                totalItems={totalItems}
+                setSearchInput={setSearchInput}
+                searchInput={searchInput}
+              />
+            }
           />
           <Route
             path="/Home/Fashion/:Category"
@@ -106,10 +113,14 @@ function App() {
             }
           />
           <Route
-            path="/Home/UsersProfilePage"
-            element={
-              <UsersProfilePage  userName={userName}/>
-            }
+            path="/UsersProfilePage"
+            element={<UsersProfilePage userName={userName} setIsLoading={setIsLoading}
+            isLoading={isLoading} />}
+          />
+          <Route
+            path="/UsersProfilePage/:pages"
+            element={<UsersProfilePage userName={userName}  setIsLoading={setIsLoading}
+            isLoading={isLoading}/>}
           />
 
           <Route path="/Admin" element={<Admin userName={userName} />} />
