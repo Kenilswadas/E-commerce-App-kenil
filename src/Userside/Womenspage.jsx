@@ -30,6 +30,9 @@ function Womenspage({ userName, totalItems, searchInput, setSearchInput }) {
     "Women's Festive Wear",
   ];
   useEffect(() => {
+    setSearchInput(null);
+  }, [Category, setSearchInput]);
+  useEffect(() => {
     // console.log("run");
     // let categoryField = mycategory ? "BaseCategory" : "SubCategory";
     // let categoryValue = "Women's Bottom Wear";
@@ -90,7 +93,7 @@ function Womenspage({ userName, totalItems, searchInput, setSearchInput }) {
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
           </li>
-          <Search  setSearchInput={setSearchInput} searchInput={searchInput} />
+          <Search setSearchInput={setSearchInput} searchInput={searchInput} />
           {auth.currentUser ? (
             <NavButton
               page={"/Admin"}

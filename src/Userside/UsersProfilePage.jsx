@@ -5,10 +5,11 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { collection, onSnapshot } from "firebase/firestore";
 import { auth, db } from "../FirebaseConfig/Firebaseconfig";
 import UserProfileEditForm from "../Smallcomponents/UserProfileEditForm";
+import { ToastContainer } from "react-toastify";
 
 function UsersProfilePage({ userName }) {
   const [userProfiles, setUserProfiles] = useState([]);
-  const [ShowEditProfiePage,setShowEditProfiePage]=useState(false);
+  const [ShowEditProfiePage, setShowEditProfiePage] = useState(false);
   useEffect(() => {
     onSnapshot(collection(db, "userDetails"), (snap) => {
       const alldata = snap.docs.map((doc) => ({
@@ -19,10 +20,9 @@ function UsersProfilePage({ userName }) {
     });
   }, []);
 
-  //handleClick 
-  function handleClick(){
+  //handleClick
+  function handleClick() {
     setShowEditProfiePage(true);
-
   }
   return (
     <div>
@@ -34,7 +34,10 @@ function UsersProfilePage({ userName }) {
         btn5name={"Beauty"}
         userName={userName}
       />
-      {ShowEditProfiePage ? <UserProfileEditForm setShowEditProfiePage={setShowEditProfiePage}/> : null}
+      {ShowEditProfiePage ? (
+        <UserProfileEditForm setShowEditProfiePage={setShowEditProfiePage} />
+      ) : null}
+      <ToastContainer />
       <div className="flex flex-col mt-10  m-10 p-2 ml-40 mr-40">
         <h1 className="flex flex-col bg-[#ebf1f1] w-full p-4 border-b-2 border-[#96200e]">
           {"Account"}
@@ -82,7 +85,18 @@ function UsersProfilePage({ userName }) {
           </nav>
           <div className="w-4/5 bg-[#ebf1f1] h-full border-l-2 border-[#96200e]">
             <div className="m-4 flex flex-col">
-              <h1 className="text-2xl">{"Profile Details :-"}</h1>
+              <div className="flex justify-between">
+                <h1 className="text-2xl">{"Profile Details :-"}</h1>
+                <img
+                  className="w-24 h-24 rounded-full"
+                  src={userProfiles
+                    .filter(
+                      (data) => data.UserName === auth.currentUser.displayName
+                    )
+                    .map((e) => e.Image)}
+                  alt={"userimage"}
+                />
+              </div>
               <div className="m-16 w-3/4 ">
                 <p className="flex justify-around">
                   <span className="flex p-1 w-full text-center">
@@ -146,7 +160,7 @@ function UsersProfilePage({ userName }) {
                       )}
                   </span>
                 </p>
-                <p className="flex justify-around mt-2">
+                {/* <p className="flex justify-around mt-2">
                   <span className="flex p-1 w-full text-center">
                     {"Image Of User"}{" "}
                   </span>
@@ -157,7 +171,7 @@ function UsersProfilePage({ userName }) {
                       )
                       .map((e) => (e.Image === "" ? "--add--" : e.Image))}
                   </span>
-                </p>
+                </p> */}
                 <p className="flex justify-around mt-2">
                   <span className="flex p-1 w-full text-center">
                     {"Address"}{" "}
@@ -171,7 +185,12 @@ function UsersProfilePage({ userName }) {
                   </span>
                 </p>
                 <div className="flex items-center justify-start mt-10">
-                  <button className="w-3/4 p-2 bg-[#217aa9] text-white" onClick={()=>{handleClick()}}>
+                  <button
+                    className="w-3/4 p-2 bg-[#217aa9] text-white"
+                    onClick={() => {
+                      handleClick();
+                    }}
+                  >
                     Edit Profile
                   </button>
                 </div>

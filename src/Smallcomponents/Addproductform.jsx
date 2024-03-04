@@ -110,6 +110,7 @@ function Addproductform({
       });
   }
   // console.log(name);
+  console.log(name);
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
       {isLoading ? <Loader /> : null}

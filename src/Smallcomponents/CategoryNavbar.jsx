@@ -88,9 +88,9 @@ function CategoryNavbar({ setMycategory, mycategory, catagoryData }) {
       ) : (
         <div className="p-4 flex flex-col">
           <div>
-            {catagoryData.map((e) => {
+            {catagoryData.map((e, index) => {
               return (
-                <div>
+                <div key={index}>
                   <input
                     type="checkbox"
                     name="Men's Top Wear"
