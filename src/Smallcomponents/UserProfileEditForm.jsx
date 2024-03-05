@@ -91,7 +91,7 @@ function UserProfileEditForm({
       Address: "",
       DateofBirth: v.DateofBirth,
       Email: v.Email,
-      Gender: "",
+      Gender: v.Gender,
       Image: url,
       Mobile: v.Mobile,
       UserName: v.UserName,
@@ -199,7 +199,7 @@ function UserProfileEditForm({
             .required("required"),
           Gender: Yup.string().required("required"),
           DateofBirth: Yup.string().required("required"),
-          // Image: Yup.string().required("required"),
+          // Image: Yup.file().required("required"),
           //   Address: Yup.string().required("required"),
         })}
         onSubmit={(values) => {

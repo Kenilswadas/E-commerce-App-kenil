@@ -138,7 +138,7 @@ function Home({ userName, totalItems }) {
           {/* <Search searchInput={} /> */}
           {auth.currentUser ? (
             <NavButton
-              page={"/UsersProfilePage"}
+              page={"/UsersProfilePage/Profiledetail"}
               buttonName={
                 userName ? userName : localStorage.getItem("userName")
               }

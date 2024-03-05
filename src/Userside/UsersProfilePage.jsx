@@ -8,13 +8,13 @@ import { ToastContainer } from "react-toastify";
 import UserProfileNavbar from "../Smallcomponents/UserProfileNavbar";
 import { useParams } from "react-router-dom";
 import ProfilePage from "../Smallcomponents/ProfilePage";
+import SavedAddresspage from "../Smallcomponents/SavedAddresspage";
 
 function UsersProfilePage({ userName, setIsLoading, isLoading }) {
   const [ShowEditProfiePage, setShowEditProfiePage] = useState(false);
   const [userProfiles, setUserProfiles] = useState([]);
   const [currentUserId, setcurrentUserId] = useState(null);
   const { pages } = useParams();
-  console.log(auth?.currentUser?.email);
   useEffect(() => {
     onSnapshot(collection(db, "userDetails"), (snap) => {
       const alldata = snap.docs.map((doc) => ({
@@ -94,6 +94,14 @@ function UsersProfilePage({ userName, setIsLoading, isLoading }) {
             <ProfilePage
               setShowEditProfiePage={setShowEditProfiePage}
               userProfiles={userProfiles}
+            />
+          ) : null}
+          {pages === "SavedAddresspage" ? (
+            <SavedAddresspage
+              setShowEditProfiePage={setShowEditProfiePage}
+              userProfiles={userProfiles}
+              // seteditAddress={seteditAddress}
+              // editAddress={editAddress}
             />
           ) : null}
         </div>
