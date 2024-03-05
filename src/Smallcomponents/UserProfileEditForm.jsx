@@ -6,12 +6,36 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import { updateDoc, doc, onSnapshot, collection } from "firebase/firestore";
-import { db, storage } from "../FirebaseConfig/Firebaseconfig";
+import { auth, db, storage } from "../FirebaseConfig/Firebaseconfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import Loader from "./Loader";
-function UserProfileEditForm({ setShowEditProfiePage }) {
+import {
+  updateEmail,
+  updateProfile,
+  sendEmailVerification,
+} from "firebase/auth";
+function UserProfileEditForm({
+  setShowEditProfiePage,
+  currentUserId,
+  setIsLoading,
+  isLoading,
+  userProfiles,
+}) {
   const [image, setImage] = useState();
-  const [imageUrl, setImageUrl] = useState();
+  const [currentU, setcurrentU] = useState([]);
+  useEffect(() => {
+    // userProfiles.map((e) => console.log(e));
+    const currentUserProfile = userProfiles
+      .filter((data) => data.Email === auth.currentUser.email)
+      .map((e) => {
+        return e;
+      });
+    console.log(currentUserProfile);
+    setcurrentU(currentUserProfile);
+  }, [userProfiles]);
+  currentU.map((e) => {
+    return console.log(e.UserName);
+  });
   // const formik = useFormik({
   //   initialValues: {
   //     UserName: "",
@@ -53,20 +77,17 @@ function UserProfileEditForm({ setShowEditProfiePage }) {
   //   })
   // },[])
   async function handleUpdateData(v) {
+    setIsLoading(true);
     toast.info("getting url");
-    
     const imageRef = ref(storage, `userDetails_Images/${image.name}`);
-    await uploadBytes(imageRef, image).then((res) => {
-      console.log("uploadBytes");
-    });
+    await uploadBytes(imageRef, image).then((res) => {});
     const url = await getDownloadURL(imageRef).then((url) => {
-      // setImageUrl(url);
       console.log(url);
       return url;
     });
     toast.info("updating data...");
-    console.log(url);
-    updateDoc(doc(db, "userDetails", "fhOj16yO2c1Kbi5kWuJV"), {
+    // console.log(url);
+    updateDoc(doc(db, "userDetails", currentUserId), {
       Address: "",
       DateofBirth: v.DateofBirth,
       Email: v.Email,
@@ -76,12 +97,87 @@ function UserProfileEditForm({ setShowEditProfiePage }) {
       UserName: v.UserName,
       Password: "",
       user_UID: "",
+    }).then(async (res) => {
+      await updateProfile(auth.currentUser, {
+        displayName: v.UserName,
+        // email: v.Email,
+      })
+        .then(() => {
+          toast.success("displayName is Updated...");
+        })
+        .catch((err) => {
+          toast.error("error occurs in displayName !!");
+        });
+      await updateEmail(auth?.currentUser, "manishasoni@gmail.com")
+        .then(() => {
+          toast.success("User Profile Updated...");
+        })
+        .catch((err) => {
+          toast.error("Opps , error occurs  !!");
+        });
     });
+    setIsLoading(false);
     await setShowEditProfiePage(false);
   }
+  // async function updateSendemail(newEmail) {
+  //   if (!newEmail) {
+  //     toast.error("Email address is required.");
+  //     return;
+  //   }
+  //   sendEmailVerification(auth.currentUser,).then(
+  //     () => {
+  //       toast.success("email sent !!");
+  //     }
+  //   );
+  // }
+  // async function updateEmailofmy(newEmail) {
+  //   await updateEmail(auth.currentUser, "kenilsoni2710@gmail.com")
+  //     .then(() => {
+  //       toast.success("Email address updated successfully.");
+  //     })
+  //     .catch((error) => {
+  //       // Handle specific error cases
+  //       switch (error.code) {
+  //         case "auth/invalid-email":
+  //           toast.error("Invalid email address.");
+  //           break;
+  //         case "auth/requires-recent-login":
+  //           toast.error(
+  //             "This operation requires a recent login. Please log in again."
+  //           );
+  //           break;
+  //         case "auth/email-already-in-use":
+  //           toast.error(
+  //             "The new email address is already in use by another account."
+  //           );
+  //           break;
+  //         default:
+  //           toast.error("An error occurred while updating the email address.");
+  //           console.error("Error updating email:", error);
+  //       }
+  //     });
+  // }
+
   return (
     <div className="fixed inset-0 bg-cover bg-center bg-opacity-50 bg-black flex  flex-col items-center justify-center z-50 h-screen ">
-      <p className="text-white m-2">UserProfileEditForm</p>
+      {/* <button
+        className="text-red-700"
+        onClick={() => {
+          updateSendemail("kenilsoni2710@gmail.com");
+        }}
+      >
+        send email
+      </button>
+      <button
+        className="text-red-700"
+        onClick={() => {
+          updateEmailofmy("kenilsoni2710@gmail.com");
+        }}
+      >
+        updateEmail
+      </button> */}
+      <p className="text-white m-2"> UserProfileEditForm</p>
+      {isLoading ? <Loader /> : null}
       <Formik
         initialValues={{
           UserName: "",
@@ -94,7 +190,7 @@ function UserProfileEditForm({ setShowEditProfiePage }) {
         }}
         validationSchema={Yup.object({
           UserName: Yup.string()
-            .max(15, "Must be 15 characters or less")
+            .max(25, "Must be 15 characters or less")
             .required("required"),
           Email: Yup.string().email("invalid email").required("required"),
           Mobile: Yup.string()
@@ -107,9 +203,6 @@ function UserProfileEditForm({ setShowEditProfiePage }) {
           //   Address: Yup.string().required("required"),
         })}
         onSubmit={(values) => {
-          alert("ok");
-          console.log(values);
-          // handleFileUpload(values);
           handleUpdateData(values);
         }}
       >
@@ -149,9 +242,8 @@ function UserProfileEditForm({ setShowEditProfiePage }) {
                     setImage(e.target.files[0]);
                   }}
                 />
-                {console.log(image)}
+                {/* {console.log(image)} */}
                 {/* <ErrorMessage name="Image" /> */}
-                {console.log()}
               </div>
             </div>
             <div className="flex justify-around">

@@ -79,19 +79,19 @@ function SignUppage({ userName }) {
       createUserProfile();
     },
   });
-  function createUserProfile(){
+  function createUserProfile() {
     const mycollection = collection(db, "userDetails");
-      addDoc(mycollection, {
-        UserName: formik.values.name,
-        Email: formik.values.email,
-        Password: formik.values.password,
-        user_UID: UserId,
-        Address: "",
-        DateofBirth: "",
-        Gender: "",
-        Image: "",
-        Mobile: "",
-      });
+    addDoc(mycollection, {
+      UserName: formik.values.name,
+      Email: formik.values.email,
+      Password: formik.values.password,
+      user_UID: UserId,
+      Address: "",
+      DateofBirth: "",
+      Gender: "",
+      Image: "",
+      Mobile: "",
+    });
   }
   function SignInWithGoogle() {
     signInWithPopup(auth, provider)
