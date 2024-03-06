@@ -1,5 +1,5 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import NavBar from "../Smallcomponents/NavBar";
 import logo from "../images/logo2.png";
 import simpleimage1 from "../images/Fashion page/simpleimage1.webp";
 import { NavButton } from "../Smallcomponents/NavButton";
@@ -17,94 +17,119 @@ import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
+
+function Fashion({
+  userName,
+  totalItems,
+  setSearchInput,
+  searchInput,
+  mycollection,
+}) {
   const [Menscollection, setMenscollection] = useState([]);
   const [Womenscollection, setWomenscollection] = useState([]);
   const [Kidscollection, setKidscollection] = useState([]);
   const [beautycollection, setbeautycollection] = useState([]);
-
   const navigate = useNavigate();
-  //fetch products
 
-  //fetch Womenscollection
-  onSnapshot(
-    query(
-      collection(db, "MyProducts"),
-      where("SubCategory", "==", "Women's Top Wear")
-    ),
-    async (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setWomenscollection(data);
-    }
-  );
+  useEffect(() => {
+    // fetch Womenscollection
+    const Womendata = mycollection.filter(
+      (data) => data.SubCategory === "Women's Top Wear"
+    );
+    setWomenscollection(Womendata);
+
+    //fetch Menscollection
+    const Mendata = mycollection.filter(
+      (data) => data.SubCategory === "Men's Top Wear"
+    );
+    setMenscollection(Mendata);
+
+    //fetch Menscollection
+    const Boydata = mycollection.filter(
+      (data) => data.SubCategory === "Boy's Clothing"
+    );
+    setKidscollection(Boydata);
+  }, [mycollection]);
+
+  console.log(Womenscollection);
+  // onSnapshot(
+  //   query(
+  //     collection(db, "MyProducts"),
+  //     where("SubCategory", "==", "Women's Top Wear")
+  //   ),
+  //   async (snapshot) => {
+  //     const data = snapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setWomenscollection(data);
+  //   }
+  // );
   //fetch Menscollection
-  onSnapshot(
-    query(
-      collection(db, "MyProducts"),
-      where("SubCategory", "==", "Men's Top Wear")
-    ),
-    async (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMenscollection(data);
-    }
-  );
+  // onSnapshot(
+  //   query(
+  //     collection(db, "MyProducts"),
+  //     where("SubCategory", "==", "Men's Top Wear")
+  //   ),
+  //   async (snapshot) => {
+  //     const data = snapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setMenscollection(data);
+  //   }
+  // );
   //fetch Kidscollection
-  onSnapshot(
-    query(
-      collection(db, "MyProducts"),
-      where("SubCategory", "==", "Boy's Clothing")
-    ),
-    async (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setKidscollection(data);
-    }
-  );
+  // onSnapshot(
+  //   query(
+  //     collection(db, "MyProducts"),
+  //     where("SubCategory", "==", "Boy's Clothing")
+  //   ),
+  //   async (snapshot) => {
+  //     const data = snapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setKidscollection(data);
+  //   }
+  // );
   //fetch beautycollection
-  onSnapshot(
-    query(
-      collection(db, "MyProducts"),
-      where("SubCategory", "==", "Beauty Product")
-    ),
-    async (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setbeautycollection(data);
-    }
-  );
+  // onSnapshot(
+  //   query(
+  //     collection(db, "MyProducts"),
+  //     where("SubCategory", "==", "Beauty Product")
+  //   ),
+  //   async (snapshot) => {
+  //     const data = snapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setbeautycollection(data);
+  //   }
+  // );
   //LogOut function
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => {
-        localStorage.clear();
-        navigate("/");
-        toast("Sign-out successful.");
-      })
-      .catch((error) => {
-        toast.error("opps ! error occurs ...");
-      });
-  };
+  // const handleLogout = () => {
+  //   signOut(auth)
+  //     .then(() => {
+  //       localStorage.clear();
+  //       navigate("/");
+  //       toast("Sign-out successful.");
+  //     })
+  //     .catch((error) => {
+  //       toast.error("opps ! error occurs ...");
+  //     });
+  // };
   return (
     <div>
-      <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
+      {/* <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
           <li className="flex">
             <img src={logo} alt="" className="w-auto h-20 p-2" />
           </li>
           <li className="flex items-center w-2/4 ml-8">
             <NavButton buttonName={"Home"} page={"/"} />
-            <NavButton buttonName={"Men"} page={"/Home/Fashion/Men"} />
-            <NavButton buttonName={"Women"} page={"/Home/Fashion/Women"} />
+            <NavButton buttonName={"Men"} page={"/Fashion/Men"} />
+            <NavButton buttonName={"Women"} page={"/Fashion/Women"} />
             <NavButton buttonName={"Kids"} />
             <NavButton buttonName={"Beauty"} />
           </li>
@@ -138,7 +163,22 @@ function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
             FaIons={<FaCartShopping className="mr-1" />}
           />
         </ul>
-      </nav>
+      </nav> */}
+      <NavBar
+        btn1name={"Home"}
+        page1={"/"}
+        btn2name={"Men"}
+        page2={"/Fashion/Men"}
+        btn3name={"Women"}
+        page3={"/Fashion/Women"}
+        btn4name={"Kids"}
+        page4={"/Fashion/Kids"}
+        btn5name={"Beauty"}
+        page5={"/Fashion/Beauty"}
+        setSearchInput={setSearchInput}
+        searchInput={searchInput}
+        userName={userName}
+      />
       {/* fashion main div */}
       <div>
         <img src={simpleimage1} alt="" />
@@ -148,7 +188,7 @@ function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
         <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
           WOMEN'S COLLECTION
         </p>
-        <div className="flex">
+        <Link className="flex" to={"/Fashion/Women"}>
           {Womenscollection.slice(0, 5).map((item, index) => {
             return (
               <TrendingInFashion
@@ -158,32 +198,32 @@ function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
               />
             );
           })}
-        </div>
+        </Link>
       </div>
       {/* Menscollection */}
       <div className="flex flex-col m-16">
         <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
           MEN'S COLLECTION
         </p>
-        <div className="flex">
+        <Link className="flex" to={"/Fashion/Men"}>
           {Menscollection.slice(0, 5).map((item, index) => {
             return (
               <TrendingInFashion
                 key={index}
                 image={item.ProductImage}
                 name={item.ProductName}
-                page={"/Home/Fashion/Men"}
+                page={"/Fashion/Men"}
               />
             );
           })}
-        </div>
+        </Link>
       </div>
       {/* Kidscollection */}
       <div className="flex flex-col m-16">
         <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
           KID'S COLLECTION
         </p>
-        <div className="flex">
+        <Link className="flex" to={"/Fashion/Kids"}>
           {Kidscollection.map((item, index) => {
             return (
               <TrendingInFashion
@@ -193,18 +233,18 @@ function Fashion({ userName, totalItems, setSearchInput, searchInput }) {
               />
             );
           })}
-        </div>
+        </Link>
       </div>
       {/* Beautycollection */}
       <div className="flex flex-col m-16">
         <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
           KID'S COLLECTION
         </p>
-        <div className="flex">
+        <Link className="flex">
           {beautycollection.map((item) => {
             return <TrendingInGrocery image={item.ProductImage} />;
           })}
-        </div>
+        </Link>
       </div>
     </div>
   );

@@ -18,6 +18,13 @@ function NavBar({
   btn3name,
   btn4name,
   btn5name,
+  page1,
+  page2,
+  page3,
+  page4,
+  page5,
+  searchInput,
+  setSearchInput,
 }) {
   const navigate = useNavigate();
   const { totalItems } = useCart();
@@ -41,13 +48,13 @@ function NavBar({
             <img src={logo} alt="" className="w-auto h-20 p-2" />
           </li>
           <li className="flex items-center w-2/4 ml-8">
-            <NavButton buttonName={btn1name} page={"/"} />
-            <NavButton buttonName={btn2name} />
-            <NavButton buttonName={btn3name} page={"/Home/Fashion"} />
-            <NavButton buttonName={btn4name} />
-            <NavButton buttonName={btn5name} />
+            <NavButton buttonName={btn1name} page={page1} />
+            <NavButton buttonName={btn2name} page={page2} />
+            <NavButton buttonName={btn3name} page={page3} />
+            <NavButton buttonName={btn4name} page={page4} />
+            <NavButton buttonName={btn5name} page={page5} />
           </li>
-          {/* <Search /> */}
+          <Search setSearchInput={setSearchInput} searchInput={searchInput} />
           {auth.currentUser ? (
             <NavButton
               page={"/Home/UsersProfilePage"}
@@ -73,7 +80,7 @@ function NavBar({
             />
           ) : null}
           <NavButton
-            page={"/Home/Fashion/Men/Cartpage"}
+            page={"/Cartpage"}
             buttonName={"Cart"}
             totalItems={totalItems}
             FaIons={<FaCartShopping className="mr-1" />}

@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from "react";
+import NavBar from "../Smallcomponents/NavBar";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/logo2.png";
 import { Search } from "../Smallcomponents/Searchbar";
@@ -27,7 +28,13 @@ import { storage } from "../FirebaseConfig/Firebaseconfig";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 //Travel image
 import TravelImage from "../images/TravelSectionImage.png";
-function Home({ userName, totalItems }) {
+function Home({
+  userName,
+  totalItems,
+  mycollection,
+  setSearchInput,
+  searchInput,
+}) {
   const [Menscollection, setMenscollection] = useState([]);
   const [Womenscollection, setWomenscollection] = useState([]);
   const [GroceryCollection, setGroceryCollection] = useState([]);
@@ -53,48 +60,60 @@ function Home({ userName, totalItems }) {
       }
     });
     //Men Top Wear
-    onSnapshot(
-      query(
-        collection(db, "MyProducts"),
-        where("SubCategory", "==", "Men's Top Wear")
-      ),
-      async (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setMenscollection(data);
-      }
+    const Mensdata = mycollection.filter(
+      (data) => data.SubCategory === "Men's Top Wear"
     );
+    setMenscollection(Mensdata);
+    // onSnapshot(
+    //   query(
+    //     collection(db, "MyProducts"),
+    //     where("SubCategory", "==", "Men's Top Wear")
+    //   ),
+    //   async (snapshot) => {
+    //     const data = snapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setMenscollection(data);
+    //   }
+    // );
 
     //Women Top Wear
-    onSnapshot(
-      query(
-        collection(db, "MyProducts"),
-        where("SubCategory", "==", "Women's Top Wear")
-      ),
-      async (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setWomenscollection(data);
-      }
+    const Womensdata = mycollection.filter(
+      (data) => data.SubCategory === "Women's Top Wear"
     );
-    //Women Top Wear
-    onSnapshot(
-      query(
-        collection(db, "MyProducts"),
-        where("SubCategory", "==", "Boy's Clothing")
-      ),
-      async (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setKidsCollection(data);
-      }
+    setWomenscollection(Womensdata);
+    // onSnapshot(
+    //   query(
+    //     collection(db, "MyProducts"),
+    //     where("SubCategory", "==", "Women's Top Wear")
+    //   ),
+    //   async (snapshot) => {
+    //     const data = snapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setWomenscollection(data);
+    //   }
+    // );
+    //Kids Top Wear
+    const Kidsdata = mycollection.filter(
+      (data) => data.SubCategory === "Boy's Clothing"
     );
+    setKidsCollection(Kidsdata);
+    // onSnapshot(
+    //   query(
+    //     collection(db, "MyProducts"),
+    //     where("SubCategory", "==", "Boy's Clothing")
+    //   ),
+    //   async (snapshot) => {
+    //     const data = snapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setKidsCollection(data);
+    //   }
+    // );
     //Grocery collection
     // onSnapshot(
     //   query(collection(db, "MyProducts"), where("Category", "==", "Grocery")),
@@ -106,7 +125,7 @@ function Home({ userName, totalItems }) {
     //     setGroceryCollection(data);
     //   }
     // );
-  }, [navigate]);
+  }, [mycollection, navigate]);
 
   //LogOut function
   const handleLogout = () => {
@@ -123,7 +142,7 @@ function Home({ userName, totalItems }) {
   return (
     <div className="bg-[#ffffff] m-0">
       <ToastContainer position="top-center" />
-      <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
+      {/* <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
           <li className="flex">
             <img src={logo} alt="" className="w-auto h-20 p-2" />
@@ -131,11 +150,10 @@ function Home({ userName, totalItems }) {
           <li className="flex items-center w-2/4 ml-8">
             <NavButton buttonName={"Grocery"} />
             <NavButton buttonName={"Electronic"} />
-            <NavButton buttonName={"Fashion"} page={"/Home/Fashion"} />
+            <NavButton buttonName={"Fashion"} page={"/Fashion"} />
             <NavButton buttonName={"Mobiles"} />
             <NavButton buttonName={"Travel"} />
           </li>
-          {/* <Search searchInput={} /> */}
           {auth.currentUser ? (
             <NavButton
               page={"/UsersProfilePage/Profiledetail"}
@@ -161,13 +179,28 @@ function Home({ userName, totalItems }) {
             />
           ) : null}
           <NavButton
-            page={"/Home/Fashion/Men/Cartpage"}
+            page={"/Cartpage"}
             buttonName={"Cart"}
             totalItems={totalItems}
             FaIons={<FaCartShopping className="mr-1" />}
           />
         </ul>
-      </nav>
+      </nav> */}
+      <NavBar
+        btn1name={"Grocery"}
+        page1={"/Grocery"}
+        btn2name={"Electronic"}
+        page2={"/Electronic"}
+        btn3name={"Fashion"}
+        page3={"/Fashion"}
+        btn4name={"Mobile"}
+        page4={"/Mobile"}
+        btn5name={"Travel"}
+        page5={"/Travel"}
+        setSearchInput={setSearchInput}
+        searchInput={searchInput}
+        userName={userName}
+      />
       {/* image Carousel */}
       <div className="m-5">
         <AliceCarousel
@@ -180,7 +213,7 @@ function Home({ userName, totalItems }) {
       {/* BMEDEL WORTHY BRANDS TO BAG */}
       <div className="bg-white h-full mb-16 ">
         <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4 ">
-          BRANDS TO BAG{" "}
+          TREANDING IN FASHION{" "}
         </p>
 
         <div className="flex m-6 mt-0 items-center justify-between w-fit ">

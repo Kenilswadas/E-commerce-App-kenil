@@ -40,7 +40,7 @@ const Search = React.memo(({ searchInput, setSearchInput }) => {
   //handleSearch
   function searchHandle() {
     const search = refSearch.current.value.toLowerCase();
-    // console.log(search);
+    console.log(search);
     if (search.length > 3) {
       const finaldata = Products.filter((data) =>
         data.SubCategory.toLowerCase().includes(search)

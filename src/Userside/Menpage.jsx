@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { NavButton } from "../Smallcomponents/NavButton";
-import { Search } from "../Smallcomponents/Searchbar";
-import logo from "../images/logo2.png";
-import { FaUserCircle } from "react-icons/fa";
-import { FaCartShopping } from "react-icons/fa6";
+// import { NavButton } from "../Smallcomponents/NavButton";
+// import { Search } from "../Smallcomponents/Searchbar";
+// import logo from "../images/logo2.png";
+// import { FaUserCircle } from "react-icons/fa";
+// import { FaCartShopping } from "react-icons/fa6";
 import CategoryNavbar from "../Smallcomponents/CategoryNavbar";
 import { PurchaseView } from "../Smallcomponents/CardView";
-import { collection, onSnapshot, query, where } from "@firebase/firestore";
-import { db } from "../FirebaseConfig/Firebaseconfig";
-import { HiOutlineLogout } from "react-icons/hi";
-import { Link } from "react-router-dom";
+// import { collection, onSnapshot, query, where } from "@firebase/firestore";
+// import { db } from "../FirebaseConfig/Firebaseconfig";
+// import { HiOutlineLogout } from "react-icons/hi";
+// import { Link } from "react-router-dom";
 //useCart
 import { useCart } from "react-use-cart";
-import { signOut } from "firebase/auth";
-import { auth } from "../FirebaseConfig/Firebaseconfig";
+// import { signOut } from "firebase/auth";
+// import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import NavBar from "../Smallcomponents/NavBar";
 
-function Menpage({ userName, totalItems, searchInput, setSearchInput }) {
-  const [Menscollection, setMenscollection] = useState([]);
+function Menpage({
+  userName,
+  totalItems,
+  searchInput,
+  setSearchInput,
+  mycollection,
+}) {
+  // const [Menscollection, setMenscollection] = useState([]);
   const [mycategory, setMycategory] = useState([]);
   const { addItem } = useCart();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { Category } = useParams();
   const catagoryData = [
     "Men's Top Wear",
@@ -33,44 +40,44 @@ function Menpage({ userName, totalItems, searchInput, setSearchInput }) {
   useEffect(() => {
     setSearchInput(null);
   }, [Category]);
-  useEffect(() => {
-    // let categoryField = mycategory ? "BaseCategory" : "SubCategory";
-    // let categoryValue = mycategory ? mycategory : "Men's Top Wear";
-    // const alldata = onSnapshot(
-    //   query(
-    //     collection(db, "MyProducts"),
-    //     where(categoryField, "==", categoryValue)
-    //   ),
-    //   async (snapshort) => {
-    //     const data = snapshort.docs.map((doc) => ({
-    //       id: doc.id,
-    //       ...doc.data(),
-    //     }));
-    //     setMenscollection(data);
-    //   }
-    // );
-    const alldata = onSnapshot(collection(db, "MyProducts"), (snapshort) => {
-      const data = snapshort.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMenscollection(data);
-    });
-    return () => alldata();
-  }, []);
+  // useEffect(() => {
+  //   // let categoryField = mycategory ? "BaseCategory" : "SubCategory";
+  //   // let categoryValue = mycategory ? mycategory : "Men's Top Wear";
+  //   // const alldata = onSnapshot(
+  //   //   query(
+  //   //     collection(db, "MyProducts"),
+  //   //     where(categoryField, "==", categoryValue)
+  //   //   ),
+  //   //   async (snapshort) => {
+  //   //     const data = snapshort.docs.map((doc) => ({
+  //   //       id: doc.id,
+  //   //       ...doc.data(),
+  //   //     }));
+  //   //     setMenscollection(data);
+  //   //   }
+  //   // );
+  //   // const alldata = onSnapshot(collection(db, "MyProducts"), (snapshort) => {
+  //   //   const data = snapshort.docs.map((doc) => ({
+  //   //     id: doc.id,
+  //   //     ...doc.data(),
+  //   //   }));
+  //   //   setMenscollection(data);
+  //   // });
+  //   // return () => alldata();
+  // }, []);
   // console.log(Menscollection);
   //LogOut function
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => {
-        localStorage.clear();
-        navigate("/");
-        toast("Sign-out successful.");
-      })
-      .catch((error) => {
-        toast.error("opps ! error occurs ...");
-      });
-  };
+  // const handleLogout = () => {
+  //   signOut(auth)
+  //     .then(() => {
+  //       localStorage.clear();
+  //       navigate("/");
+  //       toast("Sign-out successful.");
+  //     })
+  //     .catch((error) => {
+  //       toast.error("opps ! error occurs ...");
+  //     });
+  // };
   return (
     <div>
       <ToastContainer />
@@ -78,7 +85,7 @@ function Menpage({ userName, totalItems, searchInput, setSearchInput }) {
         <h1>User Profile</h1>
         <p>User ID: {Category}</p>
       </div>
-      <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
+      {/* <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
           <li className="flex">
             <img src={logo} alt="" className="w-auto h-20 p-2" />
@@ -120,7 +127,22 @@ function Menpage({ userName, totalItems, searchInput, setSearchInput }) {
             FaIons={<FaCartShopping className="mr-1" />}
           />
         </ul>
-      </nav>
+      </nav> */}
+      <NavBar
+        btn1name={"Home"}
+        page1={"/"}
+        btn2name={"Men"}
+        page2={"/Fashion/Men"}
+        btn3name={"Women"}
+        page3={"/Fashion/Women"}
+        btn4name={"Kids"}
+        page4={"/Fashion/Kids"}
+        btn5name={"Beauty"}
+        page5={"/Fashion/Beauty"}
+        setSearchInput={setSearchInput}
+        searchInput={searchInput}
+        userName={userName}
+      />
       <div className="flex">
         <CategoryNavbar
           setMycategory={setMycategory}
@@ -144,26 +166,28 @@ function Menpage({ userName, totalItems, searchInput, setSearchInput }) {
                 </div>
               );
             })
-          ) : Menscollection ? (
-            Menscollection.filter((data) =>
-              (mycategory.length === 0 ? catagoryData : mycategory).includes(
-                data.SubCategory
+          ) : mycollection ? (
+            mycollection
+              .filter((data) =>
+                (mycategory.length === 0 ? catagoryData : mycategory).includes(
+                  data.SubCategory
+                )
               )
-            ).map((e, index) => {
-              return (
-                <div>
-                  <PurchaseView
-                    key={index}
-                    image={e.ProductImage}
-                    name={e.ProductName}
-                    price={e.ProductPrice}
-                    discription={e.ProductDescription}
-                    addItems={addItem}
-                    e={e}
-                  />
-                </div>
-              );
-            })
+              .map((e, index) => {
+                return (
+                  <div>
+                    <PurchaseView
+                      key={index}
+                      image={e.ProductImage}
+                      name={e.ProductName}
+                      price={e.ProductPrice}
+                      discription={e.ProductDescription}
+                      addItems={addItem}
+                      e={e}
+                    />
+                  </div>
+                );
+              })
           ) : (
             <p>loading</p>
           )}
