@@ -39,7 +39,7 @@ const BrandsToBag = ({ image1, image2, image3, image4 }) => {
 const TrendingInFashion = ({ image, name, page }) => {
   return (
     <div className=" w-5/6 m-1 p-1 bg-[#96002e]  mb-8 hover:shadow-xl hover:-translate-y-2">
-      <p className="flex w-fit flex items-center justify-center">
+      <p className="flex w-fit items-center justify-center">
         <img src={image} alt="" className="w-full " />
       </p>
       <p className="flex flex-col items-center bg-[#ebf1f1] border-0 border-[#ebf1f1] mt-0 h-20 justify-center ">

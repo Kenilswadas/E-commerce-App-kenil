@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { HiOutlineLogout } from "react-icons/hi";
 function UserProfileNavbar() {
   return (
-    <nav className="w-1/5 h-full flex flex-col text-center bg-[#ebf1f1]  mr-2">
+    <nav className="w-1/5 h-auto flex flex-col text-center bg-[#ebf1f1]  mr-2">
       <div className="border-b-2  border-gray-300">
         <ul className="w-full">
           <li className="flex flex-col  w-full p-2">
@@ -42,7 +42,7 @@ function UserProfileNavbar() {
               Profile detail
             </NavLink>
             <NavLink
-              to={"/UsersProfilePage/UserAddress"}
+              to={"/UsersProfilePage/SavedAddresspage"}
               className={({ isActive }) =>
                 `p-2 mt-4 w-full bg-[#ebf1f1] text-[#96200e] hover:bg-[#ffffff] hover:text-[#96200e] ${
                   isActive ? `bg-[#ffffff] text-[#96200e]` : null

@@ -6,7 +6,7 @@ function ProfilePage({ setShowEditProfiePage, userProfiles }) {
     setShowEditProfiePage(true);
   }
   return (
-    <div className="w-4/5 bg-[#ebf1f1] h-full border-l-2 border-[#96200e]">
+    <div className="w-4/5 h-screen bg-[#ebf1f1] border-l-2 border-[#96200e]">
       <div className="m-4 flex flex-col">
         <div className="flex justify-between">
           <h1 className="text-2xl font-bold text-[#217aa9] ml-px">
@@ -89,16 +89,6 @@ function ProfilePage({ setShowEditProfiePage, userProfiles }) {
                       .map((e) => (e.Image === "" ? "--add--" : e.Image))}
                   </span>
                 </p> */}
-          <p className="flex justify-around mt-2">
-            <span className="flex p-1 w-full text-center">{"Address"} </span>
-            <span className="flex p-1 w-full text-center">
-              {userProfiles
-                .filter(
-                  (data) => data.UserName === auth.currentUser.displayName
-                )
-                .map((e) => (e.Address === "" ? "--add--" : e.Address))}
-            </span>
-          </p>
           <div className="flex items-center justify-start mt-10">
             <button
               className="w-3/4 p-2 bg-[#217aa9] text-white"

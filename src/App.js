@@ -17,6 +17,8 @@ import Product from "./Adminside/Product";
 import Payment from "./Userside/Payment";
 import Errorpage from "./Smallcomponents/Errorpage";
 import UsersProfilePage from "./Userside/UsersProfilePage";
+import { onSnapshot, collection } from "firebase/firestore";
+import { db } from "./FirebaseConfig/Firebaseconfig";
 function App() {
   const [userName, setUserName] = useState(null);
   const { totalItems } = useCart();
@@ -25,7 +27,18 @@ function App() {
   const [displayPasswordResetFrom, setDisplayPasswordResetForm] =
     useState(false);
   const [searchInput, setSearchInput] = useState(null);
-
+  //fetch products
+  const [mycollection, setMycollection] = useState([]);
+  useEffect(() => {
+    onSnapshot(collection(db, "MyProducts"), (snap) => {
+      const data = snap.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(data);
+      setMycollection(data);
+    });
+  }, []);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -65,12 +78,9 @@ function App() {
           />
           <Route
             path="/"
-            element={<Home userName={userName} totalItems={totalItems} />}
-          />
-          <Route
-            path="/Home/Fashion"
             element={
-              <Fashion
+              <Home
+                mycollection={mycollection}
                 userName={userName}
                 totalItems={totalItems}
                 setSearchInput={setSearchInput}
@@ -79,9 +89,22 @@ function App() {
             }
           />
           <Route
-            path="/Home/Fashion/:Category"
+            path="/Fashion"
+            element={
+              <Fashion
+                mycollection={mycollection}
+                userName={userName}
+                totalItems={totalItems}
+                setSearchInput={setSearchInput}
+                searchInput={searchInput}
+              />
+            }
+          />
+          <Route
+            path="/Fashion/:Category"
             element={
               <CategoryPage
+                mycollection={mycollection}
                 userName={userName}
                 totalItems={totalItems}
                 setSearchInput={setSearchInput}
@@ -91,7 +114,7 @@ function App() {
           />
 
           <Route
-            path="/Home/Fashion/Men/Cartpage"
+            path="/Cartpage"
             element={
               <Cartpage
                 userName={userName}
@@ -102,7 +125,7 @@ function App() {
             }
           />
           <Route
-            path="/Home/Fashion/Men/Cartpage/Checkout/Payment"
+            path="/Home/Cartpage/Checkout/Payment"
             element={
               <Payment
                 userName={userName}
@@ -114,13 +137,23 @@ function App() {
           />
           <Route
             path="/UsersProfilePage"
-            element={<UsersProfilePage userName={userName} setIsLoading={setIsLoading}
-            isLoading={isLoading} />}
+            element={
+              <UsersProfilePage
+                userName={userName}
+                setIsLoading={setIsLoading}
+                isLoading={isLoading}
+              />
+            }
           />
           <Route
             path="/UsersProfilePage/:pages"
-            element={<UsersProfilePage userName={userName}  setIsLoading={setIsLoading}
-            isLoading={isLoading}/>}
+            element={
+              <UsersProfilePage
+                userName={userName}
+                setIsLoading={setIsLoading}
+                isLoading={isLoading}
+              />
+            }
           />
 
           <Route path="/Admin" element={<Admin userName={userName} />} />

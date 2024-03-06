@@ -79,7 +79,7 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
         }
       });
     } else {
-      navigate("/Home/Fashion/Men/Cartpage/Checkout/Payment");
+      navigate("/Home/Cartpage/Checkout/Payment");
     }
   }
 
