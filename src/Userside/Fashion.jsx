@@ -17,6 +17,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { PurchaseView } from "../Smallcomponents/CardView";
+import { useCart } from "react-use-cart";
 
 function Fashion({
   userName,
@@ -30,7 +32,20 @@ function Fashion({
   const [Kidscollection, setKidscollection] = useState([]);
   const [beautycollection, setbeautycollection] = useState([]);
   const navigate = useNavigate();
-
+  const [skeleton, setSkeleton] = useState(true);
+  const {addItem} = useCart()
+  useEffect(() => {
+    if (auth?.currentUser?.email === "admin@gmail.com") {
+      navigate("/Admin");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, auth?.currentUser]);
+  useEffect(() => {
+    setTimeout(() => {
+      setSkeleton(false);
+    }, 3000);
+  }, []);
+  console.log(skeleton);
   useEffect(() => {
     // fetch Womenscollection
     const Womendata = mycollection.filter(
@@ -180,72 +195,92 @@ function Fashion({
         userName={userName}
       />
       {/* fashion main div */}
-      <div>
-        <img src={simpleimage1} alt="" />
-      </div>
-      {/* Womenscollection */}
-      <div className="flex flex-col m-16">
-        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
-          WOMEN'S COLLECTION
-        </p>
-        <Link className="flex" to={"/Fashion/Women"}>
-          {Womenscollection.slice(0, 5).map((item, index) => {
+      {searchInput ? (
+        <div className="grid grid-cols-4">
+          {searchInput.map((e, index) => {
             return (
-              <TrendingInFashion
+              <PurchaseView
                 key={index}
-                image={item.ProductImage}
-                name={item.ProductName}
+                image={e.ProductImage}
+                name={e.ProductName}
+                price={e.ProductPrice}
+                discription={e.ProductDescription}
+                addItems={addItem}
+                e={e}
               />
             );
           })}
-        </Link>
-      </div>
-      {/* Menscollection */}
-      <div className="flex flex-col m-16">
-        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
-          MEN'S COLLECTION
-        </p>
-        <Link className="flex" to={"/Fashion/Men"}>
-          {Menscollection.slice(0, 5).map((item, index) => {
-            return (
-              <TrendingInFashion
-                key={index}
-                image={item.ProductImage}
-                name={item.ProductName}
-                page={"/Fashion/Men"}
-              />
-            );
-          })}
-        </Link>
-      </div>
-      {/* Kidscollection */}
-      <div className="flex flex-col m-16">
-        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
-          KID'S COLLECTION
-        </p>
-        <Link className="flex" to={"/Fashion/Kids"}>
-          {Kidscollection.map((item, index) => {
-            return (
-              <TrendingInFashion
-                key={index}
-                image={item.ProductImage}
-                name={item.ProductName}
-              />
-            );
-          })}
-        </Link>
-      </div>
-      {/* Beautycollection */}
-      <div className="flex flex-col m-16">
-        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
-          KID'S COLLECTION
-        </p>
-        <Link className="flex">
-          {beautycollection.map((item) => {
-            return <TrendingInGrocery image={item.ProductImage} />;
-          })}
-        </Link>
-      </div>
+        </div>
+      ) : (
+        <div>
+          <div>
+            <img src={simpleimage1} alt="" />
+          </div>
+          {/* Womenscollection */}
+          <div className="flex flex-col m-16">
+            <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
+              WOMEN'S COLLECTION
+            </p>
+            <Link className="flex" to={"/Fashion/Women"}>
+              {Womenscollection.slice(0, 5).map((item, index) => {
+                return (
+                  <TrendingInFashion
+                    key={index}
+                    image={item.ProductImage}
+                    name={item.ProductName}
+                  />
+                );
+              })}
+            </Link>
+          </div>
+          {/* Menscollection */}
+          <div className="flex flex-col m-16">
+            <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
+              MEN'S COLLECTION
+            </p>
+            <Link className="flex" to={"/Fashion/Men"}>
+              {Menscollection.slice(0, 5).map((item, index) => {
+                return (
+                  <TrendingInFashion
+                    key={index}
+                    image={item.ProductImage}
+                    name={item.ProductName}
+                    page={"/Fashion/Men"}
+                  />
+                );
+              })}
+            </Link>
+          </div>
+          {/* Kidscollection */}
+          <div className="flex flex-col m-16">
+            <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
+              KID'S COLLECTION
+            </p>
+            <Link className="flex" to={"/Fashion/Kids"}>
+              {Kidscollection.map((item, index) => {
+                return (
+                  <TrendingInFashion
+                    key={index}
+                    image={item.ProductImage}
+                    name={item.ProductName}
+                  />
+                );
+              })}
+            </Link>
+          </div>
+          {/* Beautycollection */}
+          <div className="flex flex-col m-16">
+            <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
+              KID'S COLLECTION
+            </p>
+            <Link className="flex">
+              {beautycollection.map((item) => {
+                return <TrendingInGrocery image={item.ProductImage} />;
+              })}
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

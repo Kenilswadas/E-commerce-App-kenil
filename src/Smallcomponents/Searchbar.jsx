@@ -14,11 +14,26 @@ const Search = React.memo(({ searchInput, setSearchInput }) => {
           "Men's Foot Wear",
           "Men's Festive Wear",
         ]
-      : [
+      : Category === "Women"
+      ? [
           "Women's Top Wear",
           "Women's Bottom Wear",
           "Women's Foot Wear",
           "Women's Festive Wear",
+        ]
+      : Category === "Kids"
+      ? ["Boy's Clothing", "Girl's Clothing"]
+      : [
+          "Men's Top Wear",
+          "Men's Bottom Wear",
+          "Men's Foot Wear",
+          "Men's Festive Wear",
+          "Women's Top Wear",
+          "Women's Bottom Wear",
+          "Women's Foot Wear",
+          "Women's Festive Wear",
+          "Boy's Clothing",
+          "Girl's Clothing",
         ];
   }, [Category]);
 
@@ -41,7 +56,7 @@ const Search = React.memo(({ searchInput, setSearchInput }) => {
   function searchHandle() {
     const search = refSearch.current.value.toLowerCase();
     console.log(search);
-    if (search.length > 3) {
+    if (search.length > 2) {
       const finaldata = Products.filter((data) =>
         data.SubCategory.toLowerCase().includes(search)
       );

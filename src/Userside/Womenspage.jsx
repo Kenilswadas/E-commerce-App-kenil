@@ -30,6 +30,12 @@ function Womenspage({
   const navigate = useNavigate();
   let { Category } = useParams();
   const { addItem } = useCart();
+  useEffect(() => {
+    if (auth?.currentUser?.email === "admin@gmail.com") {
+      navigate("/Admin");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, auth?.currentUser]);
   const catagoryData = [
     "Women's Top Wear",
     "Women's Bottom Wear",

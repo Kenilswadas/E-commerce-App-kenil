@@ -13,9 +13,9 @@ import { PurchaseView } from "../Smallcomponents/CardView";
 //useCart
 import { useCart } from "react-use-cart";
 // import { signOut } from "firebase/auth";
-// import { auth } from "../FirebaseConfig/Firebaseconfig";
+import { auth } from "../FirebaseConfig/Firebaseconfig";
 import { ToastContainer, toast } from "react-toastify";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import NavBar from "../Smallcomponents/NavBar";
 
@@ -29,7 +29,7 @@ function Menpage({
   // const [Menscollection, setMenscollection] = useState([]);
   const [mycategory, setMycategory] = useState([]);
   const { addItem } = useCart();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { Category } = useParams();
   const catagoryData = [
     "Men's Top Wear",
@@ -37,6 +37,12 @@ function Menpage({
     "Men's Foot Wear",
     "Men's Festive Wear",
   ];
+  useEffect(() => {
+    if (auth?.currentUser?.email === "admin@gmail.com") {
+      navigate("/Admin");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, auth?.currentUser]);
   useEffect(() => {
     setSearchInput(null);
   }, [Category]);

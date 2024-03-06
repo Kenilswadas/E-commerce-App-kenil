@@ -1,40 +1,69 @@
 import { NavLink } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../FirebaseConfig/Firebaseconfig";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { HiOutlineLogout } from "react-icons/hi";
 
 const VerticalNavbar = ({ userName }) => {
+  const navigate = useNavigate();
+  // LogOut function
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        localStorage.clear();
+        navigate("/");
+        toast("Sign-out successful.");
+      })
+      .catch((error) => {
+        toast.error("opps ! error occurs ...");
+      });
+  };
   return (
-    <div className="fixed h-screen w-1/6 shadow-2xl bg-[#ebf1f1]">
-      <div className="h-16 flex items-center justify-center bg-[#96002e] text-[#ebf1f1] text-xl font-bold">
+    <nav className="w-1/6  flex flex-col text-center bg-[#ebf1f1] mr-2">
+      <div className=" flex items-center justify-center p-4 w-full bg-[#96002e] text-[#ffffff] hover:bg-[#ffffff] hover:text-[#96200e]">
         {userName}
       </div>
-      <nav className="flex-1 bg-[#ebf1f1] p-4">
-        <ul>
-          <li>
+
+      <div className="border-b-2  border-gray-300">
+        <ul className="w-full">
+          <li className="flex flex-col w-full p-2">
             <NavLink
-              className={({ isActive }) =>
-                `block text-[#96002e] py-2 px-4  ${
-                  isActive ? "bg-[#D9D9D9]" : null
-                } hover:bg-[#217aa9] hover:text-[#ebf1f1]`
-              }
               to={"/Admin/Product"}
+              className={({ isActive }) =>
+                `p-2 mt-4 w-full bg-[#ebf1f1] text-[#96002e] hover:bg-[#ffffff] hover:text-[#96002e] ${
+                  isActive ? `bg-[#ffffff] text-[#96002e]` : null
+                } `
+              }
             >
               Products
             </NavLink>
-          </li>
-          <li>
-            <NavLink
+            {/* <NavLink
+              to={"/UsersProfilePage/SavedAddresspage"}
               className={({ isActive }) =>
-                `block text-[#96002e] py-2 px-4  ${
-                  isActive ? "bg-[#D9D9D9]" : null
-                } hover:bg-[#217aa9] hover:text-[#ebf1f1]`
+                `p-2 mt-4 w-full bg-[#ebf1f1] text-[#96200e] hover:bg-[#ffffff] hover:text-[#96200e] ${
+                  isActive ? `bg-[#ffffff] text-[#96200e]` : null
+                } `
               }
-              to={"/Admin/Maintainorder"}
             >
-              Maintain Order
+              Saved Addresses
+            </NavLink> */}
+          </li>
+        </ul>
+      </div>
+      <div className="flex items-end h-full">
+        <ul className="w-full">
+          <li className="flex flex-col w-full p-2">
+            <NavLink
+              onClick={handleLogout}
+              className=" flex items-center justify-center p-2 mt-4 w-full bg-[#96002e] text-[#ffffff] hover:bg-[#ffffff] hover:text-[#96200e]"
+            >
+              {"Log Out"} <HiOutlineLogout />
             </NavLink>
           </li>
         </ul>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 };
 

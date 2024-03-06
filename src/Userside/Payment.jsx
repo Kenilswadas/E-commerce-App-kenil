@@ -13,14 +13,20 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../FirebaseConfig/Firebaseconfig";
 function Payment({ userName }) {
   const navigate = useNavigate();
-  const { totalItems, cartTotal ,emptyCart } = useCart();
+  const { totalItems, cartTotal, emptyCart } = useCart();
   const [FinalPrice, setFinalPrice] = useState(0);
   const [DisplayPaymentForm, setDisplayPaymentForm] = useState(false);
-  useEffect(()=>{
-    if(!auth.currentUser){
-      navigate("/SignInPage")
+  useEffect(() => {
+    if (auth?.currentUser?.email === "admin@gmail.com") {
+      navigate("/Admin");
     }
-  },[navigate])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, auth?.currentUser]);
+  useEffect(() => {
+    if (!auth.currentUser) {
+      navigate("/SignInPage");
+    }
+  }, [navigate]);
   useEffect(() => {
     setFinalPrice(
       Math.round(cartTotal + (0 - cartTotal * 0.2) + (0 - cartTotal * 0.018))
@@ -117,7 +123,10 @@ function Payment({ userName }) {
           </div>
           <div>
             {DisplayPaymentForm ? (
-              <PaymentForm setDisplayPaymentForm={setDisplayPaymentForm} FinalPrice={FinalPrice} />
+              <PaymentForm
+                setDisplayPaymentForm={setDisplayPaymentForm}
+                FinalPrice={FinalPrice}
+              />
             ) : null}
           </div>
         </div>

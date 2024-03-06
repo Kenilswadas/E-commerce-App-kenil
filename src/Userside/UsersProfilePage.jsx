@@ -9,12 +9,25 @@ import UserProfileNavbar from "../Smallcomponents/UserProfileNavbar";
 import { useParams } from "react-router-dom";
 import ProfilePage from "../Smallcomponents/ProfilePage";
 import SavedAddresspage from "../Smallcomponents/SavedAddresspage";
-
-function UsersProfilePage({ userName, setIsLoading, isLoading }) {
+import { useNavigate } from "react-router-dom";
+function UsersProfilePage({
+  userName,
+  setIsLoading,
+  isLoading,
+  setSearchInput,
+  searchInput,
+}) {
   const [ShowEditProfiePage, setShowEditProfiePage] = useState(false);
   const [userProfiles, setUserProfiles] = useState([]);
   const [currentUserId, setcurrentUserId] = useState(null);
   const { pages } = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (auth?.currentUser?.email === "admin@gmail.com") {
+      navigate("/Admin");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, auth?.currentUser]);
   useEffect(() => {
     onSnapshot(collection(db, "userDetails"), (snap) => {
       const alldata = snap.docs.map((doc) => ({
@@ -41,10 +54,17 @@ function UsersProfilePage({ userName, setIsLoading, isLoading }) {
     <div>
       <NavBar
         btn1name={"Home"}
+        page1={"/"}
         btn2name={"Men"}
+        page2={"/Fashion/Men"}
         btn3name={"Women"}
+        page3={"/Fashion/Women"}
         btn4name={"Kids"}
+        page4={"/Fashion/Kids"}
         btn5name={"Beauty"}
+        page5={"/Fashion/Beauty"}
+        setSearchInput={setSearchInput}
+        searchInput={searchInput}
         userName={userName}
       />
 

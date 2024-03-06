@@ -21,10 +21,10 @@ import { db, storage } from "../FirebaseConfig/Firebaseconfig";
 //uuidv4
 import { v4 as uuid } from "uuid";
 import Loader from "./Loader";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 function Addproductform({
-  displayform,
+  // displayform,
   setDisplayform,
   isupdate,
   DocId,
@@ -32,15 +32,7 @@ function Addproductform({
   setIsLoading,
   isLoading,
 }) {
-  const [Alldata, setAlldata] = useState([]);
-  onSnapshot(collection(db, "MyProducts"), (snapshot) => {
-    const alldata = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setAlldata(alldata);
-  });
-  const [name, setName] = useState("");
+  const [name, setName] = useState("kenil");
   const [description, setDiscription] = useState("");
   const [price, setPrice] = useState("");
   // const [discountedprice, setdiscountedPrice] = useState("");
@@ -52,9 +44,10 @@ function Addproductform({
 
   const uId = uuid();
   const AddProducts = async () => {
-    const imageRef = ref(storage, `${image.name}`);
+    const imageRef = ref(storage, `hi.jpeg`);
     await uploadBytes(imageRef, image);
     const url = await getDownloadURL(imageRef);
+    console.log(url);
     setIsLoading(true);
     addDoc(mycollection, {
       ProductName: name,
@@ -109,8 +102,7 @@ function Addproductform({
         setisupdate(false);
       });
   }
-  // console.log(name);
-  console.log(name);
+  console.log();
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
       {isLoading ? <Loader /> : null}
@@ -292,6 +284,12 @@ function Addproductform({
                         <option value="Shae by SASSAFRAS">
                           Shae by SASSAFRAS
                         </option>
+                      </>
+                    )}
+                    {subcategory === "Beauty Product" && (
+                      <>
+                        <option value="Lakme">Lakme</option>
+                        <option value="Nivea">Nivea</option>
                       </>
                     )}
                   </select>

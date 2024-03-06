@@ -28,9 +28,11 @@ import { storage } from "../FirebaseConfig/Firebaseconfig";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 //Travel image
 import TravelImage from "../images/TravelSectionImage.png";
+import { PurchaseView } from "../Smallcomponents/CardView";
+import { useCart } from "react-use-cart";
 function Home({
   userName,
-  totalItems,
+  // totalItems,
   mycollection,
   setSearchInput,
   searchInput,
@@ -40,7 +42,7 @@ function Home({
   const [GroceryCollection, setGroceryCollection] = useState([]);
   const [KidsCollection, setKidsCollection] = useState([]);
   const [url, setUrl] = useState([]);
-
+  const { addItem } = useCart();
   const items = [
     <img src={Carouselimage01} alt="" className="w-full h-96  " />,
     <img src={Carouselimage02} alt="" className="w-full h-96  " />,
@@ -52,6 +54,12 @@ function Home({
   ];
 
   const navigate = useNavigate();
+  useEffect(() => {
+    if (auth?.currentUser?.email === "admin@gmail.com") {
+      navigate("/Admin");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, auth?.currentUser]);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -140,8 +148,23 @@ function Home({
       });
   };
   return (
-    <div className="bg-[#ffffff] m-0">
+    <div className=" bg-[#ffffff] m-0">
       <ToastContainer position="top-center" />
+      <NavBar
+        btn1name={"Grocery"}
+        page1={"/Grocery"}
+        btn2name={"Electronic"}
+        page2={"/Electronic"}
+        btn3name={"Fashion"}
+        page3={"/Fashion"}
+        btn4name={"Mobile"}
+        page4={"/Mobile"}
+        btn5name={"Travel"}
+        page5={"/Travel"}
+        setSearchInput={setSearchInput}
+        searchInput={searchInput}
+        userName={userName}
+      />
       {/* <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
           <li className="flex">
@@ -186,38 +209,42 @@ function Home({
           />
         </ul>
       </nav> */}
-      <NavBar
-        btn1name={"Grocery"}
-        page1={"/Grocery"}
-        btn2name={"Electronic"}
-        page2={"/Electronic"}
-        btn3name={"Fashion"}
-        page3={"/Fashion"}
-        btn4name={"Mobile"}
-        page4={"/Mobile"}
-        btn5name={"Travel"}
-        page5={"/Travel"}
-        setSearchInput={setSearchInput}
-        searchInput={searchInput}
-        userName={userName}
-      />
-      {/* image Carousel */}
-      <div className="m-5">
-        <AliceCarousel
-          items={items}
-          keyboardNavigation={true}
-          autoPlay={AliceCarousel}
-          autoPlayInterval={2000}
-        />
-      </div>
-      {/* BMEDEL WORTHY BRANDS TO BAG */}
-      <div className="bg-white h-full mb-16 ">
-        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4 ">
-          TREANDING IN FASHION{" "}
-        </p>
+      {console.log(searchInput)}
+      {searchInput ? (
+        <div className="grid grid-cols-4">
+          {searchInput.map((e, index) => {
+            return (
+              <PurchaseView
+                key={index}
+                image={e.ProductImage}
+                name={e.ProductName}
+                price={e.ProductPrice}
+                discription={e.ProductDescription}
+                addItems={addItem}
+                e={e}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <div className="">
+          {/* image Carousel */}
+          <div className="m-5">
+            <AliceCarousel
+              items={items}
+              keyboardNavigation={true}
+              autoPlay={AliceCarousel}
+              autoPlayInterval={2000}
+            />
+          </div>
+          {/* BMEDEL WORTHY BRANDS TO BAG */}
+          <div className="bg-white h-full mb-16 ">
+            <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4 ">
+              TREANDING IN FASHION{" "}
+            </p>
 
-        <div className="flex m-6 mt-0 items-center justify-between w-fit ">
-          {/* <BrandsToBag
+            <div className="flex m-6 mt-0 items-center justify-between w-fit ">
+              {/* <BrandsToBag
             image1={imageList.map((e) => e.ProductImage).slice(2, 3)}
             image2={imageList.map((e) => e.ProductImage).slice(3, 4)}
             image3={imageList.map((e) => e.ProductImage).slice(4, 5)}
@@ -241,86 +268,88 @@ function Home({
             image3={imageList.map((e) => e.ProductImage).slice(4, 5)}
             image4={imageList.map((e) => e.ProductImage).slice(4, 5)}
           /> */}
-          {Womenscollection.length > 0 ? (
-            <BrandsToBag
-              image1={Womenscollection[0].ProductImage}
-              image2={Womenscollection[1].ProductImage}
-              image3={Womenscollection[2].ProductImage}
-              image4={Womenscollection[3].ProductImage}
-            />
-          ) : null}
-          {Menscollection.length > 0 ? (
-            <BrandsToBag
-              image1={Menscollection[0].ProductImage}
-              image2={Menscollection[1].ProductImage}
-              image3={Menscollection[2].ProductImage}
-              image4={Menscollection[3].ProductImage}
-            />
-          ) : null}
-          {KidsCollection.length > 0 ? (
-            <BrandsToBag
-              image1={KidsCollection[0].ProductImage}
-              image2={KidsCollection[1].ProductImage}
-              image3={KidsCollection[2].ProductImage}
-              image4={KidsCollection[3].ProductImage}
-            />
-          ) : null}
-          {Womenscollection.length > 0 ? (
-            <BrandsToBag
-              image1={Womenscollection[0].ProductImage}
-              image2={Womenscollection[1].ProductImage}
-              image3={Womenscollection[2].ProductImage}
-              image4={Womenscollection[3].ProductImage}
-            />
-          ) : null}
-        </div>
-      </div>
-      {/* TREANDING IN FASHION WOMEN'S COLLECTION  */}
-      <div className="bg-white m-16">
-        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
-          WOMEN'S COLLECTION
-        </p>
-        <div className="flex m-6 mt-0 items-center justify-between"></div>
-      </div>{" "}
-      <div className="bg-white m-16">
-        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
-          MEN'S COLLECTION
-        </p>
-        <div className="flex m-6 mt-0 items-center justify-between"></div>
-      </div>
-      {/* TRENDING IN GROCERY */}
-      <div className="bg-white h-full m-16">
-        <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4  ">
-          TREANDING IN GROCERY
-        </p>
-        <div className="flex m-6 mt-0 items-center justify-between bg-gray-200">
-          {/* <TrendingInGrocery logo={GroceryLogo1} image={GroceryItem1} />
+              {Womenscollection.length > 0 ? (
+                <BrandsToBag
+                  image1={Womenscollection[0].ProductImage}
+                  image2={Womenscollection[1].ProductImage}
+                  image3={Womenscollection[2].ProductImage}
+                  image4={Womenscollection[3].ProductImage}
+                />
+              ) : null}
+              {Menscollection.length > 0 ? (
+                <BrandsToBag
+                  image1={Menscollection[0].ProductImage}
+                  image2={Menscollection[1].ProductImage}
+                  image3={Menscollection[2].ProductImage}
+                  image4={Menscollection[3].ProductImage}
+                />
+              ) : null}
+              {KidsCollection.length > 0 ? (
+                <BrandsToBag
+                  image1={KidsCollection[0].ProductImage}
+                  image2={KidsCollection[1].ProductImage}
+                  image3={KidsCollection[2].ProductImage}
+                  image4={KidsCollection[3].ProductImage}
+                />
+              ) : null}
+              {Womenscollection.length > 0 ? (
+                <BrandsToBag
+                  image1={Womenscollection[0].ProductImage}
+                  image2={Womenscollection[1].ProductImage}
+                  image3={Womenscollection[2].ProductImage}
+                  image4={Womenscollection[3].ProductImage}
+                />
+              ) : null}
+            </div>
+          </div>
+          {/* TREANDING IN FASHION WOMEN'S COLLECTION  */}
+          <div className="bg-white m-16">
+            <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
+              WOMEN'S COLLECTION
+            </p>
+            <div className="flex m-6 mt-0 items-center justify-between"></div>
+          </div>{" "}
+          <div className="bg-white m-16">
+            <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4">
+              MEN'S COLLECTION
+            </p>
+            <div className="flex m-6 mt-0 items-center justify-between"></div>
+          </div>
+          {/* TRENDING IN GROCERY */}
+          <div className="bg-white h-full m-16">
+            <p className="flex justify-center item-center bg-[#ebf1f1] pt-4 text-[#217aa9] opacity-100 mb-2 p-4  ">
+              TREANDING IN GROCERY
+            </p>
+            <div className="flex m-6 mt-0 items-center justify-between bg-gray-200">
+              {/* <TrendingInGrocery logo={GroceryLogo1} image={GroceryItem1} />
           <TrendingInGrocery logo={GroceryLogo2} image={GroceryItem2} />
           <TrendingInGrocery logo={GroceryLogo3} image={GroceryItem3} />
           <TrendingInGrocery logo={GroceryLogo4} image={GroceryItem4} /> */}
-        </div>
-      </div>
-      {/* {imageList.map((url, index) => {
+            </div>
+          </div>
+          {/* {imageList.map((url, index) => {
         return <img key={index} src={`url`} alt="" />;
       })} */}
-      {/* Travel section */}
-      <div className="relative m-16">
-        <img
-          src={TravelImage}
-          alt=""
-          className="w- h-fit object-cover hover:bg-black"
-        />
-        <div
-          onClick={() => {
-            alert("mo");
-          }}
-          className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-50 transition-opacity duration-300 cursor-pointer"
-        >
-          <span className="text-white text-4xl cursor-pointer">
-            + Explore more
-          </span>
+          {/* Travel section */}
+          <div className="relative m-16">
+            <img
+              src={TravelImage}
+              alt=""
+              className="w- h-fit object-cover hover:bg-black"
+            />
+            <div
+              onClick={() => {
+                alert("mo");
+              }}
+              className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-50 transition-opacity duration-300 cursor-pointer"
+            >
+              <span className="text-white text-4xl cursor-pointer">
+                + Explore more
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
