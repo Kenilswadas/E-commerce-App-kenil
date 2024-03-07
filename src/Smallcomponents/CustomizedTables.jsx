@@ -51,11 +51,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 // Function to slice products based on current page and items per page
-const paginate = (array, pageNumber, itemsPerPage) => {
-  const startIndex = (pageNumber - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  return array.slice(startIndex, endIndex);
-};
 
 export default function CustomizedTables({
   setDisplayform,
@@ -70,6 +65,7 @@ export default function CustomizedTables({
   const [Products, setproducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5); // Number of items per page
+
   const getItems = async () => {
     // let arr = [];
     const mycollection = collection(db, "MyProducts");
@@ -89,7 +85,7 @@ export default function CustomizedTables({
     });
     return alldata;
   };
-  console.log(Products);
+  // console.log(Products);
   useEffect(() => {
     getItems();
   }, []);
@@ -130,14 +126,18 @@ export default function CustomizedTables({
     setItemsPerPage(newItemsPerPage);
     setCurrentPage(1); // Reset to the first page when changing items per page
   };
-
+  const paginate = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return Products.slice(startIndex, endIndex);
+  };
   return (
-    <div className="flex shadow-xl w-full ml-20">
+    <div className="flex items-center justify-center shadow-xl  bg-slate-400">
       <TableContainer component={Paper}>
         <Table
-          sx={{ minWidth: 700 }}
+          sx={{ maxWidth: 800 }}
           aria-label="customized table"
-          className="w-full"
+          // className="w-3/4"
         >
           <TableHead className="bg-[#217aa9]">
             <TableRow>
@@ -157,12 +157,12 @@ export default function CustomizedTables({
               </StyledTableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {Products.map((data) => (
+          <TableBody style={{ scrollBehavior: "true" }}>
+            {paginate().map((data) => (
               <StyledTableRow key={data.id}>
                 <StyledTableCell
                   scope="row"
-                  className="flex justify-center items-center w-24"
+                  className="flex justify-center items-center"
                 >
                   <img src={data.ProductImage} className="m-auto" alt="" />
                 </StyledTableCell>

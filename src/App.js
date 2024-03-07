@@ -35,7 +35,7 @@ function App() {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(data);
+      // console.log(data);
       setMycollection(data);
     });
   }, []);
@@ -125,7 +125,7 @@ function App() {
             }
           />
           <Route
-            path="/Home/Cartpage/Checkout/Payment"
+            path="/Cartpage/Checkout/Payment"
             element={
               <Payment
                 userName={userName}
@@ -142,6 +142,8 @@ function App() {
                 userName={userName}
                 setIsLoading={setIsLoading}
                 isLoading={isLoading}
+                setSearchInput={setSearchInput}
+                searchInput={searchInput}
               />
             }
           />
@@ -152,6 +154,8 @@ function App() {
                 userName={userName}
                 setIsLoading={setIsLoading}
                 isLoading={isLoading}
+                setSearchInput={setSearchInput}
+                searchInput={searchInput}
               />
             }
           />

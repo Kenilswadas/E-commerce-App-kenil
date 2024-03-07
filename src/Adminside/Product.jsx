@@ -18,12 +18,12 @@ function Product({ userName, setIsLoading, isLoading }) {
     } else setDisplayform(true);
   };
   return (
-    <div>
+    <div className="flex">
       {isLoading ? <Loader /> : null}
       <ToastContainer />
       <VerticalNavbar userName={userName} />
-      <div className="flex flex-col items-center justify-center">
-        <div className="flex mt-10">
+      <div className="flex flex-col items-center justify-center h-auto bg-slate-400 w-full">
+        <div className="flex items-center justify-center mb-5">
           <Button
             btnName="Add Product"
             clickHandler={() => {
@@ -31,23 +31,17 @@ function Product({ userName, setIsLoading, isLoading }) {
             }}
           />
         </div>
-
-        <div className="flex items-center justify-center mt-10 ml-10">
-          <div className="w-3/4 h-screen">
-            <CustomizedTables
-              setDisplayform={setDisplayform}
-              displayform={displayform}
-              isupdate={isupdate}
-              setisupdate={setisupdate}
-              setDocId={setDocId}
-              setIsLoading={setIsLoading}
-              isLoading={isLoading}
-
-            />
-          </div>
-        </div>
+        <CustomizedTables
+          setDisplayform={setDisplayform}
+          displayform={displayform}
+          isupdate={isupdate}
+          setisupdate={setisupdate}
+          setDocId={setDocId}
+          setIsLoading={setIsLoading}
+          isLoading={isLoading}
+        />
       </div>
-      {displayform ? (
+      {/* {displayform ? (
         <Addproductform
           displayform={displayform}
           setDisplayform={setDisplayform}
@@ -57,7 +51,7 @@ function Product({ userName, setIsLoading, isLoading }) {
           setIsLoading={setIsLoading}
           isLoading={isLoading}
         />
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

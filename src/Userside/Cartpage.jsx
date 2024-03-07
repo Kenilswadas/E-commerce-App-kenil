@@ -52,6 +52,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
   const navigate = useNavigate();
+  useEffect(() => {
+    if (auth?.currentUser?.email === "admin@gmail.com") {
+      navigate("/Admin");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, auth?.currentUser]);
   const { items, removeItem, updateItemQuantity, cartTotal, isEmpty } =
     useCart();
   const [page, setPage] = useState(0);
@@ -79,7 +85,7 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
         }
       });
     } else {
-      navigate("/Home/Cartpage/Checkout/Payment");
+      navigate("/Cartpage/Checkout/Payment");
     }
   }
 
@@ -168,7 +174,7 @@ function Cartpage({ totalItems, userName, showProduct, setShowProduct }) {
             <img src={logo} alt="" className=" w-auto h-20 p-2" />
           </li>
           <li className="flex items-center w-full sm:w-2/4 ml-8">
-            <NavButton buttonName={"Home"} page={"/Home"} />
+            <NavButton buttonName={"Home"} page={"/"} />
             <NavButton buttonName={"Men"} />
             <NavButton buttonName={"Women"} />
             <NavButton buttonName={"Kids"} />

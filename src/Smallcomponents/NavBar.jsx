@@ -57,7 +57,7 @@ function NavBar({
           <Search setSearchInput={setSearchInput} searchInput={searchInput} />
           {auth.currentUser ? (
             <NavButton
-              page={"/Home/UsersProfilePage"}
+              page={"/UsersProfilePage/Profiledetail"}
               buttonName={
                 userName ? userName : localStorage.getItem("userName")
               }

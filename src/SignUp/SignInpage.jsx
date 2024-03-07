@@ -58,8 +58,8 @@ function SignInpage({
       handleSubmit();
     },
   });
-  function handleSubmit() {
-    signInWithEmailAndPassword(
+ function handleSubmit() {
+     signInWithEmailAndPassword(
       auth,
       formik.values.email,
       formik.values.password
@@ -98,7 +98,7 @@ function SignInpage({
       <ToastContainer />
       <BgImage backgroundImage={signIncopy} />
       {/* {console.log(displayPasswordResetFrom)} */}
-      
+
       {displayPasswordResetFrom ? (
         <PasswordResetForm
           setIsLoading={setIsLoading}
