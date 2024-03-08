@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import NavBar from "../Smallcomponents/NavBar";
 import CategoryNavbar from "../Smallcomponents/CategoryNavbar";
@@ -59,7 +59,7 @@ function Beautypage({
                     price={e.ProductPrice}
                     discription={e.ProductDescription}
                     addItems={addItem}
-                    e={e}
+                    ProductDetail={e}
                   />
                 </div>
               );
@@ -81,7 +81,7 @@ function Beautypage({
                       price={e.ProductPrice}
                       discription={e.ProductDescription}
                       addItems={addItem}
-                      e={e}
+                      ProductDetail={e}
                     />
                   </div>
                 );

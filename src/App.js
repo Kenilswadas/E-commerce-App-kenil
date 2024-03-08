@@ -29,6 +29,16 @@ function App() {
   const [searchInput, setSearchInput] = useState(null);
   //fetch products
   const [mycollection, setMycollection] = useState([]);
+  const [userDetails, setuserDetails] = useState([]);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserName(user.displayName);
+      } else {
+        setUserName(null);
+      }
+    });
+  }, []);
   useEffect(() => {
     onSnapshot(collection(db, "MyProducts"), (snap) => {
       const data = snap.docs.map((doc) => ({
@@ -40,14 +50,16 @@ function App() {
     });
   }, []);
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserName(user.displayName);
-      } else {
-        setUserName(null);
-      }
+    onSnapshot(collection(db, "userDetails"), (snap) => {
+      const data = snap.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      // console.log(data);
+      setuserDetails(data);
     });
   }, []);
+
   return (
     <div>
       <BrowserRouter>
@@ -56,6 +68,7 @@ function App() {
             path="/SignUppage"
             element={
               <SignUppage
+                userDetails={userDetails}
                 userName={userName}
                 displayPasswordResetFrom={displayPasswordResetFrom}
                 setDisplayPasswordResetForm={setDisplayPasswordResetForm}
@@ -68,6 +81,7 @@ function App() {
             path="/SignInpage"
             element={
               <SignInpage
+                userDetails={userDetails}
                 userName={userName}
                 displayPasswordResetFrom={displayPasswordResetFrom}
                 setDisplayPasswordResetForm={setDisplayPasswordResetForm}
@@ -121,6 +135,8 @@ function App() {
                 totalItems={totalItems}
                 showProduct={showProduct}
                 setShowProduct={setShowProduct}
+                setSearchInput={setSearchInput}
+                searchInput={searchInput}
               />
             }
           />
@@ -132,6 +148,8 @@ function App() {
                 totalItems={totalItems}
                 showProduct={showProduct}
                 setShowProduct={setShowProduct}
+                setSearchInput={setSearchInput}
+                searchInput={searchInput}
               />
             }
           />

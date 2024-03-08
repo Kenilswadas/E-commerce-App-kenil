@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
-import { Button } from "../Smallcomponents/Buttons";
+// import { Button } from "../Smallcomponents/Buttons";
 import { toast } from "react-toastify";
+import { addDoc, collection } from "firebase/firestore";
+import { auth, db } from "../FirebaseConfig/Firebaseconfig";
 //BRANDS TO BAG
 const BrandsToBag = ({ image1, image2, image3, image4 }) => {
   return (
@@ -71,26 +73,53 @@ const PurchaseView = ({
   page,
   price,
   addItems,
-  e,
+  ProductDetail,
 }) => {
   function clickHandler() {
-    addItems({
-      id: e.id,
-      ProductImage: e.ProductImage,
-      ProductName: e.ProductName,
-      ProductDescription: e.ProductDescription,
-      price: e.ProductPrice,
-      DiscountedPrice: e.DiscountedPrice,
-      Category: e.Category,
-      SubCategory: e.SubCategory,
-      BaseCategory: e.BaseCategory,
-      ProductId: e.uId,
+    // console.log(ProductDetail);
+    // addItems({
+    //   id: e.id,
+    //   ProductImage: e.ProductImage,
+    //   ProductName: e.ProductName,
+    //   ProductDescription: e.ProductDescription,
+    //   price: e.ProductPrice,
+    //   DiscountedPrice: e.DiscountedPrice,
+    //   Category: e.Category,
+    //   SubCategory: e.SubCategory,
+    //   BaseCategory: e.BaseCategory,
+    //   ProductId: e.uId,
+    // });
+    addDoc(collection(db, "UserOrders"), {
+      User_UID: auth?.currentUser?.uid ? auth?.currentUser?.uid : "",
+      UserName: auth?.currentUser?.displayName
+        ? auth?.currentUser?.displayName
+        : "",
+      Order: {
+        Id: ProductDetail?.id,
+        Image: ProductDetail?.ProductImage,
+        Name: ProductDetail?.ProductName,
+        Description: ProductDetail?.ProductDescription
+          ? ProductDetail?.ProductDescription
+          : "",
+        Price: ProductDetail?.ProductPrice ? ProductDetail?.ProductPrice : "",
+        DiscountedPrice: ProductDetail?.DiscountedPrice
+          ? ProductDetail?.DiscountedPrice
+          : "",
+        Category: ProductDetail?.Category ? ProductDetail?.Category : "",
+        SubCategory: ProductDetail?.SubCategory
+          ? ProductDetail?.SubCategory
+          : "",
+        BaseCategory: ProductDetail?.BaseCategory
+          ? ProductDetail?.BaseCategory
+          : "",
+        Quantity: 1,
+      },
     });
     toast.success("Product is added to Cart !");
   }
   return (
     <div className=" w-11/12 h-fit bg-[#ffffff] m-4 p-4 border-2 border-[#96002e] mb-8 hover:shadow-xl hover:-translate-y-2 rounded-3xl">
-      <div className="flex w-fit h-fit flex items-center justify-center">
+      <div className="flex w-fit h-fit items-center justify-center">
         <img src={image} alt="" className="rounded-xl  w-fit" />
       </div>
       <div className="border-t-2 mt-2 border-[#96002e]">

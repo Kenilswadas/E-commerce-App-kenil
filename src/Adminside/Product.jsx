@@ -41,7 +41,7 @@ function Product({ userName, setIsLoading, isLoading }) {
           isLoading={isLoading}
         />
       </div>
-      {/* {displayform ? (
+      {displayform ? (
         <Addproductform
           displayform={displayform}
           setDisplayform={setDisplayform}
@@ -51,7 +51,7 @@ function Product({ userName, setIsLoading, isLoading }) {
           setIsLoading={setIsLoading}
           isLoading={isLoading}
         />
-      ) : null} */}
+      ) : null}
     </div>
   );
 }

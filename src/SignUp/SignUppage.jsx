@@ -21,11 +21,14 @@ import { auth, db } from "../FirebaseConfig/Firebaseconfig";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 //for fireStore
-import { collection, addDoc } from "firebase/firestore";
-function SignUppage({ userName }) {
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
+function SignUppage({ userName, userDetails }) {
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   const [UserId, setUserId] = useState("");
+  // useEffect(()=>{
+  //   userDetails.map(())
+  // },[])
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -97,10 +100,61 @@ function SignUppage({ userName }) {
     signInWithPopup(auth, provider)
       .then((result) => {
         // const credential = GoogleAuthProvider.credentialFromResult(result);
+        const d = userDetails.filter(
+          (data) => data?.Email === result?.user?.email
+        );
+        // console.log(d.length);
+        if (d.length !== 1) {
+          // console.log("true");
+          addDoc(collection(db, "userDetails"), {
+            UserName: result?.user?.displayName,
+            Email: result?.user?.email,
+            Password: "",
+            user_UID: result?.user?.uid,
+            Address: "",
+            DateofBirth: "",
+            Gender: "",
+            Image: "",
+            Mobile: "",
+          })
+            .then((res) => {
+              toast.success("logged In successfully");
+              toast.success("New userDetail Added.");
+            })
+            .catch((err) => {
+              toast.error("oppes ,error occurs !!");
+            });
+        } else {
+          // console.log("false");
+          const docId = userDetails
+            .filter((data) => data.Email === result?.user?.email)
+            .map((e) => e.id);
+          console.log(docId[0]);
+          updateDoc(doc(db, "userDetails", docId[0]), {
+            UserName: result?.user?.displayName,
+            Email: result?.user?.email,
+            Password: "",
+            user_UID: result?.user?.uid,
+            Address: "",
+            DateofBirth: "",
+            Gender: "",
+            Image: "",
+            Mobile: "6355086486",
+          })
+            .then((res) => {
+              console.log(res);
+              toast.success("logged In successfully");
+              toast.success("userDetails updated.");
+            })
+            .catch((err) => {
+              console.log("update err", err);
+              toast.error("oppes ,error occurs !!");
+            });
+        }
       })
       .catch((error) => {
         const errorMessage = error.message;
-        alert(errorMessage);
+        console.log(errorMessage);
       });
   }
   useEffect(() => {

@@ -5,8 +5,12 @@ import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useCart } from "react-use-cart";
 import { useNavigate } from "react-router-dom";
-function PaymentForm({ setDisplayPaymentForm ,FinalPrice}) {
-  const { emptyCart } = useCart();
+import { addDoc, collection } from "firebase/firestore";
+import { db, auth } from "../FirebaseConfig/Firebaseconfig";
+
+function PaymentForm({ setDisplayPaymentForm, FinalPrice }) {
+  // const { emptyCart } = useCart();
+  console.log(FinalPrice);
   const navigate = useNavigate();
   const [state, setState] = useState({
     number: "",
@@ -52,10 +56,15 @@ function PaymentForm({ setDisplayPaymentForm ,FinalPrice}) {
         text: "Have A Good Day.",
         icon: "success",
       }).then(() => {
-        emptyCart();
-        navigate("/Home");
+        // emptyCart();
+        addDoc(collection(db, "UserCompletedOrder"), {
+          User_UID: auth?.currentUser?.uid,
+          UserName: auth?.currentUser?.displayName,
+          OrderId: "",
+          Status: "Completed",
+        });
+        navigate("/");
       });
-      
     }
   }
   return (
