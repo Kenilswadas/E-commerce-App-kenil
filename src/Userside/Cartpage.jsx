@@ -112,6 +112,7 @@ function Cartpage({
             parseInt(currentValue.Order.Quantity * currentValue.Order.Price),
           0
         );
+
         setTotalPrice(totalprice);
         const totaldiscount = data.reduce(
           (accumulator, currentValue) =>
@@ -121,7 +122,8 @@ function Cartpage({
         setTotalDiscount(totaldiscount);
       }
     );
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth?.currentUser]);
   //handleCheckout function
   function handleCheckout() {
     if (orders.length === 0) {

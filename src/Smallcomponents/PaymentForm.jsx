@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cards from "react-credit-cards-2";
 import { IoIosCloseCircle } from "react-icons/io";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,9 +7,14 @@ import { useCart } from "react-use-cart";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db, auth } from "../FirebaseConfig/Firebaseconfig";
-
+import { onSnapshot, query, where } from "firebase/firestore";
+import { updateDoc, doc, arrayUnion, deleteDoc } from "firebase/firestore";
 function PaymentForm({ setDisplayPaymentForm, FinalPrice }) {
   // const { emptyCart } = useCart();
+  const [orders, setOrders] = useState([]);
+  const [completedOrderCollection, setcompletedOrderCollection] = useState([]);
+  const [completedOrderIds, setcompletedOrderIds] = useState([]);
+
   console.log(FinalPrice);
   const navigate = useNavigate();
   const [state, setState] = useState({
@@ -40,6 +45,51 @@ function PaymentForm({ setDisplayPaymentForm, FinalPrice }) {
   const handleInputFocus = (evt) => {
     setState((prev) => ({ ...prev, focus: evt.target.name }));
   };
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "UserOrders"),
+        where(
+          "User_UID",
+          "==",
+          `${auth?.currentUser?.uid ? auth?.currentUser?.uid : ""}`
+        )
+      ),
+      (snap) => {
+        const data = snap.docs.map((doc) => ({
+          docId: doc.id,
+          ...doc.data(),
+        }));
+        setOrders(data);
+        const totalquantity = data.reduce(
+          (accumulator, currentValue) =>
+            accumulator + parseInt(currentValue.Order.Quantity),
+          0
+        );
+      }
+    );
+  }, []);
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "UserCompletedOrder"),
+        where(
+          "User_UID",
+          "==",
+          auth?.currentUser?.uid ? auth?.currentUser?.uid : ""
+        )
+      ),
+      (snap) => {
+        const data = snap.docs.map((doc) => ({
+          docId: doc.id,
+          ...doc.data(),
+        }));
+        setcompletedOrderCollection(data);
+        const completed_ids = data.filter((data) => data?.OrderId);
+        setcompletedOrderIds(completed_ids);
+      }
+    );
+  }, []);
   async function handlePayment(event) {
     event.preventDefault();
     // console.log(typeof state.name);
@@ -56,14 +106,52 @@ function PaymentForm({ setDisplayPaymentForm, FinalPrice }) {
         text: "Have A Good Day.",
         icon: "success",
       }).then(() => {
-        // emptyCart();
-        addDoc(collection(db, "UserCompletedOrder"), {
-          User_UID: auth?.currentUser?.uid,
-          UserName: auth?.currentUser?.displayName,
-          OrderId: "",
-          Status: "Completed",
-        });
-        navigate("/");
+        if (completedOrderCollection.length > 0) {
+          const orderIds = orders.map((e) => {
+            return e?.Order?.Id;
+          });
+          console.log(orderIds);
+          orderIds.map(async (E) => {
+            console.log(E);
+            return updateDoc(
+              doc(
+                db,
+                "UserCompletedOrder",
+                `${completedOrderCollection.map((e) => e?.docId)}`
+              ),
+              {
+                OrderId: arrayUnion(`${E}`),
+              }
+            )
+              .then((res) => {
+                console.log("updateDoc", res);
+                // orders.map((e) => {
+                //   return deleteDoc(doc(db, "UserOrders", `${e?.docId}`));
+                // });
+              })
+              .catch((err) => {
+                console.log("err in updateDoc", err);
+              });
+          });
+        } else {
+          console.log("addDoc");
+          addDoc(collection(db, "UserCompletedOrder"), {
+            User_UID: auth?.currentUser?.uid,
+            UserName: auth?.currentUser?.displayName,
+            OrderId: orders.map((e) => e?.Order?.Id),
+            Status: "Completed",
+          })
+            .then((res) => {
+              console.log("res" + res);
+              orders.map((e) => {
+                return deleteDoc(doc(db, "UserOrders", `${e?.docId}`));
+              });
+            })
+            .catch((err) => {
+              console.log("err" + err);
+            });
+        }
+        // navigate("/");
       });
     }
   }

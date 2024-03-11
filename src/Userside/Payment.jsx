@@ -18,6 +18,10 @@ import {
   query,
   where,
   addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import { db } from "../FirebaseConfig/Firebaseconfig";
 function Payment({ userName, setSearchInput, searchInput }) {
@@ -36,6 +40,8 @@ function Payment({ userName, setSearchInput, searchInput }) {
   const [TotalPrice, setTotalPrice] = useState(0);
   const [TotalDiscount, setTotalDiscount] = useState(0);
   const [FinalPrice, setFinalPrice] = useState(0);
+  const [completedOrderCollection, setcompletedOrderCollection] = useState([]);
+  const [completedOrderIds, setcompletedOrderIds] = useState([]);
   useEffect(() => {
     onSnapshot(
       query(
@@ -77,17 +83,33 @@ function Payment({ userName, setSearchInput, searchInput }) {
       }
     );
   }, []);
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "UserCompletedOrder"),
+        where(
+          "User_UID",
+          "==",
+          auth?.currentUser?.uid ? auth?.currentUser?.uid : ""
+        )
+      ),
+      (snap) => {
+        const data = snap.docs.map((doc) => ({
+          docId: doc.id,
+          ...doc.data(),
+        }));
+        setcompletedOrderCollection(data);
+        const completed_ids = data.filter((data) => data?.OrderId);
+        setcompletedOrderIds(completed_ids);
+      }
+    );
+  }, []);
   // console.log(orders);
   useEffect(() => {
     if (!auth.currentUser) {
       navigate("/SignInPage");
     }
   }, [navigate]);
-  // useEffect(() => {
-  //   setFinalPrice(
-  //     Math.round(cartTotal + (0 - cartTotal * 0.2) + (0 - cartTotal * 0.018))
-  //   );
-  // }, [cartTotal, totalItems]);
   function handleCashPayment() {
     setDisplayPaymentForm(false);
     Swal.fire({
@@ -102,7 +124,7 @@ function Payment({ userName, setSearchInput, searchInput }) {
       confirmButtonText: `Pay`,
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(FinalPrice);
+        // console.log(FinalPrice);
         if (result.isConfirmed && result.value === `${FinalPrice}`) {
           Swal.fire({
             titleText: `Thank You For Payment of ${FinalPrice}`,
@@ -110,14 +132,54 @@ function Payment({ userName, setSearchInput, searchInput }) {
             icon: "success",
           }).then(() => {
             // emptyCart();
-            // console.log(orders);
-            addDoc(collection(db, "UserCompletedOrder"), {
-              User_UID: auth?.currentUser?.uid,
-              UserName: auth?.currentUser?.displayName,
-              // OrderId: {ids : orders.map((e)=>e?.Id)},
-              Status: "Completed",
-            });
-            navigate("/");
+            // console.log(`${orders.map((e) => e?.Order?.Id)}`);
+            if (completedOrderCollection.length > 0) {
+              const orderIds = orders.map((e) => {
+                return e?.Order?.Id;
+              });
+              console.log(orderIds);
+              orderIds.map(async (E) => {
+                console.log(E);
+                return updateDoc(
+                  doc(
+                    db,
+                    "UserCompletedOrder",
+                    `${completedOrderCollection.map((e) => e?.docId)}`
+                  ),
+                  {
+                    OrderId: arrayUnion(`${E}`),
+                  }
+                )
+                  .then((res) => {
+                    console.log("updateDoc", res);
+                    // orders.map((e) => {
+                    //   return deleteDoc(doc(db, "UserOrders", `${e?.docId}`));
+                    // });
+                  })
+                  .catch((err) => {
+                    console.log("err in updateDoc", err);
+                  });
+              });
+            } else {
+              console.log("addDoc");
+              addDoc(collection(db, "UserCompletedOrder"), {
+                User_UID: auth?.currentUser?.uid,
+                UserName: auth?.currentUser?.displayName,
+                OrderId: orders.map((e) => e?.Order?.Id),
+                Status: "Completed",
+              })
+                .then((res) => {
+                  console.log("res" + res);
+                  orders.map((e) => {
+                    return deleteDoc(doc(db, "UserOrders", `${e?.docId}`));
+                  });
+                })
+                .catch((err) => {
+                  console.log("err" + err);
+                });
+          }
+
+            // navigate("/");
           });
         } else {
           Swal.fire({

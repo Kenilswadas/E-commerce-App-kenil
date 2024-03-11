@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import ProfilePage from "../Smallcomponents/ProfilePage";
 import SavedAddresspage from "../Smallcomponents/SavedAddresspage";
 import { useNavigate } from "react-router-dom";
+import MyOrders from "../Smallcomponents/MyOrders"
 function UsersProfilePage({
   userName,
   setIsLoading,
@@ -122,6 +123,12 @@ function UsersProfilePage({
               userProfiles={userProfiles}
               // seteditAddress={seteditAddress}
               // editAddress={editAddress}
+            />
+          ) : null}
+          {pages === "MyOrders" ? (
+            <MyOrders
+              setShowEditProfiePage={setShowEditProfiePage}
+              userProfiles={userProfiles}
             />
           ) : null}
         </div>

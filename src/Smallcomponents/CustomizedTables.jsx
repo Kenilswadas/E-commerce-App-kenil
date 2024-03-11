@@ -55,7 +55,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function CustomizedTables({
   setDisplayform,
   displayform,
-  // isupdate,
   setisupdate,
   setDocId,
   setIsLoading,

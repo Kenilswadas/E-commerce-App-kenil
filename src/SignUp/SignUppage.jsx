@@ -217,7 +217,10 @@ function SignUppage({ userName, userDetails }) {
               <p>
                 {"Already have an account ? "}
                 <span>
-                  <Link to={"/"} className="underline underline-offset-1">
+                  <Link
+                    to={"/SignInPage"}
+                    className="underline underline-offset-1"
+                  >
                     {"Sign In"}
                   </Link>
                 </span>

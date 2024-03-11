@@ -49,17 +49,16 @@ function NavBar({
           ...doc.data(),
         }));
         setOrders(data);
-        const totalquantity = data
-          .filter((data) => data.Order.Quantity)
-          .reduce(
-            (accumulator, currentValue) =>
-              accumulator + parseInt(currentValue.Order.Quantity),
-            0
-          );
+        const totalquantity = data.reduce(
+          (accumulator, currentValue) =>
+            accumulator + parseInt(currentValue?.Order?.Quantity),
+          0
+        );
         setTotalQuantity(totalquantity);
       }
     );
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth?.currentUser]);
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
