@@ -12,7 +12,7 @@ import Loader from "./Loader";
 import {
   updateEmail,
   updateProfile,
-  sendEmailVerification,
+  // sendEmailVerification,
 } from "firebase/auth";
 function UserProfileEditForm({
   setShowEditProfiePage,

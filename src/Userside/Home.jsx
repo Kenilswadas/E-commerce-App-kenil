@@ -221,7 +221,7 @@ function Home({
                 price={e.ProductPrice}
                 discription={e.ProductDescription}
                 addItems={addItem}
-                e={e}
+                ProductDetail={e}
               />
             );
           })}

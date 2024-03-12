@@ -59,8 +59,7 @@ function Kidspage({
                     name={e.ProductName}
                     price={e.ProductPrice}
                     discription={e.ProductDescription}
-                    addItems={addItem}
-                    e={e}
+                    ProductDetail={e}
                   />
                 </div>
               );
@@ -81,8 +80,7 @@ function Kidspage({
                       name={e.ProductName}
                       price={e.ProductPrice}
                       discription={e.ProductDescription}
-                      addItems={addItem}
-                      e={e}
+                      ProductDetail={e}
                     />
                   </div>
                 );

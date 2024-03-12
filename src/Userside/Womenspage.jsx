@@ -89,10 +89,10 @@ function Womenspage({
   // };
   return (
     <div>
-      <div>
+      {/* <div>
         <h1>User Profile</h1>
         <p>User ID: {Category}</p>
-      </div>
+      </div> */}
       <ToastContainer position="top-center" />
       {/* <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
@@ -170,7 +170,7 @@ function Womenspage({
                     price={e.ProductPrice}
                     discription={e.ProductDescription}
                     addItems={addItem}
-                    e={e}
+                    ProductDetail={e}
                   />
                 </div>
               );
@@ -192,7 +192,7 @@ function Womenspage({
                       price={e.ProductPrice}
                       discription={e.ProductDescription}
                       addItems={addItem}
-                      e={e}
+                      ProductDetail={e}
                     />
                   </div>
                 );

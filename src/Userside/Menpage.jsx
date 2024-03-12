@@ -87,10 +87,10 @@ function Menpage({
   return (
     <div>
       <ToastContainer />
-      <div>
+      {/* <div>
         <h1>User Profile</h1>
         <p>User ID: {Category}</p>
-      </div>
+      </div> */}
       {/* <nav className="bg-[#ebf1f1] p-px sticky top-0 shadow-2xl z-50">
         <ul className="flex items-center justify-around">
           <li className="flex">
@@ -167,7 +167,7 @@ function Menpage({
                     price={e.ProductPrice}
                     discription={e.ProductDescription}
                     addItems={addItem}
-                    e={e}
+                    ProductDetail={e}
                   />
                 </div>
               );
@@ -189,7 +189,7 @@ function Menpage({
                       price={e.ProductPrice}
                       discription={e.ProductDescription}
                       addItems={addItem}
-                      e={e}
+                      ProductDetail={e}
                     />
                   </div>
                 );

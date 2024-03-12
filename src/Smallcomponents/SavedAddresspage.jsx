@@ -19,6 +19,7 @@ function SavedAddresspage({ userProfiles }) {
         return setcurrentUserProfile(e);
       });
   }, [userProfiles]);
+  console.log(currentUserProfile);
   //SaveEditedAddress
   async function SaveEditedAddress(values) {
     await updateDoc(doc(db, "userDetails", `${currentUserId}`), {

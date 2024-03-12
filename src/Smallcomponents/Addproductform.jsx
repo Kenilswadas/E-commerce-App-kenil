@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Label } from "../Smallcomponents/Label";
 import { InputField } from "../Smallcomponents/InputField";
 import { Button } from "../Smallcomponents/Buttons";
@@ -32,17 +32,46 @@ function Addproductform({
   setIsLoading,
   isLoading,
 }) {
-  const [name, setName] = useState("kenil");
+  const [MyProduct, setMyProduct] = useState(null);
+  useEffect(() => {
+    onSnapshot(collection(db, "MyProducts"), (snap) => {
+      const data = snap.docs.map((doc) => ({
+        docId: doc.id,
+        ...doc.data(),
+      }));
+      data
+        .filter((data) => data.docId === DocId)
+        .map((e) => {
+          return setMyProduct(e);
+        });
+    });
+  }, []);
+
+  const [name, setName] = useState("");
   const [description, setDiscription] = useState("");
   const [price, setPrice] = useState("");
-  // const [discountedprice, setdiscountedPrice] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubCategory] = useState("");
   const [basecategory, setBaseCategory] = useState("");
   const [image, setImage] = useState(null);
   const mycollection = collection(db, "MyProducts");
-
   const uId = uuid();
+  // if (MyProduct?.ProductName) {
+  //   setName(MyProduct?.ProductName);
+  //   setDiscription(MyProduct?.ProductDescription);
+  //   setPrice(MyProduct?.ProductPrice);
+  //   setCategory(MyProduct?.Category);
+  //   setSubCategory(MyProduct?.SubCategory);
+  //   setBaseCategory(MyProduct?.BaseCategory);
+  // } else {
+  //   setName("");
+  //   setDiscription("");
+  //   setPrice("");
+  //   setCategory("");
+  //   setSubCategory("");
+  //   setBaseCategory("");
+  // }
+  console.log(MyProduct);
   const AddProducts = async () => {
     const imageRef = ref(storage, `hi.jpeg`);
     await uploadBytes(imageRef, image);
@@ -79,16 +108,25 @@ function Addproductform({
     const url = await getDownloadURL(imageRef);
     console.log(url);
     setIsLoading(true);
+
     updateDoc(doc(db, "MyProducts", DocId), {
-      ProductName: name,
-      ProductDescription: description,
-      ProductPrice: price,
-      DiscountedPrice: price - price * 0.4,
-      Category: category,
-      SubCategory: subcategory,
-      BaseCategory: basecategory,
-      ProductId: uId,
-      ProductImage: url,
+      ProductName: MyProduct?.ProductName ? MyProduct?.ProductName : name,
+      ProductDescription: MyProduct?.ProductDescription
+        ? MyProduct?.ProductDescription
+        : description,
+      ProductPrice: MyProduct?.ProductPrice ? MyProduct?.ProductPrice : price,
+      DiscountedPrice: MyProduct?.DiscountedPrice
+        ? MyProduct?.DiscountedPrice
+        : price - price * 0.4,
+      Category: MyProduct?.Category ? MyProduct?.Category : category,
+      SubCategory: MyProduct?.SubCategory
+        ? MyProduct?.SubCategory
+        : subcategory,
+      BaseCategory: MyProduct?.BaseCategory
+        ? MyProduct?.BaseCategory
+        : basecategory,
+      ProductId: MyProduct?.ProductId ? MyProduct?.ProductId : uId,
+      ProductImage: MyProduct?.ProductImage ? MyProduct?.ProductImage : url,
     })
       .then((e) => {
         toast.success("updated successfully !");
